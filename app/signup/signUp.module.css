@@ -1,0 +1,90 @@
+.signupContainer {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #333;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+}
+
+.signupHeader {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid #333;
+  text-align: center;
+}
+
+.signupDescription {
+  text-align: center;
+  font-size: 12px;
+  color: #333;
+}
+
+.signupLink {
+  color: #1155ff;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0px;
+}
+
+.formInput {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #555;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  background-color: #ffffff;
+  color: #333;
+}
+
+/* 入力フィールドにフォーカス時のスタイル */
+.formInput:focus {
+  border-color: #56a8ff;
+  border: 1px solid #56a8ff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.signupButton {
+  width: 80%;
+  background-color: #56a8ff;
+  color: #ffffff;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 15px;
+}
+
+.signupButton:disabled {
+  background-color: #cccccc;
+  color: #333333;
+  cursor: not-allowed;
+}
+
+/* .signupButton:hover:not(:disabled) {
+  background-color: #cccccc;
+  color: #333333;
+} */
+
+/* .disabled {
+  background-color: #cccccc !important;
+  color: #990000 !important;
+  cursor: not-allowed !important;
+} */
