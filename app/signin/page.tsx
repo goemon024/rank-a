@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation'
 import styles from "./signIn.module.css";
 import Link from 'next/link';
 import { GetStrength } from '../components/PasswordStrength'
+import { useAuth } from '@/contexts/AuthContext';
+import { jwtDecode } from 'jwt-decode'
+import { UserPayload } from '@/types/auth'
 
 export default function LoginPage() {
 
@@ -14,7 +17,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const router = useRouter()
-
+    const { setUser } = useAuth()
     const passwordStrength = GetStrength(password)
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -42,7 +45,11 @@ export default function LoginPage() {
             }
 
             localStorage.setItem('token', data.token)
+            // ログイン時のユーザー情報反映
+            const decoded = jwtDecode<UserPayload>(data.token)
+            setUser(decoded)
             router.push('/')
+
 
         } catch (error) {
             setError('エラーが発生しました')

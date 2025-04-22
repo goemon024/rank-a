@@ -1,5 +1,6 @@
-// POST /api/register
+// POST /api/users
 import prisma from '@/lib/prisma'
+// import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
 import { verifyCaptcha } from '@/utils/verifyCaptcha'
 import { sanitizeInput } from '@/utils/sanitize'
@@ -51,6 +52,7 @@ export async function POST(req: Request) {
                 username: sanitizedUsername,
                 email: sanitizedEmail,
                 passwordHash: hashedPassword,
+                role: 'Student',
             },
         })
 

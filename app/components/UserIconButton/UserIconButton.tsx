@@ -1,24 +1,23 @@
 import styles from "./UserIconButton.module.css";
 import Image from "next/image";
-import defaultIcon from "../../../public/default_icon.jpg";
+import { useAuth } from "@/contexts/AuthContext";
 
-interface UserIconButtonProps {
-  imagePath: string | null;
-  // isLoading: boolean;
-  // onClick: () => void;
-  className?: string;
-}
+// interface UserIconButtonProps {
+//   imagePath: string | null;
+//   // isLoading: boolean;
+//   // onClick: () => void;
+//   className?: string;
+// }
 
-const UserIconButton: React.FC<UserIconButtonProps> = ({
-  imagePath,
-  // isLoading = false,
-  // onClick
-}) => {
+export const UserIconButton = () => {
+  const auth = useAuth();
+  const imagePath = auth.user?.imagePath;
+
   return (
     <button className={styles.userIconButton}>
       <Image
         className={styles.userIcon}
-        src={imagePath || defaultIcon}
+        src={imagePath || "/profile_default.jpg"}
         alt="User Icon"
         width={30}
         height={30}

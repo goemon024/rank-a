@@ -2,17 +2,27 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 import { jwtDecode } from 'jwt-decode'
+import { UserPayload } from '../types/auth'
 
-type UserPayload = {
-    userId: string
-    exp: number
-    [key: string]: any
-}
+// export enum Role {
+//     Student = "Student",
+//     Admin = "Admin"
+//   }
+
+//   export type UserPayload = {
+//     userId: string
+//     username: string
+//     imagePath: string
+//     role: Role
+//     exp: number
+//   }
+
 
 type AuthContextType = {
     user: UserPayload | null
     isAuthenticated: boolean
     logout: () => void
+    setUser: (user: UserPayload | null) => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -25,6 +35,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (token) {
             try {
                 const decoded: UserPayload = jwtDecode(token)
+                console.log('decoded token:', decoded)
+
                 // 有効期限確認
                 if (decoded.exp * 1000 > Date.now()) {
                     setUser(decoded)
@@ -44,7 +56,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated: !!user, logout }}>
+        <AuthContext.Provider value={{ user, isAuthenticated: !!user, logout, setUser }}>
             {children}
         </AuthContext.Provider>
     )

@@ -2,7 +2,7 @@
   background-color: #e0e0e0;
   width: 100%;
   /* 外枠は画面全体に広げる */
-  height: 70px;
+  height: 80px;
   align-items: center;
   display: flex;
   position: sticky;
@@ -22,17 +22,21 @@
   /* 最大幅を設定（必要に応じて調整） */
   margin: 0 auto;
   /* 中央寄せ */
+  height: 100%;
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
+  /* font-size: 1.5rem;
+  font-weight: bold; */
+  width: 70px;
+  height: 70px;
 }
 
 .nav {
   display: flex;
   gap: 15px;
   align-items: center;
+  height: 100%;
 }
 
 .navButtonSection {
@@ -123,4 +127,31 @@
 
 .iconContainer:hover .dropdownMenu {
   display: block;
+}
+
+.profileWindow {
+  display: flex;
+  flex-direction: column;
+  /* 上下に並べる */
+  align-items: center;
+  /* 中央揃え */
+  gap: 10px;
+  /* 要素の間隔 */
+  padding: 10px;
+  /* border-radius: 0px; */
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+  max-width: 240px;
+  height: 100%;
+  margin: 0 auto;
+  /* 中央寄せ */
+}
+
+.logoutButton {
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #aaaaaa;
+  padding: 3px 15px;
+  font-size: 14px;
+  height: 25px;
 }

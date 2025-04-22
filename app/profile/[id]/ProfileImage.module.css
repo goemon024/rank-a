@@ -1,0 +1,75 @@
+.uploader {
+  /* margin: 10px 0px; */
+  width: 120px;
+  height: 120px;
+  /* border: 2px dashed #ccc; */
+  /* 領域のデザイン */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+  /* 背景色 */
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+.notUploader {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+  /* 背景色 */
+  cursor: default;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+.uploader:hover {
+  background-color: #e6f7ff;
+  /* ホバー時の背景色 */
+  border-color: #3182ce;
+  /* ホバー時のボーダー色 */
+}
+
+.previewContainer {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.preview {
+  /* max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 8px; */
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.alert {
+  color: red;
+}
+
+.TextContainer {
+  display: block;
+  text-align: center;
+}
+
+.BlogImageText {
+  font-size: 2.5rem;
+  font-weight: 350;
+  color: #4a5568;
+  margin-bottom: 1rem;
+}
