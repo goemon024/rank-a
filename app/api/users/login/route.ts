@@ -1,9 +1,9 @@
 // app/api/users/login/route.ts
 import { NextResponse } from 'next/server'
-import prisma from '@/app/lib/prisma'
+import prisma from '@/lib/prisma'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { sanitizeInput } from '@/app/utils/sanitize'
+import { sanitizeInput } from '@/utils/sanitize'
 
 // ログイン試行回数を追跡するための簡易的なメモリストア
 const loginAttempts = new Map<string, { count: number; lastAttempt: number }>()

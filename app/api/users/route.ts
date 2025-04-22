@@ -1,8 +1,8 @@
 // POST /api/register
-import prisma from '@/app/lib/prisma'
+import prisma from '@/lib/prisma'
 import bcrypt from 'bcrypt'
-import { verifyCaptcha } from '@/app/utils/verifyCaptcha'
-import { sanitizeInput } from '@/app/utils/sanitize'
+import { verifyCaptcha } from '@/utils/verifyCaptcha'
+import { sanitizeInput } from '@/utils/sanitize'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
