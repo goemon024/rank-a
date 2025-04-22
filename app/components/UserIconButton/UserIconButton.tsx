@@ -1,20 +1,23 @@
 import styles from "./UserIconButton.module.css";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
-// interface UserIconButtonProps {
-//   imagePath: string | null;
-//   // isLoading: boolean;
-//   // onClick: () => void;
-//   className?: string;
-// }
+interface UserIconButtonProps {
+  userId: string | undefined
+}
 
-export const UserIconButton = () => {
+export const UserIconButton = ({ userId }: UserIconButtonProps) => {
   const auth = useAuth();
+  const router = useRouter();
   const imagePath = auth.user?.imagePath;
 
+  const goToProfile = (userId: string | undefined) => {
+    router.push(`/profile/${userId}`);
+  };
+
   return (
-    <button className={styles.userIconButton}>
+    <button className={styles.userIconButton} onClick={() => goToProfile(userId)}>
       <Image
         className={styles.userIcon}
         src={imagePath || "/profile_default.jpg"}

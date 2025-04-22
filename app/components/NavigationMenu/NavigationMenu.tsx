@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import styles from './NavigationMenu.module.css'
 
 interface NavItem {
     label: string
@@ -16,7 +17,7 @@ export default function NavigationMenu({ items }: NavigationMenuProps) {
     const pathname = usePathname()
 
     return (
-        <nav className="">
+        <nav className={styles.NavigationMenu}>
             {items.map(({ label, href }) => (
                 <Link
                     key={href}

@@ -1,0 +1,9 @@
+.NavigationMenu {
+    height: 25px;
+    background-color: #ddcccc;
+    display: flex;
+    justify-content: left;
+    gap: 25px;
+    align-items: center;
+    padding: 0 50px;
+}

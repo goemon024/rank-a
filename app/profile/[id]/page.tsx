@@ -1,14 +1,15 @@
 import { notFound } from 'next/navigation'
-import { getUserById } from '@/lib/api' // ↓次に定義する関数
-
+import { getUserById } from '@/lib/api'
+import { Header } from '@/app/components/Header/Header'
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 const ProfilePage = async ({ params }: PageProps) => {
-  const id = params.id
+  // paramsを非同期で扱う(非推奨な手法)
+  const id = (await params).id
 
   // UUID形式の簡易チェック（安全強化）
   const isValidUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id)
@@ -18,17 +19,20 @@ const ProfilePage = async ({ params }: PageProps) => {
   if (!user) return notFound()
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h1>{user.username} さんのプロフィール</h1>
-      <p>Email: {user.email}</p>
-      {user.imagePath && (
-        <img
-          src={user.imagePath}
-          alt={`${user.username}のプロフィール画像`}
-          style={{ width: '120px', borderRadius: '50%' }}
-        />
-      )}
-      <p>登録日: {new Date(user.createdAt).toLocaleDateString()}</p>
+    <div>
+      <Header />
+      <div style={{ padding: '1rem' }}>
+        <h1>{user.username} さんのプロフィール</h1>
+        <p>Email: {user.email}</p>
+        {user.imagePath && (
+          <img
+            src={user.imagePath}
+            alt={`${user.username}のプロフィール画像`}
+            style={{ width: '120px', borderRadius: '50%' }}
+          />
+        )}
+        <p>登録日: {new Date(user.createdAt).toLocaleDateString()}</p>
+      </div>
     </div>
   )
 }

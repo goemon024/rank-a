@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import styles from './Header.module.css'
-import Link from 'next/link'
+
 
 export const ProfileWindow = () => {
     const auth = useAuth();

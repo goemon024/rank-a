@@ -51,7 +51,7 @@ export const Header = () => {
 
           {isAuthenticated ? (
             <>
-              <UserIconButton />
+              <UserIconButton userId={user?.userId} />
               <ProfileWindow />
             </>
           ) : (
