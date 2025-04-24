@@ -1,0 +1,16 @@
+.sorterFilter {
+    padding: 1rem;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    margin: 1rem 0;
+    width: 25%;
+}
+
+.select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1rem;
+}

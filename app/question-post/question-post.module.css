@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    /* min-h-screen */
+    padding: 0.5rem 0rem;
+    /* py-8 px-4 */
+    padding-left: 6rem;
+    /* md:px-12 */
+    padding-right: 6rem;
+}
+
+.form {
+    background-color: #e2e8f0;
+    /* bg-slate-200 */
+    padding: 0.5rem 1.5rem;
+    /* p-6 */
+    border-radius: 0.375rem;
+    /* rounded */
+
+    display: flex;
+    flex-direction: column;
+    /* 子要素を縦に並べる */
+
+    min-width: 576px;
+    width: 65%;
+}
