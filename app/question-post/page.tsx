@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import styles from './question-post.module.css'
 import CreateTitle from '@/app/components/Forms/CreateTitle'
 import CreateDescription from '@/app/components/Forms/CreateDescription'
+import TagSelector from '@/app/components/Forms/TagSection'
 
 export default function QuestionPost() {
     const { user, isAuthenticated } = useAuth()
@@ -58,23 +59,25 @@ export default function QuestionPost() {
         }
     };
 
-
+    const [tags, setTags] = useState<string[]>([]);
 
     return (
 
-        <div className={styles.container}>
+        <div>
             <Header items={[]} />
-            <h2>質問を投稿</h2>
-            <form className={styles.form} onSubmit={handleSubmit}>
-                <CreateTitle title={title} setTitle={setTitle} />
-                <CreateDescription description={description} setDescription={setDescription} />
-
-                <div className={styles.buttonContainer}>
-                    <button className={styles.button} type="submit" disabled={isLoading}>
-                        投稿
-                    </button>
-                </div>
-            </form>
+            <div className={styles.container}>
+                <h2 className={styles.title}>質問を投稿</h2>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <CreateTitle title={title} setTitle={setTitle} />
+                    <CreateDescription description={description} setDescription={setDescription} />
+                    <TagSelector onChange={setTags} />
+                    <div className={styles.buttonContainer}>
+                        <button className={styles.button} type="submit" disabled={isLoading}>
+                            投稿
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
 
     )

@@ -1,8 +1,7 @@
-// import { Suspense } from 'react'
-// import Link from 'next/link'
-// import styles from './page.module.css'
-
 import Home from './home'
+import { headers } from 'next/headers'
+
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
 
 export default async function Page(
     { searchParams }:
@@ -19,7 +18,37 @@ export default async function Page(
     const limit = params.limit ?? '10'
     const keyword = params.keyword ?? ''
 
+    const queryParams = new URLSearchParams({
+        page,
+        limit,
+        keyword
+    }).toString()
+
+    const res = await fetch(
+        `${BASE_URL}/api/questions?${queryParams}`,
+        {
+            cache: 'no-store',
+            headers: await headers(),
+        }
+    )
+
+    if (!res.ok) {
+        throw new Error('質問データの取得に失敗しました')
+    }
+
+    const data = await res.json()
+    const questions = data.questions
+    const totalCount = data.totalCount
+
+    const currentPage = Number(page)
+    const totalPages = Math.ceil(totalCount / 10)
+
     return (
-        <Home searchParams={{ page, limit, keyword }} />
+        <Home
+            questions={questions}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            keyword={keyword}
+        />
     )
 }

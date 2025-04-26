@@ -29,17 +29,17 @@ const CreateDescription: React.FC<CreateDescriptionProps> = ({ description, setD
                 </label>
             ) : (
                 <label className={styles.label} htmlFor="DescriptionInput">
-                    Article Content :{" "}
+                    本文 :{" "}
                 </label>
             )}
 
             <textarea
-                className={styles.BlogInput}
+                className={styles.DescriptionInput}
                 id="DescriptionInput"
                 name="description"
                 maxLength={2000}
                 value={description}
-                placeholder="記事の内容を入力してください"
+                placeholder="質問の本文を入力してください"
                 onChange={handleInputContent}
             />
         </div>

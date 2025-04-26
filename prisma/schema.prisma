@@ -20,7 +20,7 @@ enum Role {
 }
 
 model User {
-  id           String   @id @default(uuid())
+  id           Int      @id @default(autoincrement())
   username     String   @unique
   email        String   @unique
   imagePath    String   @default("/profile_default.jpg") @map("image_path")
@@ -28,7 +28,7 @@ model User {
   role         Role     @default(Student)
   createdAt    DateTime @default(now()) @map("created_at")
 
-  accounts     Account[]
+//  accounts     Account[]
   questions    Question[]
   answers      Answer[]
   comments     Comment[]
@@ -37,38 +37,38 @@ model User {
   @@map("User")
 }
 
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
+// model Account {
+//  id                 String  @id @default(cuid())
+//  userId             String
+//  type               String
+//  provider           String
+//  providerAccountId  String
+//  refresh_token      String?
+//  access_token       String?
+//  expires_at         Int?
+//  token_type         String?
+//  scope              String?
+//  id_token           String?
+//  session_state      String?
 
-  user User @relation(fields: [userId], references: [id])
+//  user User @relation(fields: [userId], references: [id])
 
-  @@unique([provider, providerAccountId])
-}
+//  @@unique([provider, providerAccountId])
+//}
 
 
 model Question {
-  id            String   @id @default(uuid())
+  id            Int      @id @default(autoincrement())
   title         String
   description   String
   isDraft       Boolean  @map("is_draft")
   createdAt     DateTime @default(now()) @map("created_at")
 
   // リレーション
-  userId        String   @map("user_id")
+  userId        Int      @map("user_id")
   user          User     @relation(fields: [userId], references: [id])
 
-  bestAnswerId  String?  @unique @map("best_answer_id")
+  bestAnswerId  Int?     @unique @map("best_answer_id")
   answer        Answer?  @relation("BestAnswer",fields: [bestAnswerId], references: [id])
 
   answers       Answer[] @relation("AllAnswers")
@@ -79,15 +79,15 @@ model Question {
 }
 
 model Answer {
-  id         String   @id @default(uuid())
+  id         Int      @id @default(autoincrement())
   content    String
   createdAt  DateTime @default(now()) @map("created_at")
 
   // リレーション
-  questionId String   @map("question_id")
+  questionId Int      @map("question_id")
   question   Question @relation("AllAnswers", fields: [questionId], references: [id])
 
-  userId     String   @map("user_id")
+  userId     Int      @map("user_id")
   user       User     @relation(fields: [userId], references: [id])
 
   comments   Comment[]
@@ -98,20 +98,20 @@ model Answer {
 }
 
 model Vote {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   type      String
 
-  answerId  String   @map("answer_id")
+  answerId  Int      @map("answer_id")
   answer    Answer   @relation(fields: [answerId], references: [id])
 
-  userId    String   @map("user_id")
+  userId    Int      @map("user_id")
   user      User     @relation(fields: [userId], references: [id])
 
   @@map("Vote") // 念のため
 }
 
 model Tag {
-  id        String        @id @default(uuid())
+  id        Int           @id @default(autoincrement())
   name      String
   questions QuestionTag[] // 中間テーブル経由で質問にひもづく
 
@@ -119,8 +119,8 @@ model Tag {
 }
 
 model QuestionTag {
-  questionId String       @map("question_id")
-  tagId      String       @map("tag_id")
+  questionId Int          @map("question_id")
+  tagId      Int          @map("tag_id")
 
   question   Question     @relation(fields: [questionId], references: [id])
   tag        Tag          @relation(fields: [tagId], references: [id])
@@ -132,18 +132,18 @@ model QuestionTag {
 
 
 model Comment {
-  id         String    @id @default(uuid())
+  id         Int       @id @default(autoincrement())
   content    String
   createdAt  DateTime  @default(now()) @map("created_at")
 
   // リレーション
-  questionId String    @map("question_id")
+  questionId Int       @map("question_id")
   question   Question  @relation(fields: [questionId], references: [id])
 
-  answerId   String?   @map("answer_id")
+  answerId   Int?      @map("answer_id")
   answer     Answer?   @relation(fields: [answerId], references: [id])
 
-  userId     String    @map("user_id")
+  userId     Int       @map("user_id")
   user       User      @relation(fields: [userId], references: [id])
 
   @@map("Comment")

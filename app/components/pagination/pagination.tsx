@@ -1,8 +1,11 @@
 // components/Pagination.tsx
 'use client'
 
+import React from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import styles from './pagination.module.css'
+import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
+
 interface PaginationProps {
     currentPage: number
     totalPages: number
@@ -25,27 +28,36 @@ export const Pagination = ({ currentPage, totalPages, keyword = '' }: Pagination
     return (
         <div className={styles.pagination}>
             <button
+                className={styles.previousButton}
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage === 1}
             >
-                前へ
+                <AiOutlineArrowLeft className={styles.arrowIcon} />
+                <span className={styles.spanStyle}></span>
+                Previous Page
             </button>
 
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                    key={page}
-                    onClick={() => goToPage(page)}
-                    style={{ fontWeight: page === currentPage ? 'bold' : 'normal' }}
-                >
-                    {page}
-                </button>
-            ))}
+            <div className={styles.buttonsContainer}>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                        key={page}
+                        className={page === currentPage ? styles.currentButton : styles.pagiButton}
+                        onClick={() => goToPage(page)}
+                        style={{ fontWeight: page === currentPage ? 'bold' : 'normal' }}
+                    >
+                        {page}
+                    </button>
+                ))}
+            </div>
 
             <button
+                className={styles.nextButton}
                 onClick={() => goToPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
             >
-                次へ
+                Next Page
+                <span className={styles.spanStyle}></span>
+                <AiOutlineArrowRight className={styles.arrowIcon} />
             </button>
         </div>
     )

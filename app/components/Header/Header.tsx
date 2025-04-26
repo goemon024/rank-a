@@ -27,30 +27,35 @@ interface NavigationMenuProps {
 
 
 export const Header = ({ items }: NavigationMenuProps) => {
-  const { user, isAuthenticated } = useAuth()
+  try {
+    const { user, isAuthenticated } = useAuth()
 
-  return (
-    <header className={styles.header}>
-      <div className={styles.inner}>
-        <Link href="/">
-          <img src="/favicon.ico" alt="Blog Logo" className={styles.logo} />
-        </Link>
-        <nav className={styles.nav}>
+    return (
+      <header className={styles.header}>
+        <div className={styles.inner}>
+          <Link href="/">
+            <img src="/favicon.ico" alt="Blog Logo" className={styles.logo} />
+          </Link>
+          <nav className={styles.nav}>
 
-          {isAuthenticated ? (
-            <>
-              <UserIconButton userId={user?.userId} />
-              <ProfileWindow />
-            </>
-          ) : (
-            <SignupSignin />
-          )}
+            {isAuthenticated ? (
+              <>
+                <UserIconButton userId={user?.userId} />
+                <ProfileWindow />
+              </>
+            ) : (
+              <SignupSignin />
+            )}
 
-        </nav>
-      </div>
+          </nav>
+        </div>
 
-      <NavigationMenu items={items} />
+        <NavigationMenu items={items} />
 
-    </header>
-  );
+      </header>
+    );
+  } catch (error) {
+    console.error('Auth context error:', error);
+    return null; // または適切なフォールバックUI
+  }
 };

@@ -25,11 +25,11 @@ const CreateTitle: React.FC<CreateTitleProps> = ({ title, setTitle }) => {
         <div>
             {overText ? (
                 <label className={styles.labelRed} htmlFor="TitleInput">
-                    50文字を超えています
+                    100文字を超えています
                 </label>
             ) : (
                 <label className={styles.label} htmlFor="TitleInput">
-                    質問タイトル :{" "}
+                    タイトル :{" "}
                 </label>
             )}
             <input
@@ -37,9 +37,9 @@ const CreateTitle: React.FC<CreateTitleProps> = ({ title, setTitle }) => {
                 className={styles.TitleInput}
                 type="text"
                 name="title"
-                maxLength={50}
+                maxLength={100}
                 value={title}
-                placeholder="タイトルを入力してください"
+                placeholder="質問のタイトルを入力してください"
                 onChange={handleInputTitle}
             ></input>
         </div>
