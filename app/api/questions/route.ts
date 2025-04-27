@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
 
     let payload
     try {
-        payload = jwt.verify(token, JWT_SECRET) as { userId: string }
+        payload = jwt.verify(token, JWT_SECRET) as { userId: number }
     } catch (err) {
         return NextResponse.json({ error: 'Invalid token' }, { status: 400 }) // 403
     }
@@ -92,13 +92,18 @@ export async function POST(req: NextRequest) {
                 description,
                 userId: payload.userId,
                 isDraft,
-                tags: {
-                    connect: tags.map((tagId: number) => ({ id: tagId })),
-                },
             },
-            include: { tags: true },
         })
 
+        const result = await prisma.questionTag.createMany({
+            data: tags.map((tagId: number) => ({
+                questionId: question.id,
+                tagId: tagId,
+            })),
+        })
+
+        // eslint-disable-next-line no-console
+        console.log('QuestionTag insert result:', result)
         return NextResponse.json({ success: true, question }, { status: 201 })
     } catch (error) {
         console.error('DB error:', error)

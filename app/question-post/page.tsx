@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import styles from './question-post.module.css'
 import CreateTitle from '@/app/components/Forms/CreateTitle'
 import CreateDescription from '@/app/components/Forms/CreateDescription'
-import TagSelector from '@/app/components/Forms/TagSection'
+import TagSelector from '@/app/components/Forms/TagSelector'
 
 export default function QuestionPost() {
     const { user, isAuthenticated } = useAuth()
@@ -15,6 +15,7 @@ export default function QuestionPost() {
 
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const [tags, setTags] = useState<number[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -25,6 +26,7 @@ export default function QuestionPost() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(tags);
 
         setIsLoading(true);
         try {
@@ -38,7 +40,7 @@ export default function QuestionPost() {
                     title,
                     description,
                     isDraft: false,
-                    tags: []
+                    tags
                 }),
             });
             const data = await response.json();
@@ -59,7 +61,7 @@ export default function QuestionPost() {
         }
     };
 
-    const [tags, setTags] = useState<string[]>([]);
+
 
     return (
 

@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
 interface UserIconButtonProps {
-  userId: string | undefined
+  userId: number | undefined
 }
 
 export const UserIconButton = ({ userId }: UserIconButtonProps) => {
@@ -12,7 +12,7 @@ export const UserIconButton = ({ userId }: UserIconButtonProps) => {
   const router = useRouter();
   const imagePath = auth.user?.imagePath;
 
-  const goToProfile = (userId: string | undefined) => {
+  const goToProfile = (userId: number | undefined) => {
     router.push(`/profile/${userId}`);
   };
 

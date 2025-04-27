@@ -19,7 +19,9 @@ interface HomeProps {
     keyword: string
 }
 
-export default function Home({ questions, currentPage, totalPages, keyword }: HomeProps) {
+export default function Home({
+    questions, currentPage, totalPages, keyword
+}: HomeProps) {
     return (
         <div>
             <div>

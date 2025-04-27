@@ -1,18 +1,19 @@
 import { useState } from "react"
 import { Chip, Stack } from "@mui/material"
 import styles from "./Forms.module.css"
-const TAGS = ["React", "Next.js", "Prisma",
-  "TypeScript", "Python", "CSS", "HTML",
+
+const TAGS = ["Python", "SQL", "React", "Next.js", "Prisma",
+  "TypeScript", "CSS", "HTML",
   "Node.js", "Express", "Django", "Vue",
-  "Svelte", "Ruby", "Java", "SQL"]
+  "Svelte", "Ruby", "Java"]
 
-export default function TagSelector({ onChange }: { onChange: (selected: string[]) => void }) {
-  const [selected, setSelected] = useState<string[]>([])
+export default function TagSelector({ onChange }: { onChange: (selected: number[]) => void }) {
+  const [selected, setSelected] = useState<number[]>([])
 
-  const toggleTag = (tag: string) => {
-    const newSelected = selected.includes(tag)
-      ? selected.filter(t => t !== tag)
-      : [...selected, tag]
+  const toggleTag = (index: number) => {
+    const newSelected = selected.includes(index)
+      ? selected.filter(i => i !== index)
+      : [...selected, index]
 
     setSelected(newSelected)
     onChange(newSelected)
@@ -22,16 +23,16 @@ export default function TagSelector({ onChange }: { onChange: (selected: string[
     <div>
       <label className={styles.label}>タグ :{" "}</label>
       <Stack direction="row" spacing={2} flexWrap="wrap">
-        {TAGS.map(tag => {
-          const isSelected = selected.includes(tag)
+        {TAGS.map((tag, index) => {
+          const isSelected = selected.includes(index)
           return (
             <Chip
-              key={tag}
+              key={index}
               label={tag}
               clickable
-              onClick={() => toggleTag(tag)}
-              color={selected.includes(tag) ? "primary" : "default"}
-              variant={selected.includes(tag) ? "filled" : "outlined"}
+              onClick={() => toggleTag(index)}
+              color={isSelected ? "primary" : "default"}
+              variant={isSelected ? "filled" : "outlined"}
               sx={{
                 fontSize: '1.0rem',
                 padding: '3px 5px',
