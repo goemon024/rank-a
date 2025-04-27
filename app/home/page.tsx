@@ -1,5 +1,6 @@
 import Home from './home'
 import { headers } from 'next/headers'
+import { QuestionWithUserAndTags } from '@/types'
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
 
@@ -37,7 +38,7 @@ export default async function Page(
     }
 
     const data = await res.json()
-    const questions = data.questions
+    const questions = data.questions as QuestionWithUserAndTags[]
     const totalCount = data.totalCount
 
     const currentPage = Number(page)

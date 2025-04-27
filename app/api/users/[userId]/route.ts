@@ -23,7 +23,7 @@ export const GET = async (
         const { userId } = await Promise.resolve(params)
         // DBからユーザー取得
         const user = await prisma.user.findUnique({
-            where: { id: userId },
+            where: { id: parseInt(userId, 10) },
             select: {
                 id: true,
                 username: true,

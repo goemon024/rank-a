@@ -8,6 +8,7 @@ import styles from './question-post.module.css'
 import CreateTitle from '@/app/components/Forms/CreateTitle'
 import CreateDescription from '@/app/components/Forms/CreateDescription'
 import TagSelector from '@/app/components/Forms/TagSelector'
+import { LINKS_HOME } from '@/constants'
 
 export default function QuestionPost() {
     const { user, isAuthenticated } = useAuth()
@@ -40,7 +41,7 @@ export default function QuestionPost() {
                     title,
                     description,
                     isDraft: false,
-                    tags
+                    tags: tags
                 }),
             });
             const data = await response.json();
@@ -66,7 +67,7 @@ export default function QuestionPost() {
     return (
 
         <div>
-            <Header items={[]} />
+            <Header links={LINKS_HOME} />
             <div className={styles.container}>
                 <h2 className={styles.title}>質問を投稿</h2>
                 <form className={styles.form} onSubmit={handleSubmit}>

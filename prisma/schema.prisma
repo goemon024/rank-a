@@ -1,151 +1,105 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
-enum Role {
-  Student
-  Admin
-}
-
 model User {
-  id           Int      @id @default(autoincrement())
-  username     String   @unique
-  email        String   @unique
-  imagePath    String   @default("/profile_default.jpg") @map("image_path")
-  passwordHash String   @map("password_hash")
-  role         Role     @default(Student)
-  createdAt    DateTime @default(now()) @map("created_at")
-
-//  accounts     Account[]
-  questions    Question[]
+  username     String     @unique
+  email        String     @unique
+  passwordHash String     @map("password_hash")
+  role         Role       @default(Student)
+  createdAt    DateTime   @default(now()) @map("created_at")
+  imagePath    String     @default("/profile_default.jpg") @map("image_path")
+  id           Int        @id @default(autoincrement())
   answers      Answer[]
   comments     Comment[]
+  questions    Question[]
   votes        Vote[]
 
   @@map("User")
 }
 
-// model Account {
-//  id                 String  @id @default(cuid())
-//  userId             String
-//  type               String
-//  provider           String
-//  providerAccountId  String
-//  refresh_token      String?
-//  access_token       String?
-//  expires_at         Int?
-//  token_type         String?
-//  scope              String?
-//  id_token           String?
-//  session_state      String?
-
-//  user User @relation(fields: [userId], references: [id])
-
-//  @@unique([provider, providerAccountId])
-//}
-
-
 model Question {
-  id            Int      @id @default(autoincrement())
-  title         String
-  description   String
-  tags        Int[]    @db.IntegerArray
-  isDraft       Boolean  @map("is_draft")
-  createdAt     DateTime @default(now()) @map("created_at")
+  title        String
+  description  String
+  isDraft      Boolean       @map("is_draft")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  id           Int           @id @default(autoincrement())
+  userId       Int           @map("user_id")
+  bestAnswerId Int?          @unique @map("best_answer_id")
+  answers      Answer[]      @relation("AllAnswers")
+  comments     Comment[]
+  answer       Answer?       @relation("BestAnswer", fields: [bestAnswerId], references: [id])
+  user         User          @relation(fields: [userId], references: [id])
+  questionTags QuestionTag[]
 
-  // リレーション
-  userId        Int      @map("user_id")
-  user          User     @relation(fields: [userId], references: [id])
-
-  bestAnswerId  Int?     @unique @map("best_answer_id")
-  answer        Answer?  @relation("BestAnswer",fields: [bestAnswerId], references: [id])
-
-  answers       Answer[] @relation("AllAnswers")
-  comments      Comment[]
-  tags          QuestionTag[]
-
-  @@map("Question") // 念のため
+  @@map("Question")
 }
 
 model Answer {
-  id         Int      @id @default(autoincrement())
-  content    String
-  createdAt  DateTime @default(now()) @map("created_at")
+  content         String
+  createdAt       DateTime  @default(now()) @map("created_at")
+  id              Int       @id @default(autoincrement())
+  questionId      Int       @map("question_id")
+  userId          Int       @map("user_id")
+  question        Question  @relation("AllAnswers", fields: [questionId], references: [id])
+  user            User      @relation(fields: [userId], references: [id])
+  comments        Comment[]
+  bestForQuestion Question? @relation("BestAnswer")
+  votes           Vote[]
 
-  // リレーション
-  questionId Int      @map("question_id")
-  question   Question @relation("AllAnswers", fields: [questionId], references: [id])
-
-  userId     Int      @map("user_id")
-  user       User     @relation(fields: [userId], references: [id])
-
-  comments   Comment[]
-  votes      Vote[]
-
-  @@map("Answer") // 念のため
-  bestForQuestion Question? @relation("BestAnswer") // 念のため
+  @@map("Answer")
 }
 
 model Vote {
-  id        Int      @id @default(autoincrement())
-  type      String
+  type     String
+  id       Int    @id @default(autoincrement())
+  answerId Int    @map("answer_id")
+  userId   Int    @map("user_id")
+  answer   Answer @relation(fields: [answerId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
 
-  answerId  Int      @map("answer_id")
-  answer    Answer   @relation(fields: [answerId], references: [id])
-
-  userId    Int      @map("user_id")
-  user      User     @relation(fields: [userId], references: [id])
-
-  @@map("Vote") // 念のため
+  @@map("Vote")
 }
 
 model Tag {
-  id        Int           @id @default(autoincrement())
   name      String
-  questions QuestionTag[] // 中間テーブル経由で質問にひもづく
+  id        Int           @id @default(autoincrement())
+  questions QuestionTag[]
 
   @@map("Tag")
 }
 
 model QuestionTag {
-  questionId Int          @map("question_id")
-  tagId      Int          @map("tag_id")
+  questionId Int      @map("question_id")
+  tagId      Int      @map("tag_id")
+  question   Question @relation(fields: [questionId], references: [id])
+  tag        Tag      @relation(fields: [tagId], references: [id])
 
-  question   Question     @relation(fields: [questionId], references: [id])
-  tag        Tag          @relation(fields: [tagId], references: [id])
-
-  @@id([questionId, tagId]) // 複合主キーにする
-
+  @@id([questionId, tagId])
   @@map("QuestionTag")
 }
 
-
 model Comment {
-  id         Int       @id @default(autoincrement())
   content    String
-  createdAt  DateTime  @default(now()) @map("created_at")
-
-  // リレーション
-  questionId Int       @map("question_id")
-  question   Question  @relation(fields: [questionId], references: [id])
-
-  answerId   Int?      @map("answer_id")
-  answer     Answer?   @relation(fields: [answerId], references: [id])
-
-  userId     Int       @map("user_id")
-  user       User      @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now()) @map("created_at")
+  id         Int      @id @default(autoincrement())
+  questionId Int      @map("question_id")
+  answerId   Int?     @map("answer_id")
+  userId     Int      @map("user_id")
+  answer     Answer?  @relation(fields: [answerId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 
   @@map("Comment")
+}
+
+enum Role {
+  Student
+  Admin
 }

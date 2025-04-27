@@ -6,11 +6,7 @@ import { QuestionArea } from '../components/QuestionArea/QuestionArea'
 import SorterFilter from '../components/SorterFilter/SorterFilter'
 import { Pagination } from '../components/pagination/pagination'
 import PostButton from '../components/PostButton/PostButton'
-
-const items = [
-    { label: '新着質問一覧', href: '/home' },
-    { label: '人気質問一覧', href: '/home/popular' },
-]
+import { LINKS_HOME } from '@/constants'
 
 interface HomeProps {
     questions: any[]
@@ -25,7 +21,7 @@ export default function Home({
     return (
         <div>
             <div>
-                <Header items={items} />
+                <Header links={LINKS_HOME} />
             </div>
             <div className={styles.main}>
                 <QuestionArea questions={questions} />

@@ -3,11 +3,11 @@
 import React from 'react'
 import styles from './QuestionArea.module.css'
 import { QuestionCard } from '@/app/components/QuestionCard/QuestionCard'
-import { Question, QuestionTag } from '@prisma/client'
+import { QuestionWithUserAndTags } from '@/types'
 
 
-export const QuestionArea = ({ questions, questionTags }:
-    { questions: Question[], questionTags: QuestionTag[] }) => {
+export const QuestionArea = ({ questions }:
+    { questions: QuestionWithUserAndTags[] }) => {
     return (
         <div className={styles.questionArea}>
             {questions.map(question => (

@@ -14,19 +14,10 @@ import { SignupSignin } from "./SignupSignin";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { ProfileWindow } from "./ProfileWindow";
+import { NavLinks } from "@/types";
 
 
-interface NavItem {
-  label: string
-  href: string
-}
-
-interface NavigationMenuProps {
-  items: NavItem[]
-}
-
-
-export const Header = ({ items }: NavigationMenuProps) => {
+export const Header = ({ links }: { links: NavLinks[] }) => {
   try {
     const { user, isAuthenticated } = useAuth()
 
@@ -50,7 +41,7 @@ export const Header = ({ items }: NavigationMenuProps) => {
           </nav>
         </div>
 
-        <NavigationMenu items={items} />
+        <NavigationMenu links={links} />
 
       </header>
     );

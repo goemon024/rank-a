@@ -2,46 +2,45 @@
 
 import React from 'react'
 import styles from './QuestionCard.module.css'
-import { Question } from '@prisma/client'
 import { UserIconButton } from '../UserIconButton/UserIconButton'
 import { Stack, Chip } from '@mui/material'
+import Link from 'next/link'
+import { QuestionWithUserAndTags } from '@/types'
 
-const TAGS = ["Python", "SQL", "React", "Next.js", "Prisma",
-    "TypeScript", "CSS", "HTML",
-    "Node.js", "Express", "Django", "Vue",
-    "Svelte", "Ruby", "Java"]
+// APIを介さずにタグ表示。
+import { TAGS } from '@/constants'
 
 export const QuestionCard = ({ question }:
-    { question: Question }) => {
+    { question: QuestionWithUserAndTags }) => {
     return (
         <div className={styles.questionCard}>
-            <h2>{question.title}</h2>
+            <Link href={`/question-detail/${question.id}`}>
+                <h2>{question.title}</h2>
 
-            {/* --- タグを表示するエリア --- */}
-            {/* <Stack direction="row" spacing={1} flexWrap="wrap" marginBottom={1}>
-                {question.tags.map((tagIndex) => (
-                    <Chip
-                        key={tagIndex}
-                        label={TAGS[tagIndex]}
-                        size="small"
-                        sx={{
-                            fontSize: '0.8rem',
-                            padding: '2px 4px',
-                            bgcolor: 'grey.300',
-                            color: 'black',
-                        }}
-                    />
-                ))}
-            </Stack> */}
-            {/* --- ここまでタグ表示エリア --- */}
+                <Stack direction="row" spacing={1} flexWrap="wrap" marginBottom={1}>
+                    {question.questionTags.map((qt) => (
+                        <Chip
+                            key={qt.tagId}
+                            label={TAGS[qt.tagId]}
+                            size="small"
+                            sx={{
+                                fontSize: '0.8rem',
+                                padding: '2px 4px',
+                                bgcolor: 'primary.main',
+                                color: 'white',
+                            }}
+                        />
+                    ))}
+                </Stack>
 
-            <div className={styles.autherInfo}>
-                <UserIconButton userId={question.userId} />
-                <div className={styles.autherInfoText}>
-                    <p>{question.userId}</p>
-                    <p>{question.createdAt.toLocaleString()}</p>
+                <div className={styles.autherInfo}>
+                    <UserIconButton userId={question.userId} />
+                    <div className={styles.autherInfoText}>
+                        <p>{question.user.username}</p>
+                        <p>{question.createdAt.toLocaleString()}</p>
+                    </div>
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }

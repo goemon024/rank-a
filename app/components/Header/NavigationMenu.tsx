@@ -2,21 +2,13 @@
 
 import Link from 'next/link'
 import styles from './Header.module.css'
+import { NavLinks } from '@/types'
 
-interface NavItem {
-    label: string
-    href: string
-}
-
-interface NavigationMenuProps {
-    items: NavItem[]
-}
-
-export default function NavigationMenu({ items }: NavigationMenuProps) {
+export default function NavigationMenu({ links }: { links: NavLinks[] }) {
 
     return (
         <nav className={styles.NavigationMenu}>
-            {items.map(({ label, href }) => (
+            {links.map(({ label, href }) => (
                 <Link
                     key={href}
                     href={href}

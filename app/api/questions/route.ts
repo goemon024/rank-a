@@ -33,8 +33,12 @@ export async function GET(req: NextRequest) {
             prisma.question.findMany({
                 where: whereClause,
                 include: {
-                    user: true,
-                    tags: true,
+                    user: {
+                        select: {
+                            username: true,
+                        },
+                    },
+                    questionTags: true,
                 },
                 skip,
                 take: limit,
