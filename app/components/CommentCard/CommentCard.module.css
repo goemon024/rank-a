@@ -1,21 +1,20 @@
 .commentCard {
-    background: #f6f6f6;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    margin-left: 4rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: calc(100% - 4rem);
+  background: #f6f6f6;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 4rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: calc(100% - 4rem);
 }
 
-
 .autherInfo {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  gap: 20px;
 }
 
 /* .autherInfoText {
@@ -26,10 +25,10 @@
 } */
 
 .commentContent {
-    padding: 10px;
-    margin-bottom: 25px;
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: left;
+  padding: 10px;
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: left;
 }

@@ -1,38 +1,36 @@
 .questionCard,
 .descriptionCard {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .descriptionCard {
-    margin-top: -1rem;
+  margin-top: -1rem;
 }
 
-
 .questionCard h3 {
-    margin: 0 0 0.5rem 0;
-    color: #333;
+  margin: 0 0 0.5rem 0;
+  color: #333;
 }
 
 .autherInfo {
-    display: flex;
-    align-items: right;
-    gap: 20px;
+  display: flex;
+  align-items: right;
+  gap: 20px;
 }
 
-
 .autherInfoText {
-    margin-top: 5px;
-    display: flex;
-    flex-direction: column;
-    /* 縦方向に配置 */
-    justify-content: space-between;
-    /* 上下に均等配置 */
-    height: 30px;
-    /* 任意の高さを指定（これ重要） */
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  /* 縦方向に配置 */
+  justify-content: space-between;
+  /* 上下に均等配置 */
+  height: 30px;
+  /* 任意の高さを指定（これ重要） */
 }

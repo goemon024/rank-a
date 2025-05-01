@@ -1,91 +1,88 @@
 .container {
-    /* font-family: Arial, sans-serif;
+  /* font-family: Arial, sans-serif;
     max-width: 900px;
     margin: 120px auto 40px auto;
     padding: 0px 20px; */
 
-    background-color: #f6f6f6;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    position: relative;
-    z-index: 1010;
-    min-height: 100vh;
-    width: 800px;
-    margin: 120px auto 40px auto;
-
+  background-color: #f6f6f6;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1010;
+  min-height: 100vh;
+  width: 800px;
+  margin: 120px auto 40px auto;
 }
 
 .questionDescription {
-    margin: 20px 0px;
-    background-color: #f6f6f6;
-    padding: 20px;
-    border-radius: 10px;
-    position: relative;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-
+  margin: 20px 0px;
+  background-color: #f6f6f6;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
-
 .thumbnailSection h2 {
-    font-size: 14px;
-    font-weight: 400;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .thumbnailHeaderTitle {
-    margin: 10px 0px;
+  margin: 10px 0px;
 }
 
 .postsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    /* 横並びにしつつ、幅が狭くなると改行 */
-    gap: 20px;
-    /* 最小間隔を20pxに設定 */
-    margin: 0 auto;
-    /* 中央揃え */
-    justify-content: space-between;
-    /* 横幅を広げて均等配置 */
+  display: flex;
+  flex-wrap: wrap;
+  /* 横並びにしつつ、幅が狭くなると改行 */
+  gap: 20px;
+  /* 最小間隔を20pxに設定 */
+  margin: 0 auto;
+  /* 中央揃え */
+  justify-content: space-between;
+  /* 横幅を広げて均等配置 */
 }
 
 .commentsSection {
-    margin-bottom: 40px;
-    max-width: 600px;
-    margin: 0 auto;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .commentsTitle {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .commentInputContainer {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .commentInput {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .commentButton,
 .commentButtonDisabled {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .commentButtonDisabled {
-    background-color: #666666;
-    color: #aaaaaa;
+  background-color: #666666;
+  color: #aaaaaa;
 }

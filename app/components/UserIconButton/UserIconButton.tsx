@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
 interface UserIconButtonProps {
-  userId: number | undefined
+  userId: number | undefined;
 }
 
 export const UserIconButton = ({ userId }: UserIconButtonProps) => {
@@ -17,7 +17,10 @@ export const UserIconButton = ({ userId }: UserIconButtonProps) => {
   };
 
   return (
-    <button className={styles.userIconButton} onClick={() => goToProfile(userId)}>
+    <button
+      className={styles.userIconButton}
+      onClick={() => goToProfile(userId)}
+    >
       <Image
         className={styles.userIcon}
         src={imagePath || "/profile_default.jpg"}

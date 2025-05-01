@@ -1,27 +1,25 @@
-'use client'
+"use client";
 
-import React from 'react'
-import styles from './CommentCard.module.css'
-import { UserIconButton } from '../UserIconButton/UserIconButton'
+import React from "react";
+import styles from "./CommentCard.module.css";
+import { UserIconButton } from "../UserIconButton/UserIconButton";
 // import { Answer } from '@/prisma/client'
-import { CommentWithUser } from '@/types'
-import dayjs from 'dayjs'
+import { CommentWithUser } from "@/types";
+import dayjs from "dayjs";
 
-
-export const CommentCard = ({ comment }:
-    { comment: CommentWithUser }) => {
-    return (
-        <div className={styles.commentCard}>
-            <div className={styles.autherInfo}>
-                <UserIconButton userId={comment.userId} />
-                <div className={styles.autherInfoText}>
-                    <p>{comment.user.username}</p>
-                    <p>{dayjs(comment.createdAt).format('YYYY年MM月DD日 HH時mm分')}</p>
-                </div>
-            </div>
-            <div className={styles.answerContent}>
-                <p>{comment.content}</p>
-            </div>
+export const CommentCard = ({ comment }: { comment: CommentWithUser }) => {
+  return (
+    <div className={styles.commentCard}>
+      <div className={styles.autherInfo}>
+        <UserIconButton userId={comment.userId} />
+        <div className={styles.autherInfoText}>
+          <p>{comment.user.username}</p>
+          <p>{dayjs(comment.createdAt).format("YYYY年MM月DD日 HH時mm分")}</p>
         </div>
-    )
-}
+      </div>
+      <div className={styles.commentContent}>
+        <p>{comment.content}</p>
+      </div>
+    </div>
+  );
+};

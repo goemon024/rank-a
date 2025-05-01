@@ -1,69 +1,68 @@
 /* styles.module.css など */
 .postButton {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 999;
-    /* ヘッダーの下に潜らないように調整 */
-    padding: 12px 16px;
-    border-radius: 30px;
-    background-color: orange;
-    color: white;
-    font-weight: bold;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s ease;
-    height: 60px;
-    width: 200px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  /* ヘッダーの下に潜らないように調整 */
+  padding: 12px 16px;
+  border-radius: 30px;
+  background-color: orange;
+  color: white;
+  font-weight: bold;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+  height: 60px;
+  width: 200px;
 }
 
 .postButton:hover {
-    background-color: #dd8333
+  background-color: #dd8333;
 }
-
 
 .answerButton,
 .answerDisabledButton {
-    /* ヘッダーの下に潜らないように調整 */
-    padding: 4px;
-    border-radius: 30px;
-    background-color: orange;
-    color: white;
-    font-weight: bold;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s ease;
-    height: 45px;
-    width: 150px;
+  /* ヘッダーの下に潜らないように調整 */
+  padding: 4px;
+  border-radius: 30px;
+  background-color: orange;
+  color: white;
+  font-weight: bold;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+  height: 45px;
+  width: 150px;
 }
 
 .answerDisabledButton {
-    background-color: #909090;
-    cursor: not-allowed;
+  background-color: #909090;
+  cursor: not-allowed;
 }
 
 .commentButton,
 .commentDisabledButton {
-    /* ヘッダーの下に潜らないように調整 */
-    padding: 4px;
-    border-radius: 30px;
-    background-color: skyblue;
-    color: white;
-    /* font-weight: bold; */
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s ease;
-    height: 45px;
-    width: 150px;
+  /* ヘッダーの下に潜らないように調整 */
+  padding: 4px;
+  border-radius: 30px;
+  background-color: skyblue;
+  color: white;
+  /* font-weight: bold; */
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+  height: 45px;
+  width: 150px;
 }
 
 .commentDisabledButton {
-    background-color: #909090;
-    cursor: not-allowed;
+  background-color: #909090;
+  cursor: not-allowed;
 }

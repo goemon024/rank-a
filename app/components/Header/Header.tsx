@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import NavigationMenu from "./NavigationMenu";
@@ -16,11 +16,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ProfileWindow } from "./ProfileWindow";
 import { NavLinks } from "@/types";
 
-
 export const Header = ({ links }: { links: NavLinks[] }) => {
-  try {
-    const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated } = useAuth();
 
+  try {
     return (
       <header className={styles.header}>
         <div className={styles.inner}>
@@ -28,25 +27,24 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
             <img src="/favicon.ico" alt="Blog Logo" className={styles.logo} />
           </Link>
           <nav className={styles.nav}>
-
             {isAuthenticated ? (
               <>
-                <UserIconButton userId={user?.userId} />
+                <UserIconButton
+                  userId={user?.userId ? parseInt(user.userId, 10) : undefined}
+                />
                 <ProfileWindow />
               </>
             ) : (
               <SignupSignin />
             )}
-
           </nav>
         </div>
 
         <NavigationMenu links={links} />
-
       </header>
     );
   } catch (error) {
-    console.error('Auth context error:', error);
+    console.error("Auth context error:", error);
     return null; // または適切なフォールバックUI
   }
 };
