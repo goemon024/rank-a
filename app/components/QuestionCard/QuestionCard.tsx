@@ -6,6 +6,7 @@ import { UserIconButton } from '../UserIconButton/UserIconButton'
 import { Stack, Chip } from '@mui/material'
 import Link from 'next/link'
 import { QuestionWithUserAndTags } from '@/types'
+import dayjs from 'dayjs'
 
 // APIを介さずにタグ表示。
 import { TAGS } from '@/constants'
@@ -37,7 +38,7 @@ export const QuestionCard = ({ question }:
                     <UserIconButton userId={question.userId} />
                     <div className={styles.autherInfoText}>
                         <p>{question.user.username}</p>
-                        <p>{question.createdAt.toLocaleString()}</p>
+                        <p>{dayjs(question.createdAt).format('YYYY年MM月DD日 HH時mm分')}</p>
                     </div>
                 </div>
             </Link>

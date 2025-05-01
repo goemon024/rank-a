@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import styles from './PostButton.module.css'
+import styles from './Button.module.css'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 

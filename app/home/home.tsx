@@ -5,7 +5,7 @@ import { Header } from '@/app/components/Header/Header'
 import { QuestionArea } from '../components/QuestionArea/QuestionArea'
 import SorterFilter from '../components/SorterFilter/SorterFilter'
 import { Pagination } from '../components/pagination/pagination'
-import PostButton from '../components/PostButton/PostButton'
+import PostButton from '../components/Button/PostButton'
 import { LINKS_HOME } from '@/constants'
 
 interface HomeProps {
