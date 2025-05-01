@@ -6,7 +6,9 @@ export async function GET(
   context: { params: { questionId: string } },
 ) {
   try {
-    const { questionId } = await Promise.resolve(context.params);
+    // const { questionId } = await Promise.resolve(context.params);
+    const { questionId } = context.params;
+
     if (isNaN(parseInt(questionId, 10))) {
       return NextResponse.json(
         { error: "Invalid question ID" },
