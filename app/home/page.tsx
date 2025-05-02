@@ -4,39 +4,24 @@ import { QuestionWithUserAndTags } from "@/types";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 
-type SearchParams = {
-  page?: string;
-  limit?: string;
-  keyword?: string;
-};
-
 interface PageProps {
-  searchParams?: SearchParams;
+  searchParams: {
+    page?: string;
+    limit?: string;
+    keyword?: string;
+  };
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const params = await Promise.resolve(searchParams);
-  const page = parseInt(params?.page || '1', 10);
-  const limit = parseInt(params?.limit || '10', 10);
-  const keyword = params?.keyword || '';
+  const page = searchParams?.page || "1";
+  const limit = searchParams?.limit || "10";
+  const keyword = searchParams?.keyword || "";
 
   const queryParams = new URLSearchParams({
-    page: page.toString(),
-    limit: limit.toString(),
+    page,
+    limit,
     keyword,
   }).toString();
-
-
-  // const params = await searchParams;
-  // const page = params.page ?? "1";
-  // const limit = params.limit ?? "10";
-  // const keyword = params.keyword ?? "";
-
-  // const queryParams = new URLSearchParams({
-  //   page,
-  //   limit,
-  //   keyword,
-  // }).toString();
 
   const res = await fetch(`${BASE_URL}/api/questions?${queryParams}`, {
     cache: "no-store",
