@@ -1,11 +1,11 @@
 // app/api/users/[userId]/route.ts
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { verifyToken } from "@/utils/auth"; // JWT検証ユーティリティ
 
 export const GET = async (
-  req: Request,
-  { params }: { params: { userId: string } },
+  req: NextRequest,
+  // { params }: { params: { userId: string } },
 ) => {
   try {
     const authHeader = req.headers.get("authorization");
@@ -20,7 +20,9 @@ export const GET = async (
       return NextResponse.json({ error: "Invalid token" }, { status: 404 }); //401
     }
 
-    const { userId } = await Promise.resolve(params);
+    // const { userId } = await Promise.resolve(params);
+    const userId = req.nextUrl.pathname.split("/").filter(Boolean)[2];
+
     // DBからユーザー取得
     const user = await prisma.user.findUnique({
       where: { id: parseInt(userId, 10) },
