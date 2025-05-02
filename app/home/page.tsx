@@ -1,4 +1,3 @@
-import { Metadata } from 'next';
 import Home from "./home";
 import { headers } from "next/headers";
 import { QuestionWithUserAndTags } from "@/types";
