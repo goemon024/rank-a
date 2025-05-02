@@ -1,5 +1,4 @@
 import Home from "./home";
-import { headers } from "next/headers";
 import { QuestionWithUserAndTags } from "@/types";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
@@ -24,7 +23,7 @@ export default async function Page({ searchParams }: Props) {
 
   const res = await fetch(`${BASE_URL}/api/questions?${queryParams}`, {
     cache: "no-store",
-    headers: await headers(),
+    // headers: await headers(),
   });
 
   if (!res.ok) {
