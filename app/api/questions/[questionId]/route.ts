@@ -2,13 +2,15 @@ import prisma from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { questionId: string } },
+  req: NextRequest,
+  // { params }: { params: { questionId: string } },
 ) {
   try {
     // const { params } = await contextPromise
-    const { questionId } = await Promise.resolve(params);
+    // const { questionId } = await Promise.resolve(params);
     // parseInt(params.questionId, 10)
+
+    const questionId = req.nextUrl.pathname.split("/").filter(Boolean)[2];
 
     if (isNaN(parseInt(questionId, 10))) {
       return NextResponse.json(
@@ -40,6 +42,7 @@ export async function GET(
 
     return NextResponse.json(question, { status: 200 });
   } catch (error) {
+
     console.error(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
