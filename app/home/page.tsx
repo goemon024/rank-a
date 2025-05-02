@@ -4,13 +4,15 @@ import { QuestionWithUserAndTags } from "@/types";
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 
-type PageProps = {
-  searchParams?: {
-    page?: string;
-    limit?: string;
-    keyword?: string;
-  };
+type SearchParams = {
+  page?: string;
+  limit?: string;
+  keyword?: string;
 };
+
+interface PageProps {
+  searchParams?: SearchParams;
+}
 
 export default async function Page({ searchParams }: PageProps) {
   const params = await Promise.resolve(searchParams);
