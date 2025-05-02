@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  Student
+  Admin
+}
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         Role     @default(Student)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  accounts  Account[]
+  questions Question[]
+  answers   Answer[]
+  comments  Comment[]
+  votes     Vote[]
+
+  @@map("User")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+}
+
+model Question {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  isDraft     Boolean  @map("is_draft")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // リレーション
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  bestAnswerId String? @unique @map("best_answer_id")
+  answer       Answer? @relation("BestAnswer", fields: [bestAnswerId], references: [id])
+
+  answers  Answer[]      @relation("AllAnswers")
+  comments Comment[]
+  tags     QuestionTag[]
+
+  @@map("Question") // 念のため
+}
+
+model Answer {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // リレーション
+  questionId String   @map("question_id")
+  question   Question @relation("AllAnswers", fields: [questionId], references: [id])
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  comments        Comment[]
+  votes           Vote[]
+  bestForQuestion Question? @relation("BestAnswer") // 念のため
+
+  @@map("Answer") // 念のため
+}
+
+model Vote {
+  id   String @id @default(uuid())
+  type String
+
+  answerId String @map("answer_id")
+  answer   Answer @relation(fields: [answerId], references: [id])
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("Vote") // 念のため
+}
+
+model Tag {
+  id        String        @id @default(uuid())
+  name      String
+  questions QuestionTag[] // 中間テーブル経由で質問にひもづく
+
+  @@map("Tag")
+}
+
+model QuestionTag {
+  questionId String @map("question_id")
+  tagId      String @map("tag_id")
+
+  question Question @relation(fields: [questionId], references: [id])
+  tag      Tag      @relation(fields: [tagId], references: [id])
+
+  @@id([questionId, tagId]) // 複合主キーにする
+  @@map("QuestionTag")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // リレーション
+  questionId String   @map("question_id")
+  question   Question @relation(fields: [questionId], references: [id])
+
+  answerId String? @map("answer_id")
+  answer   Answer? @relation(fields: [answerId], references: [id])
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("Comment")
+}
