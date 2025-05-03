@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     if (!questionId || isNaN(parseInt(questionId, 10))) {
       return NextResponse.json(
         { error: "Invalid question ID" },
-        { status: 404 } //400
+        { status: 404 }, //400
       );
     }
 

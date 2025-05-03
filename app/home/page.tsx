@@ -11,9 +11,9 @@ interface Props {
 
 export default async function Page({ searchParams }: Props) {
   const params = await searchParams;
-  const page = typeof params.page === 'string' ? params.page : "1";
-  const limit = typeof params.limit === 'string' ? params.limit : "10";
-  const keyword = typeof params.keyword === 'string' ? params.keyword : "";
+  const page = typeof params.page === "string" ? params.page : "1";
+  const limit = typeof params.limit === "string" ? params.limit : "10";
+  const keyword = typeof params.keyword === "string" ? params.keyword : "";
 
   const queryParams = new URLSearchParams({
     page,

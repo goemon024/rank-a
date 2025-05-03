@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Chip, Stack } from "@mui/material";
+import { Chip } from "@mui/material";
 import styles from "./Forms.module.css";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
@@ -10,23 +10,23 @@ export default function TagSelector({
 }: {
   onChange: (indexes: number[]) => void;
 }) {
-
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  const hundleChange = (event: React.ChangeEvent<{}>, newValue: string[]) => {
+  const hundleChange = (_event: React.SyntheticEvent, newValue: string[]) => {
     setSelectedTags(newValue);
 
     const selectedIndexes = newValue
       .map((tag: string) => TAGS.indexOf(tag))
-      .filter(index => index !== -1);
-
+      .filter((index) => index !== -1);
 
     onChange(selectedIndexes);
   };
 
   return (
     <div>
-      <label className={styles.label} htmlFor="TagInput">タグを入力：</label>
+      <label className={styles.label} htmlFor="TagInput">
+        タグを入力：
+      </label>
       <Autocomplete
         multiple
         freeSolo
@@ -35,14 +35,19 @@ export default function TagSelector({
         onChange={hundleChange}
         renderTags={(value: readonly string[], getTagProps) =>
           value.map((option: string, index: number) => (
-            <Chip label={option}
+            <Chip
+              label={option}
               color="primary"
               variant="filled"
-              {...getTagProps({ index })} key={option} />
+              {...getTagProps({ index })}
+              key={option}
+            />
           ))
         }
         renderInput={(params) => (
-          <TextField {...params} placeholder="例: React, Prisma..."
+          <TextField
+            {...params}
+            placeholder="例: React, Prisma..."
             className={styles.TagInput}
           />
         )}
@@ -50,7 +55,6 @@ export default function TagSelector({
     </div>
   );
 }
-
 
 //   const [selected, setSelected] = useState<number[]>([]);
 

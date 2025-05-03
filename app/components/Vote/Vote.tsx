@@ -4,7 +4,6 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { IconButton, Stack, Typography } from "@mui/material";
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key";
 
 type Props = {
     answerId: number;
@@ -19,7 +18,8 @@ export default function UpvoteDownvote({
     initialVote,
     initialUpvotes,
     initialDownvotes,
-    voteId, }: Props) {
+    voteId,
+}: Props) {
     const [vote, setVote] = useState<"Upvote" | "Downvote" | null>(initialVote);
     const [upvotes, setUpvotes] = useState(initialUpvotes);
     const [downvotes, setDownvotes] = useState(initialDownvotes);
@@ -28,16 +28,14 @@ export default function UpvoteDownvote({
     const token = localStorage.getItem("token");
 
     const handleVote = async (type: "Upvote" | "Downvote") => {
-
         try {
-
             if (!vote) {
                 // まだ投票していない → 新規作成
                 const res = await fetch("/api/votes", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify({ answerId, type }),
                 });
@@ -46,15 +44,14 @@ export default function UpvoteDownvote({
                 const result = await res.json();
 
                 setIsVoteId(parseInt(result.id, 10));
-
             } else if (vote === type) {
                 // 同じ投票をもう一度押した → 取消（DELETE）
                 const res = await fetch(`/api/votes/${isVoteId}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
-                    }
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
                 if (!res.ok) throw new Error("投票の取り消しに失敗しました");
                 setIsVoteId(undefined);
@@ -64,7 +61,7 @@ export default function UpvoteDownvote({
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify({ type }),
                 });

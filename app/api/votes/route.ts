@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import jwt from "jsonwebtoken";
-import { resourceLimits } from "worker_threads";
-import { createDynamicValidationState } from "next/dist/server/app-render/dynamic-rendering";
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key";
 
@@ -12,19 +10,27 @@ export async function GET(req: NextRequest) {
         const questionIdParam = searchParams.get("questionId");
 
         if (!questionIdParam) {
-            return NextResponse.json({ error: "Missing questionId" }, { status: 400 });
+            return NextResponse.json(
+                { error: "Missing questionId" },
+                { status: 400 },
+            );
         }
 
         const questionId = parseInt(questionIdParam, 10);
         if (isNaN(questionId)) {
-            return NextResponse.json({ error: "Invalid questionId" }, { status: 400 });
+            return NextResponse.json(
+                { error: "Invalid questionId" },
+                { status: 400 },
+            );
         }
 
         //認証トークンがある場合のみ userId を取得
         let userId: number | null = null;
 
         const authHeader = req.headers.get("authorization");
-        const token = authHeader?.startsWith("Bearer") ? authHeader.split(" ")[1] : null;
+        const token = authHeader?.startsWith("Bearer")
+            ? authHeader.split(" ")[1]
+            : null;
 
         console.log("token", token);
 
@@ -56,7 +62,9 @@ export async function GET(req: NextRequest) {
 
         for (const answer of answers) {
             const upvotes = answer.votes.filter((v) => v.type === "Upvote").length;
-            const downvotes = answer.votes.filter((v) => v.type === "Downvote").length;
+            const downvotes = answer.votes.filter(
+                (v) => v.type === "Downvote",
+            ).length;
 
             let userVote: "Upvote" | "Downvote" | null = null;
             let voteId: number | undefined = undefined;
@@ -83,13 +91,15 @@ export async function GET(req: NextRequest) {
         return NextResponse.json(voteMap, { status: 200 });
     } catch (err) {
         console.error("Error fetching votes:", err);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 },
+        );
     }
 }
 
 export async function POST(req: NextRequest) {
     try {
-
         const { answerId, type } = await req.json();
 
         const authHeader = req.headers.get("Authorization");
@@ -101,6 +111,7 @@ export async function POST(req: NextRequest) {
                 const payload = jwt.verify(token, JWT_SECRET) as { userId: number };
                 userId = payload.userId;
             } catch (err) {
+                console.error("POST /vote エラー:", err);
                 return NextResponse.json({ error: "Invalid token" }, { status: 401 });
             }
         }
@@ -117,7 +128,10 @@ export async function POST(req: NextRequest) {
         });
 
         if (existingVote) {
-            return NextResponse.json({ error: "Vote already exists" }, { status: 400 });
+            return NextResponse.json(
+                { error: "Vote already exists" },
+                { status: 400 },
+            );
         }
 
         const createVote = await prisma.vote.create({
@@ -128,13 +142,18 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        return NextResponse.json({
-            success: true,
-            id: createVote.id
-        }, { status: 200 });
+        return NextResponse.json(
+            {
+                success: true,
+                id: createVote.id,
+            },
+            { status: 200 },
+        );
     } catch (err) {
         console.error("Error creating vote:", err);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 },
+        );
     }
 }
-
