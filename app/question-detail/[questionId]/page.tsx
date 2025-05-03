@@ -9,6 +9,7 @@ import {
   QuestionWithUserAndTags,
   AnswerWithUser,
   CommentWithUser,
+  VoteMap,
 } from "@/types";
 import { LINKS_HOME } from "@/constants";
 import { useParams } from "next/navigation";
@@ -27,6 +28,7 @@ export default function QuestionDetail() {
   );
   const [answers, setAnswers] = useState<AnswerWithUser[]>([]);
   const [comments, setComments] = useState<CommentWithUser[]>([]);
+  const [votes, setVotes] = useState<VoteMap>({});
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -51,6 +53,14 @@ export default function QuestionDetail() {
         };
         setAnswers(answerList);
         setCount(count);
+
+        const votesRes = await fetch(`/api/votes?questionId=${questionId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          },
+        });
+        const voteMap = (await votesRes.json()) as VoteMap;
+        setVotes(voteMap);
 
         const commentsRes = await fetch(
           `/api/questions/${questionId}/comments`,
@@ -80,11 +90,12 @@ export default function QuestionDetail() {
         <QuestionCard question={question} />
         <DescriptionCard question={question} />
 
-        {comments
-          .filter((comment) => !comment.answerId)
-          .map((comment) => (
-            <CommentCard key={comment.id} comment={comment} />
-          ))}
+        {Array.isArray(comments) &&
+          comments
+            .filter((comment) => !comment.answerId)
+            .map((comment) => (
+              <CommentCard key={comment.id} comment={comment} />
+            ))}
 
         <AnswerTop
           setOpen={setIsAnswerModalOpen}
@@ -95,23 +106,26 @@ export default function QuestionDetail() {
             setIsCommentModalOpen(true);
           }}
         />
-        {answers.map((answer) => (
-          <div key={answer.id}>
-            <AnswerCard
-              key={answer.id}
-              answer={answer}
-              setCommentButtonClick={() => {
-                setSelectedAnswerId(answer.id);
-                setIsCommentModalOpen(true);
-              }}
-            />
-            {comments
-              .filter((comment) => comment.answerId === answer.id)
-              .map((comment) => (
-                <CommentCard key={comment.id} comment={comment} />
-              ))}
-          </div>
-        ))}
+        {Array.isArray(answers) &&
+          answers.map((answer) => (
+            <div key={answer.id}>
+              <AnswerCard
+                key={answer.id}
+                answer={answer}
+                votes={votes[answer.id]}
+                setCommentButtonClick={() => {
+                  setSelectedAnswerId(answer.id);
+                  setIsCommentModalOpen(true);
+                }}
+              />
+              {Array.isArray(comments) &&
+                comments
+                  .filter((comment) => comment.answerId === answer.id)
+                  .map((comment) => (
+                    <CommentCard key={comment.id} comment={comment} />
+                  ))}
+            </div>
+          ))}
       </div>
       {isAnswerModalOpen && (
         <AnswerModal setOpen={setIsAnswerModalOpen} questionId={questionId} />

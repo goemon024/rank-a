@@ -9,6 +9,8 @@ import CreateTitle from "@/app/components/Forms/CreateTitle";
 import CreateDescription from "@/app/components/Forms/CreateDescription";
 import TagSelector from "@/app/components/Forms/TagSelector";
 import { LINKS_HOME } from "@/constants";
+import { TAGS } from "@/constants";
+
 
 export default function QuestionPost() {
   const { isAuthenticated } = useAuth();

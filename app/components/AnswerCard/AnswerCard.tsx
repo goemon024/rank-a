@@ -6,14 +6,18 @@ import { UserIconButton } from "../UserIconButton/UserIconButton";
 // import { Answer } from '@/prisma/client'
 import { AnswerWithUser } from "@/types";
 import CommentButton from "../Button/CommentButton";
+import Vote from "../Vote/Vote";
 
 import dayjs from "dayjs";
+import { VoteSummary } from "@/types";
 
 export const AnswerCard = ({
   answer,
+  votes,
   setCommentButtonClick,
 }: {
   answer: AnswerWithUser;
+  votes: VoteSummary;
   setCommentButtonClick: () => void;
 }) => {
   return (
@@ -30,6 +34,15 @@ export const AnswerCard = ({
       </div>
       <div>
         <CommentButton setCommentButtonClick={setCommentButtonClick} />
+      </div>
+      <div>
+        <Vote
+          answerId={answer.id}
+          initialVote={votes.userVote}
+          initialUpvotes={votes.upvotes}
+          initialDownvotes={votes.downvotes}
+          voteId={votes.voteId}
+        />
       </div>
     </div>
   );
