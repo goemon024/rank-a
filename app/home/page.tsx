@@ -14,16 +14,24 @@ export default async function Page({ searchParams }: Props) {
   const page = typeof params.page === "string" ? params.page : "1";
   const limit = typeof params.limit === "string" ? params.limit : "10";
   const keyword = typeof params.keyword === "string" ? params.keyword : "";
+  const sort = typeof params.sort === "string" ? params.sort : "newest";
+  const tags = typeof params.tags === "string" ? params.tags : "";
+
+  // const orderBy =
+  // sort === "popular"
+  //   ? { upvotes: "desc" } // 人気順（仮に投票数で）
+  //   : { createdAt: "desc" }; // 新着順
 
   const queryParams = new URLSearchParams({
     page,
     limit,
     keyword,
+    sort,
+    tags,
   }).toString();
 
   const res = await fetch(`${BASE_URL}/api/questions?${queryParams}`, {
     cache: "no-store",
-    // headers: await headers(),
   });
 
   if (!res.ok) {
@@ -43,6 +51,7 @@ export default async function Page({ searchParams }: Props) {
       currentPage={currentPage}
       totalPages={totalPages}
       keyword={keyword}
+      tags={tags}
     />
   );
 }

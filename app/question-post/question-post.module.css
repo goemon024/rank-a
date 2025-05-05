@@ -1,5 +1,5 @@
 .container {
-  margin-top: 15px;
+  margin-top: 45px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,4 +27,70 @@
 
   min-width: 576px;
   width: 65%;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.buttonSection {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 300px;
+}
+
+.button {
+  height: 30px;
+  width: 100%;
+  background-color: #5566cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  /* ← 外側黒くする */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* 背景 */
+}
+
+
+.previewContainer {
+  background-color: #f6f6f6;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1010;
+  min-height: 80vh;
+  width: 800px;
+  margin: 120px auto 40px auto;
+
+  max-height: 90vh;
+  /* 画面の90%を上限に */
+  overflow-y: auto;
+  /* はみ出たらスクロール */
+
 }

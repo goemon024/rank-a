@@ -1,0 +1,47 @@
+.main {
+    display: flex;
+    gap: 20px;
+    padding: 5px;
+    margin-top: 100px;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.questionArea {
+    /* margin-top: 200px; */
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin: 15px;
+    width: 70%;
+    margin: auto;
+    margin-top: 120px;
+}
+
+.questionArea h2 {
+    margin-bottom: 16px;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+/* .questionCard {
+    padding: 16px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 8px;
+} */
+
+.questionCard {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}

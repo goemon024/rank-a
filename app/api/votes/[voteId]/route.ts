@@ -13,8 +13,8 @@ export async function DELETE(req: NextRequest) {
     const token = authHeader?.split(" ")[1];
 
     if (!token) {
-      return NextResponse.json({ error: "Token missing" }, { status: 404 });
-    } //401
+      return NextResponse.json({ error: "Token missing" }, { status: 401 });
+    }
 
     let userId: number;
     try {
@@ -22,8 +22,8 @@ export async function DELETE(req: NextRequest) {
       userId = payload.userId;
     } catch (err) {
       console.error("DELETE /vote/[voteId] エラー:", err);
-      return NextResponse.json({ error: "Invalid token" }, { status: 404 });
-    } //401
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
 
     console.log("DELETE voteId", voteId);
 
@@ -69,8 +69,8 @@ export async function PUT(req: NextRequest) {
     const token = authHeader?.split(" ")[1];
 
     if (!token) {
-      return NextResponse.json({ error: "Token missing" }, { status: 400 });
-    } //401
+      return NextResponse.json({ error: "Token missing" }, { status: 401 });
+    }
 
     let userId: number;
     try {
@@ -78,8 +78,8 @@ export async function PUT(req: NextRequest) {
       userId = payload.userId;
     } catch (err) {
       console.error("PUT /vote/[voteId] エラー:", err);
-      return NextResponse.json({ error: "Invalid token" }, { status: 400 });
-    } //401
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
 
     const existingVote = await prisma.vote.findUnique({
       where: { id: voteId },
@@ -92,9 +92,9 @@ export async function PUT(req: NextRequest) {
     if (existingVote.userId !== userId) {
       return NextResponse.json(
         { error: "Not authorized to delete this vote" },
-        { status: 400 },
+        { status: 403 },
       );
-    } //403
+    }
 
     let newtype: "Upvote" | "Downvote";
     const { type: typeFromRequest } = await req.json();

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Chip } from "@mui/material";
 import styles from "./Forms.module.css";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -7,9 +7,12 @@ import { TAGS } from "@/constants";
 
 export default function TagSelector({
   onChange,
+  tags,
 }: {
   onChange: (indexes: number[]) => void;
+  tags?: number[];
 }) {
+
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const hundleChange = (_event: React.SyntheticEvent, newValue: string[]) => {
@@ -21,6 +24,13 @@ export default function TagSelector({
 
     onChange(selectedIndexes);
   };
+
+
+  useEffect(() => {
+    setSelectedTags(tags?.map((tag) => TAGS[tag]) || []);
+    console.log(tags)
+  }, [tags]);
+
 
   return (
     <div>

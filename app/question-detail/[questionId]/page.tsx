@@ -52,7 +52,7 @@ export default function QuestionDetail() {
           count: number;
         };
         setAnswers(answerList);
-        setCount(count);
+        setCount(count ?? 0);
 
         const votesRes = await fetch(`/api/votes?questionId=${questionId}`, {
           headers: {
