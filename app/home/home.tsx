@@ -14,7 +14,6 @@ interface HomeProps {
   currentPage: number;
   totalPages: number;
   keyword: string;
-  tags: string;
 }
 
 export default function Home({
@@ -22,7 +21,6 @@ export default function Home({
   currentPage,
   totalPages,
   keyword,
-  tags
 }: HomeProps) {
   return (
     <div>

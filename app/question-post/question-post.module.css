@@ -80,7 +80,6 @@
   /* 背景 */
 }
 
-
 .previewContainer {
   background-color: #f6f6f6;
   padding: 20px;
@@ -97,5 +96,4 @@
   /* 画面の90%を上限に */
   overflow-y: auto;
   /* はみ出たらスクロール */
-
 }

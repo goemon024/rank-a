@@ -10,8 +10,7 @@ import CreateDescription from "@/app/components/Forms/CreateDescription";
 import TagSelector from "@/app/components/Forms/TagSelector";
 import { LINKS_HOME } from "@/constants";
 import { useRef } from "react";
-// import PreviewModal from "@/app/components/Modal/PreviewModal";
-import { TAGS } from "@/constants";
+
 import { parseJwt } from "@/lib/parseJwt";
 import { QuestionCard } from "@/app/components/QuestionCard/QuestionCard";
 import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
@@ -40,7 +39,7 @@ export default function QuestionPost() {
     e.preventDefault();
 
     const isDraft = isDrafrRef.current;
-    console.log("isDraft:", isDraft)
+    console.log("isDraft:", isDraft);
 
     console.log(tags);
 
@@ -114,7 +113,7 @@ export default function QuestionPost() {
                 value="draft"
                 type="submit"
                 disabled={isLoading}
-                onClick={() => isDrafrRef.current = true}
+                onClick={() => (isDrafrRef.current = true)}
               >
                 下書き保存
               </button>
@@ -122,7 +121,8 @@ export default function QuestionPost() {
                 className={styles.button}
                 type="button"
                 disabled={isLoading}
-                onClick={() => setIsPreviewOpen(true)}>
+                onClick={() => setIsPreviewOpen(true)}
+              >
                 preview
               </button>
             </div>
@@ -133,7 +133,7 @@ export default function QuestionPost() {
               value="publish"
               type="submit"
               disabled={isLoading}
-              onClick={() => isDrafrRef.current = false}
+              onClick={() => (isDrafrRef.current = false)}
             >
               投稿
             </button>
@@ -142,11 +142,14 @@ export default function QuestionPost() {
       </div>
 
       {isPreviewOpen && (
-        <div className={styles.modalOverlay}
+        <div
+          className={styles.modalOverlay}
           onClick={() => setIsPreviewOpen(false)}
         >
-          <div className={styles.previewContainer}
-            onClick={(e) => e.stopPropagation()}>
+          <div
+            className={styles.previewContainer}
+            onClick={(e) => e.stopPropagation()}
+          >
             <QuestionCard question={previewQuestion} />
             <DescriptionCard question={previewQuestion} />
             <form onSubmit={handleSubmit}>
@@ -158,7 +161,7 @@ export default function QuestionPost() {
                     value="draft"
                     type="submit"
                     disabled={isLoading}
-                    onClick={() => isDrafrRef.current = true}
+                    onClick={() => (isDrafrRef.current = true)}
                   >
                     下書き保存
                   </button>
@@ -166,7 +169,8 @@ export default function QuestionPost() {
                     className={styles.button}
                     type="button"
                     disabled={isLoading}
-                    onClick={() => setIsPreviewOpen(false)}>
+                    onClick={() => setIsPreviewOpen(false)}
+                  >
                     戻る
                   </button>
                 </div>
@@ -177,17 +181,15 @@ export default function QuestionPost() {
                   value="publish"
                   type="submit"
                   disabled={isLoading}
-                  onClick={() => isDrafrRef.current = false}
+                  onClick={() => (isDrafrRef.current = false)}
                 >
                   投稿
                 </button>
               </div>
             </form>
-
           </div>
         </div>
       )}
-
     </div>
   );
 }

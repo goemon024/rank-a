@@ -29,10 +29,13 @@ export default function SorterFilter() {
   };
 
   return (
-
     <div className={styles.sorterFilter}>
       <h3>ソート</h3>
-      <select className={styles.selectSorter} onChange={handleChange} value={sort}>
+      <select
+        className={styles.selectSorter}
+        onChange={handleChange}
+        value={sort}
+      >
         <option value="">-- 選択してください --</option>
         <option value="newest">新着順</option>
         <option value="oldest">古い順</option>
@@ -46,11 +49,6 @@ export default function SorterFilter() {
       </select>
       <p>タグ</p>
       <TagSelector onChange={handleTagChange} />
-
-
     </div>
-
-
-
   );
 }

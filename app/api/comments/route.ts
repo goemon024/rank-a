@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 import jwt from "jsonwebtoken";
-import { useSearchParams } from "next/navigation";
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key"; // .envで設定しておく
 
@@ -49,7 +48,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const userId = searchParams.get("userId");
@@ -82,7 +80,10 @@ export async function GET(req: NextRequest) {
         },
       },
     });
-    return NextResponse.json({ success: true, comment: comment }, { status: 200 });
+    return NextResponse.json(
+      { success: true, comment: comment },
+      { status: 200 },
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(

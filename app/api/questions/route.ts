@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
+import { Prisma } from "@prisma/client";
 // import { getFilteredQuestions } from "@/lib/questionService";
 
 export async function GET(req: NextRequest) {
@@ -16,7 +17,12 @@ export async function GET(req: NextRequest) {
     const userId = parseInt(searchParams.get("userId") || "0", 10);
     const isDraft = searchParams.get("isDraft") || "false";
 
-    const tagIds = tagParam ? tagParam.split(",").map(id => parseInt(id, 10)).filter(id => !isNaN(id)) : [];
+    const tagIds = tagParam
+      ? tagParam
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id))
+      : [];
 
     const orderBy =
       sort === "oldest"
@@ -30,7 +36,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const conditions: any[] = [];
+    const conditions: Prisma.QuestionWhereInput[] = [];
 
     if (userId) {
       conditions.push({
@@ -41,7 +47,7 @@ export async function GET(req: NextRequest) {
     if (isDraft === "true") {
       conditions.push({
         isDraft: true,
-      })
+      });
     } else {
       conditions.push({ isDraft: false });
     }
@@ -72,9 +78,8 @@ export async function GET(req: NextRequest) {
             },
           },
         ],
-      })
-    };
-
+      });
+    }
 
     // tagIds がある場合の条件
     if (tagIds.length > 0) {
@@ -122,11 +127,6 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
-
-
-
-
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key"; // .envで設定しておく
 
@@ -177,7 +177,10 @@ export async function POST(req: NextRequest) {
 
     // eslint-disable-next-line no-console
     console.log("QuestionTag insert result:", result);
-    return NextResponse.json({ success: true, question, result }, { status: 201 });
+    return NextResponse.json(
+      { success: true, question, result },
+      { status: 201 },
+    );
   } catch (error: unknown) {
     // eslint-disable-next-line no-console
     console.error("DB error:", error);
@@ -187,7 +190,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
-
-
-

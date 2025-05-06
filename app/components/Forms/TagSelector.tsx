@@ -12,7 +12,6 @@ export default function TagSelector({
   onChange: (indexes: number[]) => void;
   tags?: number[];
 }) {
-
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const hundleChange = (_event: React.SyntheticEvent, newValue: string[]) => {
@@ -25,14 +24,12 @@ export default function TagSelector({
     onChange(selectedIndexes);
   };
 
-
   useEffect(() => {
     if (tags) {
       const selected = tags.map((index) => TAGS[index]).filter(Boolean);
       setSelectedTags(selected);
     }
   }, [tags]);
-
 
   return (
     <div>

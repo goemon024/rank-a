@@ -33,7 +33,6 @@ export type CommentWithUser = Comment & {
   };
 };
 
-
 export type VoteWithQuestion = Vote & {
   answer: {
     questionId: number;

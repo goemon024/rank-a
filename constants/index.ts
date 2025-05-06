@@ -28,4 +28,3 @@ export const getLinksProfile = (userId: string | null) => [
   { label: "回答履歴", href: `/profile/${userId}/answers` },
   { label: "コメント履歴", href: `/profile/${userId}/comments` },
 ];
-

@@ -51,8 +51,6 @@ export async function GET(
   }
 }
 
-
-
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key"; // .envで設定しておく
 
 export async function PUT(req: NextRequest) {
@@ -83,8 +81,6 @@ export async function PUT(req: NextRequest) {
     );
   }
 
-
-
   try {
     const question = await prisma.question.update({
       where: { id: parseInt(id), userId: payload.userId },
@@ -109,10 +105,21 @@ export async function PUT(req: NextRequest) {
 
     // eslint-disable-next-line no-console
     console.log("QuestionTag insert result:", updateResult);
-    return NextResponse.json({ success: true, question, deleteResult, updateResult }, { status: 200 });
+    return NextResponse.json(
+      { success: true, question, deleteResult, updateResult },
+      { status: 200 },
+    );
   } catch (error: unknown) {
-    if ((error as any).code === 'P2025') {
-      return NextResponse.json({ error: 'Question not found' }, { status: 404 });
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as { code?: string }).code === "P2025"
+    ) {
+      return NextResponse.json(
+        { error: "Question not found" },
+        { status: 404 }
+      );
     }
     // eslint-disable-next-line no-console
     console.error("DB error:", error);
@@ -122,8 +129,6 @@ export async function PUT(req: NextRequest) {
     );
   }
 }
-
-
 
 export async function DELETE(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
@@ -151,8 +156,16 @@ export async function DELETE(req: NextRequest) {
     });
     return NextResponse.json({ success: true, result }, { status: 200 });
   } catch (error: unknown) {
-    if ((error as any).code === 'P2025') {
-      return NextResponse.json({ error: 'Question not found' }, { status: 404 });
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as { code?: string }).code === "P2025"
+    ) {
+      return NextResponse.json(
+        { error: "Question not found" },
+        { status: 404 }
+      );
     }
     // eslint-disable-next-line no-console
     console.error("DB error:", error);

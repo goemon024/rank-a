@@ -47,7 +47,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const userId = searchParams.get("userId");
@@ -85,7 +84,10 @@ export async function GET(req: NextRequest) {
         },
       },
     });
-    return NextResponse.json({ success: true, answer: answer }, { status: 200 });
+    return NextResponse.json(
+      { success: true, answer: answer },
+      { status: 200 },
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(

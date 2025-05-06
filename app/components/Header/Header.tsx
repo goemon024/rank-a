@@ -27,7 +27,6 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
     params.set("page", "1"); // 検索時にページをリセット
 
     router.push(`?${params.toString()}`);
-
   };
 
   try {
@@ -38,11 +37,7 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
             <img src="/favicon.ico" alt="Blog Logo" className={styles.logo} />
           </Link>
 
-
-          <form
-            className={styles.searchForm}
-            onSubmit={handleSearch}
-          >
+          <form className={styles.searchForm} onSubmit={handleSearch}>
             <button type="submit" className={styles.searchIconButton}>
               🔍
             </button>
@@ -54,7 +49,6 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </form>
-
 
           <nav className={styles.nav}>
             {isAuthenticated ? (
