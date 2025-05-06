@@ -46,3 +46,51 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+
+export async function GET(req: NextRequest) {
+  const searchParams = req.nextUrl.searchParams;
+  const userId = searchParams.get("userId");
+
+  const authHeader = req.headers.get("authorization");
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const token = authHeader.split(" ")[1];
+  const payload = jwt.verify(token, JWT_SECRET) as { userId: number };
+
+  if (!userId || payload.userId !== parseInt(userId, 10)) {
+    console.log("payload.userId", payload.userId);
+    console.log("userId", userId);
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  try {
+    const answer = await prisma.answer.findMany({
+      where: {
+        userId: parseInt(userId, 10),
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+          },
+        },
+        question: {
+          select: {
+            title: true,
+          },
+        },
+      },
+    });
+    return NextResponse.json({ success: true, answer: answer }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
+  }
+}

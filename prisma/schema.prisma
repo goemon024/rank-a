@@ -15,6 +15,7 @@ model User {
   role         Role       @default(Student)
   createdAt    DateTime   @default(now()) @map("created_at")
   imagePath    String     @default("/profile_default.jpg") @map("image_path")
+  introduce    String?     
   id           Int        @id @default(autoincrement())
   answers      Answer[]
   comments     Comment[]
@@ -47,7 +48,7 @@ model Answer {
   id              Int       @id @default(autoincrement())
   questionId      Int       @map("question_id")
   userId          Int       @map("user_id")
-  question        Question  @relation("AllAnswers", fields: [questionId], references: [id])
+  question        Question  @relation("AllAnswers", fields: [questionId], references: [id], onDelete: Restrict)
   user            User      @relation(fields: [userId], references: [id])
   comments        Comment[]
   bestForQuestion Question? @relation("BestAnswer")
@@ -61,9 +62,10 @@ model Vote {
   id       Int    @id @default(autoincrement())
   answerId Int    @map("answer_id")
   userId   Int    @map("user_id")
-  answer   Answer @relation(fields: [answerId], references: [id])
+  answer   Answer @relation(fields: [answerId], references: [id], onDelete: Restrict)
   user     User   @relation(fields: [userId], references: [id])
 
+  @@unique([answerId, userId])
   @@map("Vote")
 }
 
@@ -78,8 +80,8 @@ model Tag {
 model QuestionTag {
   questionId Int      @map("question_id")
   tagId      Int      @map("tag_id")
-  question   Question @relation(fields: [questionId], references: [id])
-  tag        Tag      @relation(fields: [tagId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  tag        Tag      @relation(fields: [tagId], references: [id] , onDelete: Cascade)
 
   @@id([questionId, tagId])
   @@map("QuestionTag")
@@ -92,8 +94,8 @@ model Comment {
   questionId Int      @map("question_id")
   answerId   Int?     @map("answer_id")
   userId     Int      @map("user_id")
-  answer     Answer?  @relation(fields: [answerId], references: [id])
-  question   Question @relation(fields: [questionId], references: [id])
+  answer     Answer?  @relation(fields: [answerId], references: [id], onDelete: Restrict)
+  question   Question @relation(fields: [questionId], references: [id],  onDelete: Restrict)
   user       User     @relation(fields: [userId], references: [id])
 
   @@map("Comment")

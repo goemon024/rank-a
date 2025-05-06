@@ -2,34 +2,31 @@
 
 import React, { useEffect, useState } from 'react'
 
-import { QuestionWithUserAndTags } from '@/types';
 import { parseJwt } from '@/lib/parseJwt';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { Header } from '@/app/components/Header/Header';
 import { getLinksProfile } from '@/constants/index';
-import styles from './drafts.module.css';
+import styles from './UserAnswers.module.css';
 import Link from 'next/link';
+import { AnswerWithUserAndQuestion } from '@/types';
+import dayjs from 'dayjs';
 
-export default function DraftPage() {
+export default function UserCommentsPage() {
     const params = useParams();
     const userId = parseInt(params.id as string);
-    const [questions, setQuestions] = useState<QuestionWithUserAndTags[]>([]);
+    const [answers, setAnswers] = useState<AnswerWithUserAndQuestion[]>([]);
     const router = useRouter();
     const [username, setUsername] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-
     const links = getLinksProfile(params.id as string);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
         const payload = token ? parseJwt(token) : null;
         const userIdFromToken = payload?.userId;
-        // const username = payload?.username;
         setUsername(payload?.username);
 
-        console.log("userIdFromToken", userIdFromToken);
-        console.log(userIdFromToken, userId);
 
         if (userIdFromToken !== userId) {
             alert("不正なアクセスです");
@@ -37,9 +34,9 @@ export default function DraftPage() {
             return;
         }
 
-        const fetchQuestions = async () => {
+        const fetchComments = async () => {
             setIsLoading(true);
-            const res = await fetch(`/api/questions?isDraft=true&userId=${userId}`,
+            const res = await fetch(`/api/answers?userId=${userId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -47,11 +44,12 @@ export default function DraftPage() {
                     },
                 }
             );
+
             const data = await res.json();
-            setQuestions(data.questions);
+            setAnswers(data.answer);
             setIsLoading(false);
         };
-        fetchQuestions();
+        fetchComments();
     }, []);
 
     return (
@@ -60,18 +58,19 @@ export default function DraftPage() {
                 <Header links={links} />
             </div>
             <div className={styles.questionArea}>
-                <h2>{username} さんの下書き一覧</h2>
+                <h2>{username} さんの回答履歴</h2>
                 {isLoading ? (
                     <p>読み込み中...</p>
-                ) : questions.length === 0 ? (
-                    <p>下書きはありません。</p>
+                ) : answers.length === 0 ? (
+                    <p>回答はありません。</p>
                 ) : (
-                    questions.map((q: QuestionWithUserAndTags) => (
-                        <Link key={q.id} href={`/question-post/${q.id}`}>
-                            <div key={q.id} className={styles.questionCard}>
-                                <p className={styles.questionTitle}>{q.title}</p>
-                                <p className={styles.questionDescription}>{q.description}</p>
-                                <p className={styles.questionCreatedAt}>{q.createdAt.toLocaleString()}</p>
+                    answers.map((a: AnswerWithUserAndQuestion) => (
+                        <Link key={a.id} href={`/question-detail/${a.questionId}`}>
+                            <div key={a.id} className={styles.answerCard}>
+                                <p className={styles.answerQuestionTitle}>（{a.question.title}）</p>
+                                <p className={styles.answerContent}>{a.content}</p>
+                                <p className={styles.answerTime}>{dayjs(a.createdAt).format('YYYY/MM/DD HH:mm')}</p>
+
                             </div>
                         </Link>
                     ))

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Header } from "@/app/components/Header/Header";
-import { useAuth } from "@/contexts/AuthContext";
+// import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import styles from "../question-post.module.css";
 import CreateTitle from "@/app/components/Forms/CreateTitle";
@@ -10,8 +10,9 @@ import CreateDescription from "@/app/components/Forms/CreateDescription";
 import TagSelector from "@/app/components/Forms/TagSelector";
 import { LINKS_HOME } from "@/constants";
 import { useRef } from "react";
+import DeleteModal from "@/app/components/Modal/DeleteModal";
 // import PreviewModal from "@/app/components/Modal/PreviewModal";
-import { TAGS } from "@/constants";
+
 import { parseJwt } from "@/lib/parseJwt";
 import { QuestionCard } from "@/app/components/QuestionCard/QuestionCard";
 import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
@@ -22,8 +23,8 @@ export default function QuestionPut({ }) {
     const params = useParams();
     const questionId = params.id as string;
 
-    const { isAuthenticated } = useAuth();
     const router = useRouter();
+    const [question, setQuestion] = useState<QuestionWithUserAndTags | null>(null);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [tags, setTags] = useState<number[]>([]);
@@ -32,12 +33,16 @@ export default function QuestionPut({ }) {
     const isDrafrRef = useRef(false);
 
     const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+    const [error, setError] = useState<string | null>(null);
+
+    const [payload, setPayload] = useState<{ userId: number; username: string } | null>(null);
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            router.push("/home");
-        }
-    }, [isAuthenticated, router]);
+        const token = localStorage.getItem("token");
+        setPayload(token ? parseJwt(token) : null);
+    }, []);
 
     useEffect(() => {
         if (!questionId) return;
@@ -52,13 +57,26 @@ export default function QuestionPut({ }) {
                 }
             );
             const data = await response.json();
+            setQuestion(data);
             setTitle(data.title);
             setDescription(data.description);
-            setTags(data.tagIds);
+            setTags(data.questionTags.map((t: { tagId: number }) => t.tagId));
         }
         fetchQuestion();
         console.log(tags)
     }, [questionId]);
+
+    useEffect(() => {
+        if (!question) return;
+        // 1. ログインユーザーのuserId取得
+        const loginUserId = payload?.userId;
+
+        // 2. 質問データの投稿者userId（例: question.userId）
+        // questionはAPI等から取得済みと仮定
+        if (!loginUserId || loginUserId !== question.userId) {
+            router.push("/home");
+        }
+    }, [question, router, payload]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -67,7 +85,7 @@ export default function QuestionPut({ }) {
 
         setIsLoading(true);
         try {
-            const response = await fetch("/api/questions", {
+            const response = await fetch(`/api/questions/${questionId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -100,22 +118,43 @@ export default function QuestionPut({ }) {
         }
     };
 
-    const token = localStorage.getItem("token");
-    const payload = token ? parseJwt(token) : null;
+    const handleDelete = async () => {
+        try {
+            setIsLoading(true);
+            const response = await fetch(`/api/questions/${questionId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+                },
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                setError(data.error || "削除に失敗しました");
+            }
+            router.push("/profile/" + payload?.userId + "/drafts");
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error("Error:", error);
+        } finally {
+            setIsLoading(false);
+            setIsDeleteOpen(false);
+        }
+    };
 
-    // const previewQuestion: QuestionWithUserAndTags = {
-    //     id: parseInt(questionId),
-    //     title,
-    //     description,
-    //     createdAt: new Date(),
-    //     isDraft: false,
-    //     userId: payload?.userId || 0,
-    //     bestAnswerId: null,
-    //     user: {
-    //         username: payload?.username || "未ログインユーザー",
-    //     },
-    //     questionTags: tags.map((tagId) => ({ questionId: parseInt(questionId), tagId })),
-    // };
+    const previewQuestion: QuestionWithUserAndTags = {
+        id: parseInt(questionId),
+        title,
+        description,
+        createdAt: new Date(),
+        isDraft: false,
+        userId: question?.userId || 0,
+        bestAnswerId: null,
+        user: {
+            username: payload?.username || "未ログインユーザー",
+        },
+        questionTags: tags.map((tagId) => ({ questionId: parseInt(questionId), tagId })),
+    };
 
     return (
         <div>
@@ -148,6 +187,22 @@ export default function QuestionPut({ }) {
                                 onClick={() => setIsPreviewOpen(true)}>
                                 preview
                             </button>
+                            <button
+                                className={styles.deleteButton}
+                                type="button"
+                                disabled={isLoading}
+                                onClick={() => setIsDeleteOpen(true)}
+                            >
+                                削除
+                            </button>
+                            <DeleteModal
+                                open={isDeleteOpen}
+                                onClose={() => setIsDeleteOpen(false)}
+                                onDelete={handleDelete}
+                                targetLabel="質問"
+                                loading={isLoading}>
+                                {error && <p className={styles.error}>{error}</p>}
+                            </DeleteModal>
                         </div>
 
                         <button
@@ -170,8 +225,8 @@ export default function QuestionPut({ }) {
                 >
                     <div className={styles.previewContainer}
                         onClick={(e) => e.stopPropagation()}>
-                        {/* <QuestionCard question={previewQuestion} />
-                        <DescriptionCard question={previewQuestion} /> */}
+                        <QuestionCard question={previewQuestion} />
+                        <DescriptionCard question={previewQuestion} />
                         <form onSubmit={handleSubmit}>
                             <div className={styles.buttonContainer}>
                                 <div className={styles.buttonSection}>

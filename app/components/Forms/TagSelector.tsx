@@ -27,8 +27,10 @@ export default function TagSelector({
 
 
   useEffect(() => {
-    setSelectedTags(tags?.map((tag) => TAGS[tag]) || []);
-    console.log(tags)
+    if (tags) {
+      const selected = tags.map((index) => TAGS[index]).filter(Boolean);
+      setSelectedTags(selected);
+    }
   }, [tags]);
 
 

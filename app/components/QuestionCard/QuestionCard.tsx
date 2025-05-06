@@ -36,15 +36,14 @@ export const QuestionCard = ({
             />
           ))}
         </Stack>
-
-        <div className={styles.autherInfo}>
-          <UserIconButton userId={question.userId} />
-          <div className={styles.autherInfoText}>
-            <p>{question.user.username}</p>
-            <p>{dayjs(question.createdAt).format("YYYY年MM月DD日 HH時mm分")}</p>
-          </div>
-        </div>
       </Link>
+      <div className={styles.autherInfo}>
+        <UserIconButton userId={question.userId} />
+        <div className={styles.autherInfoText}>
+          <p>{question.user.username}</p>
+          <p>{dayjs(question.createdAt).format("YYYY年MM月DD日 HH時mm分")}</p>
+        </div>
+      </div>
     </div>
   );
 };

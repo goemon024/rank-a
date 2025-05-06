@@ -6,12 +6,6 @@
     width: 100%;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
 .questionArea {
     /* margin-top: 200px; */
     padding: 20px;
@@ -29,12 +23,6 @@
     font-size: 1.5rem;
 }
 
-/* .questionCard {
-    padding: 16px;
-    border: 1px solid #ccc;
-    background: #fff;
-    border-radius: 8px;
-} */
 
 .questionCard {
     background: white;
@@ -51,10 +39,20 @@
 .questionTitle {
     font-size: 1.0rem;
     font-weight: bold;
-    /* text-decoration: underline; */
+}
+
+.questionTime {
+    font-size: 1.0rem;
 }
 
 .questionDescription {
-    font-size: 0.8rem;
     overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    max-height: calc(1.4em * 3);
+    margin: 0.7rem 0.5rem;
+    font-size: 0.8rem;
 }

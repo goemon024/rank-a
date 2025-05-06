@@ -17,12 +17,22 @@ export type AnswerWithUser = Answer & {
   };
 };
 
+export type AnswerWithUserAndQuestion = Answer & {
+  user: {
+    username: string;
+  };
+  question: {
+    title: string;
+  };
+};
+
 export type CommentWithUser = Comment & {
   user: {
     username: string;
     userId: number;
   };
 };
+
 
 export type VoteWithQuestion = Vote & {
   answer: {

@@ -88,6 +88,8 @@ export async function GET(req: NextRequest) {
       conditions.push(...allTagsConditions);
     }
 
+    console.log("userId", userId);
+    console.log(conditions);
     const whereClause = conditions.length > 0 ? { AND: conditions } : {};
 
     const [questions, totalCount] = await Promise.all([
@@ -188,64 +190,4 @@ export async function POST(req: NextRequest) {
 
 
 
-export async function PUT(req: NextRequest) {
-  const authHeader = req.headers.get("authorization");
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  let payload;
-  try {
-    payload = jwt.verify(token, JWT_SECRET) as { userId: number };
-  } catch (err: unknown) {
-    // eslint-disable-next-line no-console
-    console.error("Token verification failed:", err);
-    return NextResponse.json({ error: "Invalid token" }, { status: 403 });
-  }
-
-  const body = await req.json();
-  const { title, description, isDraft, tags, id } = body;
-
-  if (!title || !description) {
-    return NextResponse.json(
-      { error: "title and description are required" },
-      { status: 400 },
-    );
-  }
-
-  try {
-    const question = await prisma.question.update({
-      where: { id: parseInt(id), userId: payload.userId },
-      data: {
-        title,
-        description,
-        isDraft,
-      },
-    });
-
-    const deleteResult = await prisma.questionTag.deleteMany({
-      where: { questionId: parseInt(id) },
-    });
-
-    const updateResult = await prisma.questionTag.createMany({
-      data: tags.map((tagId: number) => ({
-        questionId: parseInt(id),
-        tagId: tagId,
-      })),
-    });
-
-    // eslint-disable-next-line no-console
-    console.log("QuestionTag insert result:", updateResult);
-    return NextResponse.json({ success: true, question, deleteResult, updateResult }, { status: 201 });
-  } catch (error: unknown) {
-    // eslint-disable-next-line no-console
-    console.error("DB error:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
-  }
-}

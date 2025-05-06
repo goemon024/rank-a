@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Header } from "@/app/components/Header/Header";
 import { User } from "@prisma/client";
-import { LINKS_HOME } from "@/constants";
-
+import { getLinksProfile } from "@/constants";
+import styles from "./Profile.module.css";
 // const items: NavLinks[] = [
 //   { label: '投稿質問一覧', href: '/home' },
 //   { label: '投稿回答一覧', href: '/home/popular' },
@@ -15,6 +15,7 @@ export default function ProfilePage() {
   const params = useParams();
   const userId = params.id as string;
   const [user, setUser] = useState<User | null>(null);
+  const links = getLinksProfile(userId);
 
   // const [loading, setLoading] = useState(true)
   // const [error, setError] = useState<string | null>(null)
@@ -50,8 +51,8 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <Header links={LINKS_HOME} />
-      <div style={{ padding: "1rem" }}>
+      <Header links={links} />
+      <div className={styles.ProfileContainer}>
         <h1>{user?.username} さんのプロフィール</h1>
         <p>Email: {user?.email}</p>
         {user?.imagePath && (

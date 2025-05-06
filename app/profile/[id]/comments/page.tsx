@@ -2,19 +2,20 @@
 
 import React, { useEffect, useState } from 'react'
 
-import { QuestionWithUserAndTags } from '@/types';
 import { parseJwt } from '@/lib/parseJwt';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { Header } from '@/app/components/Header/Header';
 import { getLinksProfile } from '@/constants/index';
-import styles from './drafts.module.css';
+import styles from './UserComments.module.css';
 import Link from 'next/link';
+import { CommentWithUser } from '@/types';
+import dayjs from 'dayjs';
 
-export default function DraftPage() {
+export default function UserCommentsPage() {
     const params = useParams();
     const userId = parseInt(params.id as string);
-    const [questions, setQuestions] = useState<QuestionWithUserAndTags[]>([]);
+    const [comments, setComments] = useState<CommentWithUser[]>([]);
     const router = useRouter();
     const [username, setUsername] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -28,18 +29,15 @@ export default function DraftPage() {
         // const username = payload?.username;
         setUsername(payload?.username);
 
-        console.log("userIdFromToken", userIdFromToken);
-        console.log(userIdFromToken, userId);
-
         if (userIdFromToken !== userId) {
             alert("不正なアクセスです");
             router.push("/");
             return;
         }
 
-        const fetchQuestions = async () => {
+        const fetchComments = async () => {
             setIsLoading(true);
-            const res = await fetch(`/api/questions?isDraft=true&userId=${userId}`,
+            const res = await fetch(`/api/comments?userId=${userId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -47,11 +45,12 @@ export default function DraftPage() {
                     },
                 }
             );
+
             const data = await res.json();
-            setQuestions(data.questions);
+            setComments(data.comment);
             setIsLoading(false);
         };
-        fetchQuestions();
+        fetchComments();
     }, []);
 
     return (
@@ -60,18 +59,17 @@ export default function DraftPage() {
                 <Header links={links} />
             </div>
             <div className={styles.questionArea}>
-                <h2>{username} さんの下書き一覧</h2>
+                <h2>{username} さんのコメント履歴</h2>
                 {isLoading ? (
                     <p>読み込み中...</p>
-                ) : questions.length === 0 ? (
-                    <p>下書きはありません。</p>
+                ) : comments.length === 0 ? (
+                    <p>コメントはありません。</p>
                 ) : (
-                    questions.map((q: QuestionWithUserAndTags) => (
-                        <Link key={q.id} href={`/question-post/${q.id}`}>
-                            <div key={q.id} className={styles.questionCard}>
-                                <p className={styles.questionTitle}>{q.title}</p>
-                                <p className={styles.questionDescription}>{q.description}</p>
-                                <p className={styles.questionCreatedAt}>{q.createdAt.toLocaleString()}</p>
+                    comments.map((c: CommentWithUser) => (
+                        <Link key={c.id} href={`/question-detail/${c.questionId}`}>
+                            <div key={c.id} className={styles.commentCard}>
+                                <p className={styles.commentTime}>{dayjs(c.createdAt).format('YYYY/MM/DD HH:mm')}</p>
+                                <p className={styles.commentContent}>{c.content}</p>
                             </div>
                         </Link>
                     ))
