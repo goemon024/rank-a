@@ -51,7 +51,6 @@ export default async function Page({ searchParams }: Props) {
       currentPage={currentPage}
       totalPages={totalPages}
       keyword={keyword}
-      tags={tags}
     />
   );
 }
