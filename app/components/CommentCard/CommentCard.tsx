@@ -11,7 +11,10 @@ export const CommentCard = ({ comment }: { comment: CommentWithUser }) => {
   return (
     <div className={styles.commentCard}>
       <div className={styles.autherInfo}>
-        <UserIconButton userId={comment.userId} />
+        <UserIconButton
+          userId={comment.userId}
+          imagePath={comment.user.imagePath}
+        />
         <div className={styles.autherInfoText}>
           <p>{comment.user.username}</p>
           <p>{dayjs(comment.createdAt).format("YYYY年MM月DD日 HH時mm分")}</p>

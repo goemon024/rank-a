@@ -76,6 +76,7 @@ export async function GET(req: NextRequest) {
         user: {
           select: {
             username: true,
+            imagePath: true,
           },
         },
       },

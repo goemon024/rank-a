@@ -16,7 +16,11 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: "asc" },
       include: {
         user: {
-          select: { id: true, username: true },
+          select: {
+            id: true,
+            username: true,
+            imagePath: true,
+          },
         },
       },
     });

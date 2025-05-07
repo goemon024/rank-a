@@ -1,7 +1,10 @@
 import { Question, Answer, QuestionTag, Comment, Vote } from "@prisma/client";
 
 export type QuestionWithUserAndTags = Question & {
-  user: { username: string };
+  user: {
+    username: string;
+    imagePath: string | null;
+  };
   questionTags: QuestionTag[];
 };
 
@@ -14,12 +17,14 @@ export type AnswerWithUser = Answer & {
   user: {
     username: string;
     userId: number;
+    imagePath: string | null;
   };
 };
 
 export type AnswerWithUserAndQuestion = Answer & {
   user: {
     username: string;
+    imagePath: string | null;
   };
   question: {
     title: string;
@@ -30,6 +35,7 @@ export type CommentWithUser = Comment & {
   user: {
     username: string;
     userId: number;
+    imagePath: string | null;
   };
 };
 

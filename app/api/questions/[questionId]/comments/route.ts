@@ -21,7 +21,7 @@ export async function GET(
       orderBy: { createdAt: "asc" },
       include: {
         user: {
-          select: { id: true, username: true },
+          select: { id: true, username: true, imagePath: true },
         },
       },
     });

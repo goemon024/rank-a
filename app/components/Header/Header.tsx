@@ -14,7 +14,7 @@ import { NavLinks } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export const Header = ({ links }: { links: NavLinks[] }) => {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated, user: authUser } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -54,7 +54,10 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
             {isAuthenticated ? (
               <>
                 <UserIconButton
-                  userId={user?.userId ? parseInt(user.userId, 10) : undefined}
+                  userId={
+                    authUser?.userId ? parseInt(authUser.userId, 10) : undefined
+                  }
+                  imagePath={authUser?.imagePath || null}
                 />
                 <ProfileWindow />
               </>

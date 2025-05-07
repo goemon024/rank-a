@@ -23,7 +23,10 @@ export const AnswerCard = ({
   return (
     <div className={styles.answerCard}>
       <div className={styles.autherInfo}>
-        <UserIconButton userId={answer.userId} />
+        <UserIconButton
+          userId={answer.userId}
+          imagePath={answer.user.imagePath}
+        />
         <div className={styles.autherInfoText}>
           <p>{answer.user.username}</p>
           <p>{dayjs(answer.createdAt).format("YYYY年MM月DD日 HH時mm分")}</p>

@@ -28,6 +28,7 @@ export async function GET(
         user: {
           select: {
             username: true,
+            imagePath: true,
           },
         },
         questionTags: true,
@@ -118,7 +119,7 @@ export async function PUT(req: NextRequest) {
     ) {
       return NextResponse.json(
         { error: "Question not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     // eslint-disable-next-line no-console
@@ -164,7 +165,7 @@ export async function DELETE(req: NextRequest) {
     ) {
       return NextResponse.json(
         { error: "Question not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     // eslint-disable-next-line no-console

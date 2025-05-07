@@ -1,16 +1,16 @@
 import styles from "./UserIconButton.module.css";
 import Image from "next/image";
-import { useAuth } from "@/contexts/AuthContext";
+// import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
 interface UserIconButtonProps {
   userId: number | undefined;
+  imagePath: string | null;
 }
 
-export const UserIconButton = ({ userId }: UserIconButtonProps) => {
-  const auth = useAuth();
+export const UserIconButton = ({ userId, imagePath }: UserIconButtonProps) => {
+  // const auth = useAuth();
   const router = useRouter();
-  const imagePath = auth.user?.imagePath;
 
   const goToProfile = (userId: number | undefined) => {
     router.push(`/profile/${userId}`);

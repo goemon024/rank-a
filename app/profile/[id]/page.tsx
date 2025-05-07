@@ -1,27 +1,27 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Header } from "@/app/components/Header/Header";
 import { User } from "@prisma/client";
 import { getLinksProfile } from "@/constants";
 import styles from "./Profile.module.css";
-// const items: NavLinks[] = [
-//   { label: '投稿質問一覧', href: '/home' },
-//   { label: '投稿回答一覧', href: '/home/popular' },
-// ]
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const params = useParams();
   const userId = params.id as string;
   const [user, setUser] = useState<User | null>(null);
   const links = getLinksProfile(userId);
-
-  // const [loading, setLoading] = useState(true)
-  // const [error, setError] = useState<string | null>(null)
+  const { isAuthenticated, user: authUser } = useAuth();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(`/api/users/${userId}`, {
@@ -36,36 +36,52 @@ export default function ProfilePage() {
         }
 
         const data = await res.json();
+        setIsLoading(false);
         setUser(data);
       } catch (err: unknown) {
         // eslint-disable-next-line no-console
         console.error("ユーザー情報の取得に失敗しました:", err);
-        // setError(err.message)
+        router.push("/home");
       } finally {
-        // setLoading(false)
       }
     };
 
     fetchUser();
-  }, [userId]);
+    console.log(authUser?.imagePath);
+  }, [userId, authUser]);
 
-  return (
-    <div>
-      <Header links={links} />
-      <div className={styles.ProfileContainer}>
+  const ProfileContent = (
+    <div className={styles.ProfileContainer}>
+      {user?.imagePath && (
+        <img
+          src={user?.imagePath}
+          alt={`${user?.username}のプロフィール画像`}
+          className={styles.ProfileImage}
+        />
+      )}
+      <div className={styles.ProfileSection}>
         <h1>{user?.username} さんのプロフィール</h1>
-        <p>Email: {user?.email}</p>
-        {user?.imagePath && (
-          <img
-            src={user?.imagePath}
-            alt={`${user?.username}のプロフィール画像`}
-            style={{ width: "120px", borderRadius: "50%" }}
-          />
-        )}
+        {isAuthenticated ? <p>Email: {user?.email}</p> : <p>Email: ******</p>}
+        <p>infomation: {user?.introduce}</p>
         {user?.createdAt && (
           <p>登録日: {new Date(user.createdAt).toLocaleDateString()}</p>
         )}
       </div>
+    </div>
+  );
+
+  return (
+    <div>
+      <Header links={links} />
+      {isLoading ? (
+        <div className={styles.LoadingContainer}>
+          <p className={styles.Blink}>Loading...</p>
+        </div>
+      ) : String(authUser?.userId) === userId ? (
+        <Link href={`/profile/${userId}/edit`}>{ProfileContent}</Link>
+      ) : (
+        ProfileContent
+      )}
     </div>
   );
 }

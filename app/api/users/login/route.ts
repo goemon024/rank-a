@@ -13,8 +13,8 @@ async function checkLoginAttempts(identifier: string): Promise<boolean> {
   const now = Date.now();
   const attempt = loginAttempts.get(identifier);
 
-  // 15秒でリセット
-  if (attempt && now - attempt.lastAttempt > 15 * 1000) {
+  // 300秒でリセット
+  if (attempt && now - attempt.lastAttempt > 300 * 1000) {
     loginAttempts.delete(identifier);
     return true;
   }
@@ -81,9 +81,10 @@ export async function POST(req: Request) {
         userId: user.id,
         username: user.username,
         role: user.role,
+        imagePath: user.imagePath,
       },
       JWT_SECRET,
-      { expiresIn: "1h" },
+      { expiresIn: "3h" },
     );
 
     return NextResponse.json({ token }, { status: 200 });

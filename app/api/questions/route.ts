@@ -19,9 +19,9 @@ export async function GET(req: NextRequest) {
 
     const tagIds = tagParam
       ? tagParam
-        .split(",")
-        .map((id) => parseInt(id, 10))
-        .filter((id) => !isNaN(id))
+          .split(",")
+          .map((id) => parseInt(id, 10))
+          .filter((id) => !isNaN(id))
       : [];
 
     const orderBy =
@@ -104,6 +104,7 @@ export async function GET(req: NextRequest) {
           user: {
             select: {
               username: true,
+              imagePath: true,
             },
           },
           answers: true,
