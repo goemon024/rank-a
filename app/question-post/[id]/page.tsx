@@ -19,7 +19,7 @@ import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
 import { QuestionWithUserAndTags } from "@/types";
 import { useParams } from "next/navigation";
 
-export default function QuestionPut({}) {
+export default function QuestionPut({ }) {
   const params = useParams();
   const questionId = params.id as string;
 
@@ -42,6 +42,7 @@ export default function QuestionPut({}) {
   const [payload, setPayload] = useState<{
     userId: number;
     username: string;
+    imagePath?: string | null;
   } | null>(null);
 
   useEffect(() => {
@@ -155,6 +156,7 @@ export default function QuestionPut({}) {
     bestAnswerId: null,
     user: {
       username: payload?.username || "未ログインユーザー",
+      imagePath: payload?.imagePath || null,
     },
     questionTags: tags.map((tagId) => ({
       questionId: parseInt(questionId),
