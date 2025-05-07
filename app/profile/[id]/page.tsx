@@ -52,17 +52,19 @@ export default function ProfilePage() {
 
   const ProfileContent = (
     <div className={styles.ProfileContainer}>
-      {user?.imagePath && (
-        <img
-          src={user?.imagePath}
-          alt={`${user?.username}のプロフィール画像`}
-          className={styles.ProfileImage}
-        />
-      )}
+      <div className={styles.ProfileImageContainer}>
+        {user?.imagePath && (
+          <img
+            src={user?.imagePath}
+            alt={`${user?.username}のプロフィール画像`}
+            className={styles.ProfileImage}
+          />
+        )}
+      </div>
       <div className={styles.ProfileSection}>
-        <h1>{user?.username} さんのプロフィール</h1>
+        <h3>{user?.username} さんのプロフィール</h3>
         {isAuthenticated ? <p>Email: {user?.email}</p> : <p>Email: ******</p>}
-        <p>infomation: {user?.introduce}</p>
+        <p className={styles.Introduce}>infomation: {user?.introduce}</p>
         {user?.createdAt && (
           <p>登録日: {new Date(user.createdAt).toLocaleDateString()}</p>
         )}

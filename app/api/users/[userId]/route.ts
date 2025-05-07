@@ -47,21 +47,21 @@ export async function GET(req: NextRequest) {
       where: { id: parseInt(userId, 10) },
       select: isSelf
         ? {
-          id: true,
-          username: true,
-          email: true,
-          role: true,
-          imagePath: true,
-          introduce: true,
-          createdAt: true,
-        }
+            id: true,
+            username: true,
+            email: true,
+            role: true,
+            imagePath: true,
+            introduce: true,
+            createdAt: true,
+          }
         : {
-          id: true,
-          username: true,
-          imagePath: true,
-          introduce: true,
-          createdAt: true,
-        },
+            id: true,
+            username: true,
+            imagePath: true,
+            introduce: true,
+            createdAt: true,
+          },
     });
 
     if (!user) {
@@ -120,10 +120,14 @@ export async function PUT(req: NextRequest) {
   });
 
   let oldFileName: string | null = null;
-  if (currentUser?.imagePath) {
-    const url = new URL(currentUser.imagePath);
-    const parts = url.pathname.split("/");
-    oldFileName = parts[parts.length - 1];
+  try {
+    if (currentUser?.imagePath) {
+      const url = new URL(currentUser.imagePath);
+      const parts = url.pathname.split("/");
+      oldFileName = parts[parts.length - 1];
+    }
+  } catch (e) {
+    console.warn("旧画像ファイル名の取得に失敗しました（ログのみ）", e);
   }
 
   // 画像アップロード
@@ -168,16 +172,19 @@ export async function PUT(req: NextRequest) {
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
+        id: userId,
         username: username as string,
         email: email as string,
         introduce: introduce as string,
         ...(imagePath && { imagePath }),
       },
       select: {
+        id: true,
         username: true,
         email: true,
         introduce: true,
         imagePath: true,
+        role: true,
       },
     });
 
