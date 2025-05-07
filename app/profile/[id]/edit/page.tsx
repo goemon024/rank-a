@@ -26,11 +26,6 @@ export default function ProfilePage() {
     // const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        // アラートが出ているが正常。
-        console.log("authUser", authUser);
-        console.log(typeof authUser?.userId);
-        console.log("userId", userId);
-
         if (!authUser || String(authUser?.userId) !== userId) {
             router.push("/home");
         }

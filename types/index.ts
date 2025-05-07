@@ -55,3 +55,11 @@ export type VoteSummary = {
 export type VoteMap = {
   [answerId: number]: VoteSummary;
 };
+
+export type JwtPayload = {
+  userId: number;
+  username: string;
+  role: string;
+  imagePath: string | null;
+  exp?: number; // トークンの有効期限
+};

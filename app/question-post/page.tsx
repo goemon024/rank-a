@@ -14,7 +14,7 @@ import { useRef } from "react";
 import { parseJwt } from "@/lib/parseJwt";
 import { QuestionCard } from "@/app/components/QuestionCard/QuestionCard";
 import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
-import { QuestionWithUserAndTags } from "@/types";
+import { QuestionWithUserAndTags, JwtPayload } from "@/types";
 
 export default function QuestionPost() {
   const { isAuthenticated } = useAuth();
@@ -76,8 +76,12 @@ export default function QuestionPost() {
     }
   };
 
-  const token = localStorage.getItem("token");
-  const payload = token ? parseJwt(token) : null;
+  const [payload, setPayload] = useState<JwtPayload | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setPayload(token ? parseJwt(token) : null);
+  }, []);
 
   const previewQuestion: QuestionWithUserAndTags = {
     id: -1,
