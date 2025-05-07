@@ -89,6 +89,7 @@ export default function QuestionPost() {
     bestAnswerId: null,
     user: {
       username: payload?.username || "未ログインユーザー",
+      imagePath: payload?.imagePath || null,
     },
     questionTags: tags.map((tagId) => ({ questionId: -1, tagId })),
   };
