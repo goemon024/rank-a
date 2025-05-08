@@ -50,21 +50,21 @@ export async function GET(req: NextRequest) {
       where: { id: parseInt(userId, 10) },
       select: isSelf
         ? {
-          id: true,
-          username: true,
-          email: true,
-          role: true,
-          imagePath: true,
-          introduce: true,
-          createdAt: true,
-        }
+            id: true,
+            username: true,
+            email: true,
+            role: true,
+            imagePath: true,
+            introduce: true,
+            createdAt: true,
+          }
         : {
-          id: true,
-          username: true,
-          imagePath: true,
-          introduce: true,
-          createdAt: true,
-        },
+            id: true,
+            username: true,
+            imagePath: true,
+            introduce: true,
+            createdAt: true,
+          },
     });
 
     if (!user) {
@@ -149,7 +149,10 @@ export async function PUT(req: NextRequest) {
   if (file && file.size > 0) {
     const result = imageUploadSchema.safeParse(file);
     if (!result.success) {
-      return NextResponse.json({ error: result.error.errors[0].message }, { status: 400 });
+      return NextResponse.json(
+        { error: result.error.errors[0].message },
+        { status: 400 },
+      );
     }
   }
 
@@ -160,7 +163,10 @@ export async function PUT(req: NextRequest) {
     introduce,
   });
   if (!profileResult.success) {
-    return NextResponse.json({ error: profileResult.error.errors[0].message }, { status: 400 });
+    return NextResponse.json(
+      { error: profileResult.error.errors[0].message },
+      { status: 400 },
+    );
   }
 
   let imagePath: string | null = null;

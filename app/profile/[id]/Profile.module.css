@@ -115,7 +115,6 @@
   font-size: 16px;
 }
 
-
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -140,13 +139,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-
-
-
-
-
-
-
 .alert {
   color: red;
 }
@@ -170,7 +162,6 @@
 }
 
 @keyframes blink {
-
   0%,
   49% {
     opacity: 1;

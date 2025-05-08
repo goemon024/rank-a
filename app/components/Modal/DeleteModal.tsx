@@ -2,7 +2,11 @@
 
 import React, { useState } from "react";
 import styles from "./modal.module.css";
-import { AnswerWithUser, QuestionWithUserAndTags, CommentWithUser } from "@/types";
+import {
+  AnswerWithUser,
+  QuestionWithUserAndTags,
+  CommentWithUser,
+} from "@/types";
 
 type DeleteModalProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,7 +15,12 @@ type DeleteModalProps = {
   comment?: CommentWithUser;
 };
 
-const DeleteModal = ({ setOpen, question, answer, comment }: DeleteModalProps) => {
+const DeleteModal = ({
+  setOpen,
+  question,
+  answer,
+  comment,
+}: DeleteModalProps) => {
   if (!question && !answer && !comment) {
     throw new Error("question または answer または comment が必要です");
   }
@@ -69,15 +78,20 @@ const DeleteModal = ({ setOpen, question, answer, comment }: DeleteModalProps) =
       <div className={styles.answerModal} onClick={(e) => e.stopPropagation()}>
         <div>
           <h3>本当に削除しますか？</h3>
-          {errorDelete ? <p className={styles.alert}>{errorDelete}</p>
-            : <p></p>}
-
+          {errorDelete ? (
+            <p className={styles.alert}>{errorDelete}</p>
+          ) : (
+            <p></p>
+          )}
         </div>
         <div className={styles.DeleteButtonContainer}>
           <button onClick={handleSubmit} className={styles.DeleteButton}>
             削除
           </button>
-          <button onClick={() => setOpen(false)} className={styles.DeleteButton}>
+          <button
+            onClick={() => setOpen(false)}
+            className={styles.DeleteButton}
+          >
             キャンセル
           </button>
         </div>
@@ -87,11 +101,6 @@ const DeleteModal = ({ setOpen, question, answer, comment }: DeleteModalProps) =
 };
 
 export default DeleteModal;
-
-
-
-
-
 
 // // components/DeleteDialog.tsx
 // import {

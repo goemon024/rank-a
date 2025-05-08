@@ -79,8 +79,11 @@ const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
       <div className={styles.answerModal} onClick={(e) => e.stopPropagation()}>
         <div>
           <h3>回答を投稿</h3>
-          {errorAnswer ? <p className={styles.alert}>{errorAnswer}</p> :
-            <p>(2000文字以内 markdown形式)</p>}
+          {errorAnswer ? (
+            <p className={styles.alert}>{errorAnswer}</p>
+          ) : (
+            <p>(2000文字以内 markdown形式)</p>
+          )}
         </div>
         <div>
           <textarea

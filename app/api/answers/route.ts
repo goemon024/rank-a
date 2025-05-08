@@ -32,7 +32,10 @@ export async function POST(req: NextRequest) {
 
   const result = answerSchema.safeParse({ content });
   if (!result.success) {
-    return NextResponse.json({ error: result.error.errors[0].message }, { status: 400 });
+    return NextResponse.json(
+      { error: result.error.errors[0].message },
+      { status: 400 },
+    );
   }
 
   try {

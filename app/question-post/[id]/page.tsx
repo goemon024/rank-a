@@ -19,7 +19,7 @@ import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
 import { QuestionWithUserAndTags } from "@/types";
 import { useParams } from "next/navigation";
 
-export default function QuestionPut({ }) {
+export default function QuestionPut({}) {
   const params = useParams();
   const questionId = params.id as string;
 

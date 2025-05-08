@@ -55,7 +55,11 @@ export const AnswerCard = ({
         />
         <div className={styles.buttonContainer}>
           <CommentButton setCommentButtonClick={setCommentButtonClick} />
-          <EditDeleteButton answer={answer} votes={votes} commentCount={commentCount} />
+          <EditDeleteButton
+            answer={answer}
+            votes={votes}
+            commentCount={commentCount}
+          />
         </div>
       </div>
     </div>
