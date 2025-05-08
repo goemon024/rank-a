@@ -19,7 +19,7 @@ import { QuestionCard } from "@/app/components/QuestionCard/QuestionCard";
 import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
 import { QuestionWithUserAndTags } from "@/types";
 import { useParams } from "next/navigation";
-import { number } from "zod";
+
 
 export default function QuestionPut({ }) {
   const params = useParams();
