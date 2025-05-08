@@ -91,6 +91,7 @@ export default function QuestionPost() {
     isDraft: false,
     userId: payload?.userId || 0,
     bestAnswerId: null,
+    score: 0,
     user: {
       username: payload?.username || "未ログインユーザー",
       imagePath: payload?.imagePath || null,

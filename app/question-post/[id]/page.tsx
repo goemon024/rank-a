@@ -10,7 +10,8 @@ import CreateDescription from "@/app/components/Forms/CreateDescription";
 import TagSelector from "@/app/components/Forms/TagSelector";
 import { LINKS_HOME } from "@/constants";
 import { useRef } from "react";
-import DeleteModal from "@/app/components/Modal/DeleteModal";
+
+import DeleteQuestionModal from "@/app/components/Modal/DeleteQuestionModal";
 // import PreviewModal from "@/app/components/Modal/PreviewModal";
 
 import { parseJwt } from "@/lib/parseJwt";
@@ -18,8 +19,9 @@ import { QuestionCard } from "@/app/components/QuestionCard/QuestionCard";
 import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
 import { QuestionWithUserAndTags } from "@/types";
 import { useParams } from "next/navigation";
+import { number } from "zod";
 
-export default function QuestionPut({}) {
+export default function QuestionPut({ }) {
   const params = useParams();
   const questionId = params.id as string;
 
@@ -154,6 +156,7 @@ export default function QuestionPut({}) {
     isDraft: false,
     userId: question?.userId || 0,
     bestAnswerId: null,
+    score: 0,
     user: {
       username: payload?.username || "未ログインユーザー",
       imagePath: payload?.imagePath || null,
@@ -204,7 +207,7 @@ export default function QuestionPut({}) {
               >
                 削除
               </button>
-              <DeleteModal
+              <DeleteQuestionModal
                 open={isDeleteOpen}
                 onClose={() => setIsDeleteOpen(false)}
                 onDelete={handleDelete}
@@ -212,7 +215,7 @@ export default function QuestionPut({}) {
                 loading={isLoading}
               >
                 {error && <p className={styles.error}>{error}</p>}
-              </DeleteModal>
+              </DeleteQuestionModal>
             </div>
 
             <button
