@@ -107,25 +107,28 @@ export default function QuestionDetail() {
           }}
         />
         {Array.isArray(answers) &&
-          answers.map((answer) => (
-            <div key={answer.id}>
-              <AnswerCard
-                key={answer.id}
-                answer={answer}
-                votes={votes[answer.id]}
-                setCommentButtonClick={() => {
-                  setSelectedAnswerId(answer.id);
-                  setIsCommentModalOpen(true);
-                }}
-              />
-              {Array.isArray(comments) &&
-                comments
-                  .filter((comment) => comment.answerId === answer.id)
-                  .map((comment) => (
-                    <CommentCard key={comment.id} comment={comment} />
-                  ))}
-            </div>
-          ))}
+          answers.map((answer) => {
+            const answerComments = Array.isArray(comments)
+              ? comments.filter((comment) => comment.answerId === answer.id)
+              : [];
+            return (
+              <div key={answer.id}>
+                <AnswerCard
+                  key={answer.id}
+                  answer={answer}
+                  votes={votes[answer.id]}
+                  commentCount={answerComments.length}
+                  setCommentButtonClick={() => {
+                    setSelectedAnswerId(answer.id);
+                    setIsCommentModalOpen(true);
+                  }}
+                />
+                {answerComments.map((comment) => (
+                  <CommentCard key={comment.id} comment={comment} />
+                ))}
+              </div>
+            );
+          })}
       </div>
       {isAnswerModalOpen && (
         <AnswerModal setOpen={setIsAnswerModalOpen} questionId={questionId} />

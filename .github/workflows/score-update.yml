@@ -1,0 +1,13 @@
+# name: Update Question Scores
+
+# on:
+#   schedule:
+#     - cron: '0 */12 * * *'  # 毎日12時（UTC）に実行
+
+# jobs:
+#   update-scores:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Call score update API
+#         run: |
+#           curl -X POST "https://your-app.vercel.app/api/questions/score"

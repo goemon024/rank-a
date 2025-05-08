@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 import jwt from "jsonwebtoken";
+import { answerSchema } from "@/schemas/answerSchema";
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key"; // .envで設定しておく
 
@@ -27,6 +28,11 @@ export async function POST(req: NextRequest) {
 
   if (!questionId || !content) {
     return NextResponse.json({ error: "Answer not found" }, { status: 404 });
+  }
+
+  const result = answerSchema.safeParse({ content });
+  if (!result.success) {
+    return NextResponse.json({ error: result.error.errors[0].message }, { status: 400 });
   }
 
   try {

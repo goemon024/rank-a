@@ -7,17 +7,23 @@ import { UserIconButton } from "../UserIconButton/UserIconButton";
 import { AnswerWithUser } from "@/types";
 import CommentButton from "../Button/CommentButton";
 import Vote from "../Vote/Vote";
+import EditDeleteButton from "./EditDeleteButton";
 
 import dayjs from "dayjs";
 import { VoteSummary } from "@/types";
 
+import { marked } from "marked";
+import DOMPurify from "dompurify";
+
 export const AnswerCard = ({
   answer,
   votes,
+  commentCount,
   setCommentButtonClick,
 }: {
   answer: AnswerWithUser;
   votes: VoteSummary;
+  commentCount: number;
   setCommentButtonClick: () => void;
 }) => {
   return (
@@ -33,12 +39,13 @@ export const AnswerCard = ({
         </div>
       </div>
       <div className={styles.answerContent}>
-        <p>{answer.content}</p>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(marked.parse(answer.content) as string),
+          }}
+        />
       </div>
-      <div>
-        <CommentButton setCommentButtonClick={setCommentButtonClick} />
-      </div>
-      <div>
+      <div className={styles.infomationContainer}>
         <Vote
           answerId={answer.id}
           initialVote={votes.userVote}
@@ -46,6 +53,10 @@ export const AnswerCard = ({
           initialDownvotes={votes.downvotes}
           voteId={votes.voteId}
         />
+        <div className={styles.buttonContainer}>
+          <CommentButton setCommentButtonClick={setCommentButtonClick} />
+          <EditDeleteButton answer={answer} votes={votes} commentCount={commentCount} />
+        </div>
       </div>
     </div>
   );

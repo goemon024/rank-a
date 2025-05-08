@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "../Profile.module.css";
 import { useParams } from "next/navigation";
+import { getPasswordScore, changePasswordSchema } from "@/schemas/passswordSchema";
 
 type Props = {
     onClose: () => void;
@@ -15,12 +16,24 @@ const ChangePasswordModal: React.FC<Props> = ({ onClose }) => {
 
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [passwordScore, setPasswordScore] = useState(0);
 
     const handlePasswordSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (newPassword !== confirmPassword) {
             setError("新しいパスワードが一致しません");
+            return;
+        }
+
+        const result = changePasswordSchema.safeParse({
+            currentPassword,
+            newPassword,
+            confirmPassword,
+        });
+
+        if (!result.success) {
+            setError(result.error.errors[0].message);
             return;
         }
 
@@ -35,6 +48,7 @@ const ChangePasswordModal: React.FC<Props> = ({ onClose }) => {
                 body: JSON.stringify({
                     currentPassword,
                     newPassword,
+                    confirmPassword,
                 }),
             });
 
@@ -49,7 +63,7 @@ const ChangePasswordModal: React.FC<Props> = ({ onClose }) => {
             setTimeout(() => {
                 onClose();
             }, 1000);
-        } catch (err: unknown) {
+        } catch (err) {
             setSuccess("");
             setError(err instanceof Error ? err.message : "エラーが発生しました");
         }
@@ -65,7 +79,9 @@ const ChangePasswordModal: React.FC<Props> = ({ onClose }) => {
         <div className={styles.modalOverlay} onClick={handleOverlayClick}>
             <div className={styles.modalContent}>
                 <h2>パスワード変更</h2>
-                <form>
+                {error && <p className={styles.alert}>{error}</p>}
+                {success && <p className={styles.success}>{success}</p>}
+                <form onSubmit={handlePasswordSubmit}>
                     <label>
                         現在のパスワード
                         <input
@@ -76,11 +92,14 @@ const ChangePasswordModal: React.FC<Props> = ({ onClose }) => {
                         />
                     </label>
                     <label>
-                        新しいパスワード
+                        新しいパスワード（スコア: {passwordScore}）
                         <input
                             type="password"
                             value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
+                            onChange={(e) => {
+                                setNewPassword(e.target.value);
+                                setPasswordScore(getPasswordScore(e.target.value));
+                            }}
                             required
                         />
                     </label>
@@ -93,9 +112,6 @@ const ChangePasswordModal: React.FC<Props> = ({ onClose }) => {
                             required
                         />
                     </label>
-
-                    {error && <p className="error">{error}</p>}
-                    {success && <p className="success">{success}</p>}
 
                     <div className={styles.buttonGroup}>
                         <button type="button" onClick={handlePasswordSubmit}>変更する</button>

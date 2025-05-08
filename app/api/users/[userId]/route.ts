@@ -5,6 +5,9 @@ import { verifyToken } from "@/utils/auth"; // JWT検証ユーティリティ
 import { Prisma } from "@prisma/client";
 import { createClient } from "@supabase/supabase-js";
 
+import { imageUploadSchema } from "@/schemas/imageUploadSchema";
+import { profileSchema } from "@/schemas/profileSchema";
+
 export async function GET(req: NextRequest) {
   try {
     const urlParams = new URL(req.url);
@@ -47,21 +50,21 @@ export async function GET(req: NextRequest) {
       where: { id: parseInt(userId, 10) },
       select: isSelf
         ? {
-            id: true,
-            username: true,
-            email: true,
-            role: true,
-            imagePath: true,
-            introduce: true,
-            createdAt: true,
-          }
+          id: true,
+          username: true,
+          email: true,
+          role: true,
+          imagePath: true,
+          introduce: true,
+          createdAt: true,
+        }
         : {
-            id: true,
-            username: true,
-            imagePath: true,
-            introduce: true,
-            createdAt: true,
-          },
+          id: true,
+          username: true,
+          imagePath: true,
+          introduce: true,
+          createdAt: true,
+        },
     });
 
     if (!user) {
@@ -141,6 +144,24 @@ export async function PUT(req: NextRequest) {
   const email = formData.get("email");
   const file = formData.get("imagePath") as File | null;
   const introduce = formData.get("introduce");
+
+  // 画像バリデーション
+  if (file && file.size > 0) {
+    const result = imageUploadSchema.safeParse(file);
+    if (!result.success) {
+      return NextResponse.json({ error: result.error.errors[0].message }, { status: 400 });
+    }
+  }
+
+  // プロフィールバリデーション
+  const profileResult = profileSchema.safeParse({
+    username,
+    email,
+    introduce,
+  });
+  if (!profileResult.success) {
+    return NextResponse.json({ error: profileResult.error.errors[0].message }, { status: 400 });
+  }
 
   let imagePath: string | null = null;
   if (file && file.size > 0) {

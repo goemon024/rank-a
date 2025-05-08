@@ -20,20 +20,6 @@ export const GetStrength = (password: string): "弱" | "中" | "強" | null => {
 };
 
 export const PasswordStrength = ({ password }: Props) => {
-  // const getStrength = (password: string): '弱' | '中' | '強' => {
-  //     if (password.length < 8) return '弱'
-
-  //     const hasLower = /[a-z]/.test(password)
-  //     const hasUpper = /[A-Z]/.test(password)
-  //     const hasNumber = /[0-9]/.test(password)
-  //     const hasSymbol = /[^a-zA-Z0-9]/.test(password)
-
-  //     const score = [hasLower, hasUpper, hasNumber, hasSymbol].filter(Boolean).length
-  //     if (score >= 3) return '強'
-  //     if (score === 2) return '中'
-  //     return '弱'
-  // }
-
   if (!password) return null;
 
   const strength = GetStrength(password);

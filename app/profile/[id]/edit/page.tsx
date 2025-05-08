@@ -11,6 +11,9 @@ import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import ChangePasswordModal from "./ChangePasswordModal";
 
+import { imageUploadSchema } from "@/schemas/imageUploadSchema";
+import { profileSchema } from "@/schemas/profileSchema";
+
 export default function ProfilePage() {
     const params = useParams();
     const userId = params.id as string;
@@ -21,6 +24,8 @@ export default function ProfilePage() {
     const [isLoading, setIsLoading] = useState(true);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
+
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     // const [loading, setLoading] = useState(true)
     // const [error, setError] = useState<string | null>(null)
@@ -63,6 +68,29 @@ export default function ProfilePage() {
         event.preventDefault();
         const formData = new FormData(event.target as HTMLFormElement);
 
+        const file = formData.get("imagePath") as File | null;
+        if (file && file.size > 0) {
+            // 画像バリデーションチェック
+            const result = imageUploadSchema.safeParse(file);
+            if (!result.success) {
+                setErrorMessage(result.error.errors[0].message);
+                return;
+            }
+        }
+
+        const profileData = {
+            username: formData.get("username") as string,
+            email: formData.get("email") as string,
+            introduce: formData.get("introduce") as string,
+        };
+
+        // プロフィールバリデーションチェック
+        const result = profileSchema.safeParse(profileData);
+        if (!result.success) {
+            setErrorMessage(result.error.errors[0].message);
+            return;
+        }
+
         try {
             const token = localStorage.getItem("token");
             const res = await fetch(`/api/users/${userId}`, {
@@ -77,6 +105,7 @@ export default function ProfilePage() {
                 const data = await res.json();
                 if (res.status === 409) {
                     setErrorMessage(data.error || "プロフィールの更新に失敗しました");
+                    return;
                 }
                 throw new Error(data.error || "プロフィールの更新に失敗しました");
             }
@@ -84,6 +113,7 @@ export default function ProfilePage() {
             const data = await res.json();
             setUser(data);
             setErrorMessage("");
+            setPreviewImage(null);
 
             // --- ここから exp を取得して setAuthUser ---
             let exp: number | undefined = undefined;
@@ -100,10 +130,27 @@ export default function ProfilePage() {
                 role: data.role,
                 exp: exp ?? 0,
             });
-        } catch (err: unknown) {
+        } catch (err) {
             // eslint-disable-next-line no-console
             console.error("プロフィールの更新に失敗しました:", err);
+            setErrorMessage("プロフィールの更新に失敗しました");
         }
+    };
+
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const result = imageUploadSchema.safeParse(file);
+        if (!result.success) {
+            setErrorMessage(result.error.errors[0].message);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = () => setPreviewImage(reader.result as string);
+        reader.readAsDataURL(file);
+        setErrorMessage("");
     };
 
     const ProfileContent = (
@@ -117,12 +164,13 @@ export default function ProfilePage() {
                     <p>プロフィール画像</p>
                     <img
                         className={styles.ProfileImageEdit}
-                        src={user?.imagePath || "/profile_default.jpg"}
+                        src={previewImage || user?.imagePath || "/profile_default.jpg"}
                         alt="User Icon"
                         loading="eager"
                         sizes="30px"
                     />
-                    <input type="file" name="imagePath" accept="image/*" hidden />
+                    <input type="file" name="imagePath" accept="image/*"
+                        onChange={handleImageChange} hidden />
                 </label>
             </div>
 
@@ -139,7 +187,7 @@ export default function ProfilePage() {
                 </label>
                 <label>
                     Email:
-                    <input type="email" name="email" defaultValue={user?.email || ""} />
+                    <input type="text" name="email" defaultValue={user?.email || ""} />
                 </label>
                 <label>
                     自己紹介:

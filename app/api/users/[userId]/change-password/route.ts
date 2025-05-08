@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import { verifyToken } from "@/utils/auth";
+import { changePasswordSchema } from "@/schemas/passswordSchema";
 
 export async function PUT(req: NextRequest) {
   try {
@@ -17,19 +18,28 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: "トークンが無効です" }, { status: 401 });
     }
 
-    const { currentPassword, newPassword } = await req.json();
+    const { currentPassword, newPassword, confirmPassword } = await req.json();
 
-    if (!currentPassword || !newPassword) {
-      // eslint-disable-next-line no-console
-      console.log("すべての項目を入力してください");
-      return NextResponse.json({ error: "すべての項目を入力してください" }, { status: 400 });
+    // if (!currentPassword || !newPassword) {
+    //   // eslint-disable-next-line no-console
+    //   console.log("すべての項目を入力してください");
+    //   return NextResponse.json({ error: "すべての項目を入力してください" }, { status: 400 });
+    // }
+
+
+    // if (newPassword.length < 8) {
+    //   return NextResponse.json({ error: "パスワードは8文字以上にしてください" }, { status: 400 });
+    // }
+
+
+    const result = changePasswordSchema.safeParse({
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    });
+    if (!result.success) {
+      return NextResponse.json({ error: result.error.errors[0].message }, { status: 400 });
     }
-
-
-    if (newPassword.length < 8) {
-      return NextResponse.json({ error: "パスワードは8文字以上にしてください" }, { status: 400 });
-    }
-
 
     let userId: number | undefined = undefined;
     if (
