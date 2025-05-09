@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
+import { questionSchema } from "@/schemas/qustionSchema";
 
 export async function GET(
   req: NextRequest,
@@ -74,6 +75,19 @@ export async function PUT(req: NextRequest) {
 
   const body = await req.json();
   const { title, description, isDraft, tags, id } = body;
+
+  const result = questionSchema.safeParse({
+    title,
+    description,
+    tags,
+  });
+
+  if (!result.success) {
+    return NextResponse.json(
+      { error: result.error.errors[0].message },
+      { status: 400 },
+    );
+  }
 
   if (!title || !description) {
     return NextResponse.json(

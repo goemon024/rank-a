@@ -97,3 +97,7 @@
   overflow-y: auto;
   /* はみ出たらスクロール */
 }
+
+.alert {
+  color: red;
+}

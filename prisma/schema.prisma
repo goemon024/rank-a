@@ -34,6 +34,8 @@ model Question {
   userId       Int           @map("user_id")
   bestAnswerId Int?          @unique @map("best_answer_id")
   score        Int           @default(0)
+  answerCount  Int           @default(0) @map("answer_count")
+  upvoteCount  Int           @default(0) @map("upvote_count")
   answers      Answer[]      @relation("AllAnswers")
   comments     Comment[]
   answer       Answer?       @relation("BestAnswer", fields: [bestAnswerId], references: [id])

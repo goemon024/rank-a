@@ -15,6 +15,8 @@ import { parseJwt } from "@/lib/parseJwt";
 import { QuestionCard } from "@/app/components/QuestionCard/QuestionCard";
 import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
 import { QuestionWithUserAndTags, JwtPayload } from "@/types";
+import { questionSchema } from "@/schemas/qustionSchema";
+
 
 export default function QuestionPost() {
   const { isAuthenticated } = useAuth();
@@ -24,6 +26,7 @@ export default function QuestionPost() {
   const [description, setDescription] = useState<string>("");
   const [tags, setTags] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const isDrafrRef = useRef(false);
 
@@ -40,8 +43,17 @@ export default function QuestionPost() {
 
     const isDraft = isDrafrRef.current;
 
-    console.log("isDraft:", isDraft);
-    console.log("tags:", tags);
+    const result = questionSchema.safeParse({
+      title,
+      description,
+      tags,
+    });
+
+    if (!result.success) {
+      console.error("Validation error:", result.error);
+      setError(result.error.errors[0].message);
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -70,6 +82,7 @@ export default function QuestionPost() {
       // router.push("/");
     } catch (error) {
       // eslint-disable-next-line no-console
+      setError("エラーが発生しました");
       console.error("Error:", error);
     } finally {
       setIsLoading(false);
@@ -93,6 +106,8 @@ export default function QuestionPost() {
     userId: payload?.userId || 0,
     bestAnswerId: null,
     score: 0,
+    answerCount: 0,
+    upvoteCount: 0,
     user: {
       username: payload?.username || "未ログインユーザー",
       imagePath: payload?.imagePath || null,
@@ -106,6 +121,7 @@ export default function QuestionPost() {
       <div className={styles.container}>
         <h2 className={styles.title}>質問を投稿</h2>
         <form className={styles.form} onSubmit={handleSubmit}>
+          {error && <p className={styles.alert}>{error}</p>}
           <CreateTitle title={title} setTitle={setTitle} />
           <CreateDescription
             description={description}

@@ -14,7 +14,7 @@ export const TAGS = [
   "Svelte",
   "Ruby",
   "Java",
-];
+] as const;
 
 export const LINKS_HOME = [
   { label: "新着質問一覧", href: "/home" },

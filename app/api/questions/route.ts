@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { Prisma } from "@prisma/client";
+import { questionSchema } from "@/schemas/qustionSchema";
 // import { getFilteredQuestions } from "@/lib/questionService";
 
 export async function GET(req: NextRequest) {
@@ -19,9 +20,9 @@ export async function GET(req: NextRequest) {
 
     const tagIds = tagParam
       ? tagParam
-          .split(",")
-          .map((id) => parseInt(id, 10))
-          .filter((id) => !isNaN(id))
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id))
       : [];
 
     const orderBy =
@@ -151,6 +152,19 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
   const { title, description, isDraft, tags } = body;
+
+  const result = questionSchema.safeParse({
+    title,
+    description,
+    tags,
+  });
+
+  if (!result.success) {
+    return NextResponse.json(
+      { error: result.error.errors[0].message },
+      { status: 400 },
+    );
+  }
 
   if (!title || !description) {
     return NextResponse.json(

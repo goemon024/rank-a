@@ -25,7 +25,7 @@ const CreateTitle: React.FC<CreateTitleProps> = ({ title, setTitle }) => {
     <div>
       {overText ? (
         <label className={styles.labelRed} htmlFor="TitleInput">
-          100文字を超えています
+          50文字を超えています
         </label>
       ) : (
         <label className={styles.label} htmlFor="TitleInput">

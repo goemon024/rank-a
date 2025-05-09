@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import styles from "./modal.module.css";
 import { useRouter } from "next/navigation";
+import { commentSchema } from "@/schemas/commentSchema";
 
 const CommentModal = ({
   setOpen,
@@ -20,6 +21,16 @@ const CommentModal = ({
 
   const handleSubmit = async () => {
     try {
+
+      const result = commentSchema.safeParse({
+        content,
+      });
+
+      if (!result.success) {
+        setErrorComment(result.error.errors[0].message);
+        return;
+      }
+
       const res = await fetch("/api/comments", {
         method: "POST",
         headers: {
@@ -53,13 +64,12 @@ const CommentModal = ({
           ) : (
             <p></p>
           )}
-          <p>{answerId}</p>
-          <p>{questionId}</p>
+
         </div>
         <div>
           <textarea
             className={styles.textarea}
-            placeholder="ここにMarkdownでコメントを入力..."
+            placeholder="ここにコメントを入力..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />

@@ -19,7 +19,7 @@ import { QuestionCard } from "@/app/components/QuestionCard/QuestionCard";
 import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
 import { QuestionWithUserAndTags } from "@/types";
 import { useParams } from "next/navigation";
-
+import { questionSchema } from "@/schemas/qustionSchema";
 
 export default function QuestionPut({ }) {
   const params = useParams();
@@ -89,6 +89,17 @@ export default function QuestionPut({ }) {
 
     const isDraft = isDrafrRef.current;
 
+    const result = questionSchema.safeParse({
+      title,
+      description,
+      tags,
+    });
+
+    if (!result.success) {
+      setError(result.error.errors[0].message);
+      return;
+    }
+
     setIsLoading(true);
     try {
       const response = await fetch(`/api/questions/${questionId}`, {
@@ -111,18 +122,18 @@ export default function QuestionPut({ }) {
         throw new Error(data.error || "質問の投稿に失敗しました");
       }
 
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Error:", error);
-    } finally {
-      setIsLoading(false);
-
       if (isDraft) {
         router.push("/profile/" + payload?.userId + "/drafts");
       } else {
         router.push("/");
       }
+
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error("Error:", error);
+      setError("エラーが発生しました");
     }
+
   };
 
   const handleDelete = async () => {
@@ -159,6 +170,8 @@ export default function QuestionPut({ }) {
     userId: question?.userId || 0,
     bestAnswerId: null,
     score: 0,
+    answerCount: 0,
+    upvoteCount: 0,
     user: {
       username: payload?.username || "未ログインユーザー",
       imagePath: payload?.imagePath || null,
@@ -175,6 +188,7 @@ export default function QuestionPut({ }) {
       <div className={styles.container}>
         <h2 className={styles.title}>質問を投稿</h2>
         <form className={styles.form} onSubmit={handleSubmit}>
+          {error && <p className={styles.alert}>{error}</p>}
           <CreateTitle title={title} setTitle={setTitle} />
           <CreateDescription
             description={description}
