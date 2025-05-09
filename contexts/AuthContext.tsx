@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       try {
         const decoded: UserPayload = jwtDecode(token);
-        console.log("decoded token:", decoded);
+        // console.log("AuthContext decoded token:", decoded);
 
         // 有効期限確認
         if (decoded.exp * 1000 > Date.now()) {

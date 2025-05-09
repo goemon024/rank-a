@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 
-import { parseJwt } from "@/lib/parseJwt";
-import { useRouter } from "next/navigation";
+// import { parseJwt } from "@/lib/parseJwt";
+// import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Header } from "@/app/components/Header/Header";
 import { getLinksProfile } from "@/constants/index";
@@ -11,44 +11,47 @@ import styles from "./UserQuestions.module.css";
 import Link from "next/link";
 import { QuestionWithUserAndTags } from "@/types";
 import dayjs from "dayjs";
+import { UserIconButton } from "@/app/components/UserIconButton/UserIconButton";
 
 export default function UserCommentsPage() {
   const params = useParams();
   const userId = parseInt(params.id as string);
   const [questions, setQuestions] = useState<QuestionWithUserAndTags[]>([]);
-  const router = useRouter();
+  // const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [userImagePath, setUserImagePath] = useState<string | null>(null);
 
   const links = getLinksProfile(params.id as string);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const payload = token ? parseJwt(token) : null;
-    const userIdFromToken = payload?.userId;
+    // const token = localStorage.getItem("token");
+    // const payload = token ? parseJwt(token) : null;
+    // const userIdFromToken = payload?.userId;
     // const username = payload?.username;
-    setUsername(payload?.username);
+    // setUsername(payload?.username);
 
-    console.log("userIdFromToken", userIdFromToken);
-    console.log(userIdFromToken, userId);
+    // console.log("userIdFromToken", userIdFromToken);
+    // console.log(userIdFromToken, userId);
 
-    if (userIdFromToken !== userId) {
-      alert("不正なアクセスです");
-      router.push("/");
-      return;
-    }
+    // if (userIdFromToken !== userId) {
+    //   router.push("/");
+    //   return;
+    // }
 
     const fetchQuestions = async () => {
       setIsLoading(true);
       const res = await fetch(`/api/questions?userId=${userId}&limit=50`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
 
       const data = await res.json();
       setQuestions(data.questions);
+      setUserImagePath(data.questions[0].user.imagePath);
+      setUsername(data.questions[0].user.username);
       setIsLoading(false);
     };
     fetchQuestions();
@@ -60,11 +63,17 @@ export default function UserCommentsPage() {
         <Header links={links} />
       </div>
       <div className={styles.questionArea}>
-        <h2>{username} さんの質問履歴（直近100件までの表示）</h2>
+        <div className={styles.userIconButtonContainer}>
+          <UserIconButton
+            userId={userId}
+            imagePath={userImagePath}
+          />
+          <h3>{username} さんの質問履歴（直近100件までの表示）</h3>
+        </div>
         {isLoading ? (
           <p>読み込み中...</p>
         ) : questions.length === 0 ? (
-          <p>コメントはありません。</p>
+          <p>質問の投稿はありません。</p>
         ) : (
           questions.map((q: QuestionWithUserAndTags) => (
             <Link key={q.id} href={`/question-detail/${q.id}`}>

@@ -82,8 +82,7 @@ export default function UpvoteDownvote({
           setDownvotes((prev) => prev + 1);
           if (vote === "Upvote") setUpvotes((prev) => prev - 1);
         }
-        // eslint-disable-next-line no-console
-        console.log("type", type);
+
         setVote(type);
       }
     } catch (err) {

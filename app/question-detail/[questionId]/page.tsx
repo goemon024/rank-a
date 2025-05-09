@@ -76,7 +76,6 @@ export default function QuestionDetail() {
       }
     };
     fetchQuestion();
-    console.log(answers);
   }, [questionId]);
 
   if (loading) return <div>Loading...</div>;

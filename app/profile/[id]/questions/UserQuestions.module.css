@@ -55,3 +55,12 @@
   margin: 0.7rem 0.5rem;
   font-size: 0.8rem;
 }
+
+.userIconButtonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}

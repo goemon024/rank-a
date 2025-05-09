@@ -6,9 +6,11 @@ import { UserIconButton } from "../UserIconButton/UserIconButton";
 import { Stack, Chip } from "@mui/material";
 import Link from "next/link";
 import { QuestionWithUserAndTags } from "@/types";
-import dayjs from "dayjs";
 
-// APIを介さずにタグ表示。
+import dayjs from "dayjs";
+import DOMPurify from "dompurify";
+import { marked } from "marked";
+
 import { TAGS } from "@/constants";
 
 export const QuestionCard = ({
@@ -17,9 +19,14 @@ export const QuestionCard = ({
   question: QuestionWithUserAndTags;
 }) => {
   return (
+
     <div className={styles.questionCard}>
       <Link href={`/question-detail/${question.id}`}>
-        <h2>{question.title}</h2>
+        <h2
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(marked.parseInline(question.title) as string),
+          }}
+        />
 
         <Stack direction="row" spacing={1} flexWrap="wrap" marginBottom={1}>
           {question.questionTags.map((qt) => (
@@ -48,5 +55,6 @@ export const QuestionCard = ({
         </div>
       </div>
     </div>
+
   );
 };

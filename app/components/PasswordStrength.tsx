@@ -32,14 +32,6 @@ export const PasswordStrength = ({ password }: Props) => {
 };
 
 export const isPasswordStrong = (password: string) => {
-  return GetStrength(password) != "弱"; // if (password.length < 8) return false
+  return GetStrength(password) != "弱";
 
-  // const check = [
-  //     /[a-z]/.test(password),
-  //     /[A-Z]/.test(password),
-  //     /[0-9]/.test(password),
-  //     /[^a-zA-Z0-9]/.test(password)
-  // ]
-
-  // return check.filter(Boolean).length >= 2
 };

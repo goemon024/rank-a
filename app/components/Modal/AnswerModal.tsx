@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import styles from "./modal.module.css";
 import { answerSchema } from "@/schemas/answerSchema";
 import { AnswerWithUser } from "@/types";
+import { useRouter } from "next/navigation";
 
 // POSTとPUTに対応させている。
 type AnswerModalProps = {
@@ -13,6 +14,8 @@ type AnswerModalProps = {
 };
 
 const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
+  const router = useRouter();
+
   if (!questionId && !answer) {
     throw new Error("questionId または answer が必要です");
   }
@@ -65,7 +68,7 @@ const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
       }
 
       // 投稿成功したらモーダルを閉じる
-      setOpen(false);
+      router.push("/");
       // 必要ならページをリロードしたり、回答リストを更新したりもできる
       // location.reload()
     } catch (error) {

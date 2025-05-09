@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "./modal.module.css";
+import { useRouter } from "next/navigation";
 
 const CommentModal = ({
   setOpen,
@@ -13,8 +14,9 @@ const CommentModal = ({
   answerId?: string | null;
 }) => {
   const [content, setContent] = useState("");
-
+  const router = useRouter();
   const token = localStorage.getItem("token");
+  const [errorComment, setErrorComment] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     try {
@@ -30,18 +32,14 @@ const CommentModal = ({
           content: content,
         }),
       });
-
       if (!res.ok) {
         throw new Error("投稿に失敗しました");
       }
 
-      // 投稿成功したらモーダルを閉じる
-      setOpen(false);
-      // 必要ならページをリロードしたり、回答リストを更新したりもできる
-      // location.reload()
+      router.push("/");
     } catch (error) {
+      setErrorComment("投稿エラー：もう一度お試しください");
       console.error(error);
-      alert("投稿エラー：もう一度お試しください");
     }
   };
 
@@ -50,6 +48,11 @@ const CommentModal = ({
       <div className={styles.commentModal} onClick={(e) => e.stopPropagation()}>
         <div>
           <h2>コメントを投稿</h2>
+          {errorComment ? (
+            <p className={styles.alert}>{errorComment}</p>
+          ) : (
+            <p></p>
+          )}
           <p>{answerId}</p>
           <p>{questionId}</p>
         </div>

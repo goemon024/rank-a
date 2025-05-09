@@ -39,9 +39,9 @@ export default function QuestionPost() {
     e.preventDefault();
 
     const isDraft = isDrafrRef.current;
-    console.log("isDraft:", isDraft);
 
-    console.log(tags);
+    console.log("isDraft:", isDraft);
+    console.log("tags:", tags);
 
     setIsLoading(true);
     try {
@@ -73,6 +73,7 @@ export default function QuestionPost() {
       console.error("Error:", error);
     } finally {
       setIsLoading(false);
+      router.push("/");
     }
   };
 

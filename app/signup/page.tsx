@@ -2,6 +2,7 @@
 
 "use client";
 import { useState, FormEvent, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 import { useRouter } from "next/navigation";
 import styles from "./signUp.module.css";
@@ -11,6 +12,7 @@ import {
   isPasswordStrong,
 } from "../components/PasswordStrength";
 import { EmailWarning, isValidEmail } from "../components/EmailWarning";
+import { useAuth } from "@/contexts/AuthContext";
 // import { signIn } from 'next-auth/react'
 
 export default function SignUpPage() {
@@ -22,6 +24,7 @@ export default function SignUpPage() {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const router = useRouter();
+  const { setUser } = useAuth();
 
   const isConfirmPasswordValid =
     password === confirmPassword && confirmPassword !== "";
@@ -67,7 +70,7 @@ export default function SignUpPage() {
 
     if (data.success) {
       setMessage("登録成功！扉ページへ");
-      setTimeout(() => {}, 2000);
+      setTimeout(() => { }, 2000);
       const usernameOrEmail = email;
 
       const res = await fetch("/api/users/login", {
@@ -77,8 +80,11 @@ export default function SignUpPage() {
       });
 
       if (res?.ok) {
-        localStorage.setItem("token", data.token);
+        const loadData = await res.json();
+        localStorage.setItem("token", loadData.token);
+        setUser(jwtDecode(loadData.token));
         router.push("/"); // ログイン後のリダイレクト先
+
       } else {
         setMessage("ログインに失敗しました");
       }

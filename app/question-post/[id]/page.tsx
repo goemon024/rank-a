@@ -111,16 +111,17 @@ export default function QuestionPut({ }) {
         throw new Error(data.error || "質問の投稿に失敗しました");
       }
 
-      // 成功時の処理
-      // await router.refresh();
-      // await new Promise((resolve) => setTimeout(resolve, 100));
-
-      // router.push("/");
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("Error:", error);
     } finally {
       setIsLoading(false);
+
+      if (isDraft) {
+        router.push("/profile/" + payload?.userId + "/drafts");
+      } else {
+        router.push("/");
+      }
     }
   };
 
@@ -138,13 +139,14 @@ export default function QuestionPut({ }) {
         const data = await response.json();
         setError(data.error || "削除に失敗しました");
       }
-      router.push("/profile/" + payload?.userId + "/drafts");
+
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("Error:", error);
     } finally {
       setIsLoading(false);
       setIsDeleteOpen(false);
+      router.push("/profile/" + payload?.userId + "/drafts");
     }
   };
 
@@ -183,8 +185,6 @@ export default function QuestionPut({ }) {
             <div className={styles.buttonSection}>
               <button
                 className={styles.button}
-                name="action"
-                value="draft"
                 type="submit"
                 disabled={isLoading}
                 onClick={() => (isDrafrRef.current = true)}
@@ -220,8 +220,6 @@ export default function QuestionPut({ }) {
 
             <button
               className={styles.button}
-              name="action"
-              value="publish"
               type="submit"
               disabled={isLoading}
               onClick={() => (isDrafrRef.current = false)}

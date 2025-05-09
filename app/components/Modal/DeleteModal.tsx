@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "./modal.module.css";
+import { useRouter } from "next/navigation";
 import {
   AnswerWithUser,
   QuestionWithUserAndTags,
@@ -31,6 +32,8 @@ const DeleteModal = ({
 
   const handleSubmit = async () => {
     setErrorDelete(null);
+    const router = useRouter();
+
     try {
       let res;
       if (answer?.id) {
@@ -64,7 +67,7 @@ const DeleteModal = ({
       }
 
       // 投稿成功したらモーダルを閉じる
-      setOpen(false);
+      router.push("/");
       // 必要ならページをリロードしたり、回答リストを更新したりもできる
       // location.reload()
     } catch (error) {

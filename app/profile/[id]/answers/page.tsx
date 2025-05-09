@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 
-import { parseJwt } from "@/lib/parseJwt";
-import { useRouter } from "next/navigation";
+// import { parseJwt } from "@/lib/parseJwt";
+// import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Header } from "@/app/components/Header/Header";
 import { getLinksProfile } from "@/constants/index";
@@ -16,34 +16,34 @@ export default function UserCommentsPage() {
   const params = useParams();
   const userId = parseInt(params.id as string);
   const [answers, setAnswers] = useState<AnswerWithUserAndQuestion[]>([]);
-  const router = useRouter();
+  // const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const links = getLinksProfile(params.id as string);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const payload = token ? parseJwt(token) : null;
-    const userIdFromToken = payload?.userId;
-    setUsername(payload?.username);
+    // const token = localStorage.getItem("token");
+    // const payload = token ? parseJwt(token) : null;
+    // const userIdFromToken = payload?.userId;
+    // setUsername(payload?.username);
 
-    if (userIdFromToken !== userId) {
-      alert("不正なアクセスです");
-      router.push("/");
-      return;
-    }
+    // if (userIdFromToken !== userId) {
+    //   router.push("/");
+    //   return;
+    // }
 
     const fetchComments = async () => {
       setIsLoading(true);
       const res = await fetch(`/api/answers?userId=${userId}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          // Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
 
       const data = await res.json();
       setAnswers(data.answer);
+      setUsername(data.answer[0].user.username);
       setIsLoading(false);
     };
     fetchComments();
@@ -59,7 +59,7 @@ export default function UserCommentsPage() {
         {isLoading ? (
           <p>読み込み中...</p>
         ) : answers.length === 0 ? (
-          <p>回答はありません。</p>
+          <p>回答の投稿はありません。</p>
         ) : (
           answers.map((a: AnswerWithUserAndQuestion) => (
             <Link key={a.id} href={`/question-detail/${a.questionId}`}>

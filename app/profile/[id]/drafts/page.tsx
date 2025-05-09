@@ -10,6 +10,7 @@ import { Header } from "@/app/components/Header/Header";
 import { getLinksProfile } from "@/constants/index";
 import styles from "./drafts.module.css";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 export default function DraftPage() {
   const params = useParams();
@@ -32,7 +33,6 @@ export default function DraftPage() {
     console.log(userIdFromToken, userId);
 
     if (userIdFromToken !== userId) {
-      alert("不正なアクセスです");
       router.push("/");
       return;
     }
@@ -70,7 +70,7 @@ export default function DraftPage() {
                 <p className={styles.questionTitle}>{q.title}</p>
                 <p className={styles.questionDescription}>{q.description}</p>
                 <p className={styles.questionCreatedAt}>
-                  {q.createdAt.toLocaleString()}
+                  {dayjs(q.createdAt).format("YYYY/MM/DD HH:mm")}
                 </p>
               </div>
             </Link>

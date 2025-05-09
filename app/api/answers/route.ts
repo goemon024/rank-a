@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 400 }); //401
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const token = authHeader.split(" ")[1];
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   } catch (err: unknown) {
     // eslint-disable-next-line no-console
     console.error("Token verification failed:", err);
-    return NextResponse.json({ error: "Invalid token" }, { status: 400 }); // 403
+    return NextResponse.json({ error: "Invalid token" }, { status: 403 });
   }
 
   const body = await req.json();
@@ -56,29 +56,32 @@ export async function POST(req: NextRequest) {
   }
 }
 
+
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const userId = searchParams.get("userId");
 
-  const authHeader = req.headers.get("authorization");
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!userId) {
+    return NextResponse.json({ error: "userId is required" }, { status: 400 });
   }
 
-  const token = authHeader.split(" ")[1];
-  const payload = jwt.verify(token, JWT_SECRET) as { userId: number };
-
-  if (!userId || payload.userId !== parseInt(userId, 10)) {
-    console.log("payload.userId", payload.userId);
-    console.log("userId", userId);
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  // クエリuserIdとトークンを照合する場合
+  // const authHeader = req.headers.get("authorization");
+  // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
+  // const token = authHeader.split(" ")[1];
+  // const payload = jwt.verify(token, JWT_SECRET) as { userId: number };
+  // if (!userId || payload.userId !== parseInt(userId, 10)) {
+  //   console.log("payload.userId", payload.userId);
+  //   console.log("userId", userId);
+  //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  // }
 
   try {
     const answer = await prisma.answer.findMany({
       where: {
-        userId: parseInt(userId, 10),
+        userId: parseInt(userId || "0", 10),
       },
       include: {
         user: {

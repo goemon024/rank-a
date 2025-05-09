@@ -9,8 +9,18 @@
   width: 100%;
 }
 
-.descriptionCard {
+/* .descriptionPart {
   margin-top: -1rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+} */
+
+.descriptionCard {
+  margin-top: -0.75rem;
 }
 
 .questionCard h3 {
