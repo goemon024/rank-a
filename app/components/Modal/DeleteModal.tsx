@@ -27,12 +27,12 @@ const DeleteModal = ({
   }
 
   const [errorDelete, setErrorDelete] = useState<string | null>(null);
+  const router = useRouter();
 
   const token = localStorage.getItem("token");
 
   const handleSubmit = async () => {
     setErrorDelete(null);
-    const router = useRouter();
 
     try {
       let res;
