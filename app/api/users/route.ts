@@ -15,7 +15,12 @@ export async function POST(req: NextRequest) {
     const recaptchaToken = req.headers.get("x-recaptcha-token");
 
     //zodスキーマを使う
-    if (!sanitizedUsername || !sanitizedEmail || !password || !confirmPassword) {
+    if (
+      !sanitizedUsername ||
+      !sanitizedEmail ||
+      !password ||
+      !confirmPassword
+    ) {
       return NextResponse.json(
         { error: "全ての項目を入力してください" },
         { status: 400 },
@@ -37,7 +42,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const validationResult = signupSchema.safeParse({ username, email, password, confirmPassword });
+    const validationResult = signupSchema.safeParse({
+      username,
+      email,
+      password,
+      confirmPassword,
+    });
     if (!validationResult.success) {
       return NextResponse.json(
         { error: validationResult.error.errors[0].message },

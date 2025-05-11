@@ -21,7 +21,6 @@ const CommentModal = ({
 
   const handleSubmit = async () => {
     try {
-
       const result = commentSchema.safeParse({
         content,
       });
@@ -64,7 +63,6 @@ const CommentModal = ({
           ) : (
             <p></p>
           )}
-
         </div>
         <div>
           <textarea

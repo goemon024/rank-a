@@ -55,14 +55,17 @@ export default function SorterFilter() {
       </select>
       <h3>フィルター</h3>
       <p>ステータス</p>
-      <select className={styles.selectFilter}
+      <select
+        className={styles.selectFilter}
         onChange={handleFilterChange}
         value={filter}
       >
         <option value="">-- 選択してください --</option>
         <option value="oneWeek">１週間以内の質問</option>
         <option value="havingAnswer">回答ありの質問</option>
-        {isAuthenticated && <option value="notHavingAnswer">回答無しの質問</option>}
+        {isAuthenticated && (
+          <option value="notHavingAnswer">回答無しの質問</option>
+        )}
       </select>
       <p>タグ</p>
       <TagSelector onChange={handleTagChange} />

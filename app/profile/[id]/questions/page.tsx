@@ -64,10 +64,7 @@ export default function UserCommentsPage() {
       </div>
       <div className={styles.questionArea}>
         <div className={styles.userIconButtonContainer}>
-          <UserIconButton
-            userId={userId}
-            imagePath={userImagePath}
-          />
+          <UserIconButton userId={userId} imagePath={userImagePath} />
           <h3>{username} さんの質問履歴（直近100件までの表示）</h3>
         </div>
         {isLoading ? (

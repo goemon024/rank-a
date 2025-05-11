@@ -61,10 +61,7 @@ export default function UserCommentsPage() {
       </div>
       <div className={styles.questionArea}>
         <div className={styles.userIconButtonContainer}>
-          <UserIconButton
-            userId={userId}
-            imagePath={userImagePath}
-          />
+          <UserIconButton userId={userId} imagePath={userImagePath} />
           <h2>{username} さんのコメント履歴</h2>
         </div>
 

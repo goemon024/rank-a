@@ -24,7 +24,10 @@ export default function LoginPage() {
     e.preventDefault();
     const usernameOrEmail = username || email;
 
-    const validationResult = signinSchema.safeParse({ usernameOrEmail, password });
+    const validationResult = signinSchema.safeParse({
+      usernameOrEmail,
+      password,
+    });
     if (!validationResult.success) {
       setError(validationResult.error.errors[0].message);
       return;
@@ -50,7 +53,6 @@ export default function LoginPage() {
       setUser(decoded);
       router.push("/");
     } catch (error: unknown) {
-
       console.error("ログインエラー:", error);
       setError("エラーが発生しました");
     }

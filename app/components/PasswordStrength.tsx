@@ -33,5 +33,4 @@ export const PasswordStrength = ({ password }: Props) => {
 
 export const isPasswordStrong = (password: string) => {
   return GetStrength(password) != "弱";
-
 };

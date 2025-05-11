@@ -17,7 +17,6 @@ import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
 import { QuestionWithUserAndTags, JwtPayload } from "@/types";
 import { questionSchema } from "@/schemas/qustionSchema";
 
-
 export default function QuestionPost() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();

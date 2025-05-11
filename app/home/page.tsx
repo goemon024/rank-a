@@ -18,7 +18,6 @@ export default async function Page({ searchParams }: Props) {
   const tags = typeof params.tags === "string" ? params.tags : "";
   const filter = typeof params.filter === "string" ? params.filter : "";
 
-
   const queryParams = new URLSearchParams({
     page,
     limit,

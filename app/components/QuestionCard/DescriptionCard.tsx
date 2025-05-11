@@ -10,7 +10,6 @@ export const DescriptionCard = ({
 }: {
   question: QuestionWithUserAndTags;
 }) => {
-
   return (
     <div className={styles.descriptionCard}>
       <div

@@ -19,12 +19,13 @@ export const QuestionCard = ({
   question: QuestionWithUserAndTags;
 }) => {
   return (
-
     <div className={styles.questionCard}>
       <Link href={`/question-detail/${question.id}`}>
         <h2
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(marked.parseInline(question.title) as string),
+            __html: DOMPurify.sanitize(
+              marked.parseInline(question.title) as string,
+            ),
           }}
         />
 
@@ -55,6 +56,5 @@ export const QuestionCard = ({
         </div>
       </div>
     </div>
-
   );
 };

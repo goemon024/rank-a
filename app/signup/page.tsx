@@ -14,8 +14,6 @@ import {
 import { EmailWarning, isValidEmail } from "../components/EmailWarning";
 import { useAuth } from "@/contexts/AuthContext";
 import { signupSchema } from "@/schemas/signupSchema";
-import { signinSchema } from "@/schemas/signinSchema";
-// import { signIn } from 'next-auth/react'
 
 export default function SignUpPage() {
   const [username, setUsername] = useState("");
@@ -54,7 +52,12 @@ export default function SignUpPage() {
       return;
     }
 
-    const validationResult = signupSchema.safeParse({ username, email, password, confirmPassword });
+    const validationResult = signupSchema.safeParse({
+      username,
+      email,
+      password,
+      confirmPassword,
+    });
     if (!validationResult.success) {
       setMessage(validationResult.error.errors[0].message);
       return;
@@ -87,7 +90,6 @@ export default function SignUpPage() {
         localStorage.setItem("token", loadData.token);
         setUser(jwtDecode(loadData.token));
         router.push("/"); // ログイン後のリダイレクト先
-
       } else {
         setMessage("ログインに失敗しました");
       }

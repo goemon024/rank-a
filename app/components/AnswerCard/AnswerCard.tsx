@@ -38,7 +38,6 @@ export const AnswerCard = ({
 }) => {
   return (
     <div className={styles.answerCard}>
-
       <div className={styles.autherInfo}>
         <div className={styles.autherInfoContainer}>
           <UserIconButton
@@ -57,7 +56,6 @@ export const AnswerCard = ({
           bestInfo={bestInfo}
           onBest={onBest}
         />
-
       </div>
       <div className={styles.answerContent}>
         <div

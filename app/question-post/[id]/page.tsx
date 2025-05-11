@@ -21,7 +21,7 @@ import { QuestionWithUserAndTags } from "@/types";
 import { useParams } from "next/navigation";
 import { questionSchema } from "@/schemas/qustionSchema";
 
-export default function QuestionPut({ }) {
+export default function QuestionPut({}) {
   const params = useParams();
   const questionId = params.id as string;
 
@@ -127,13 +127,11 @@ export default function QuestionPut({ }) {
       } else {
         router.push("/");
       }
-
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("Error:", error);
       setError("エラーが発生しました");
     }
-
   };
 
   const handleDelete = async () => {
@@ -150,7 +148,6 @@ export default function QuestionPut({ }) {
         const data = await response.json();
         setError(data.error || "削除に失敗しました");
       }
-
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error("Error:", error);
