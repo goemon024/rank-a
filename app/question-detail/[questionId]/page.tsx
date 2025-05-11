@@ -18,7 +18,7 @@ import AnswerModal from "@/app/components/Modal/AnswerModal";
 import { AnswerCard } from "@/app/components/AnswerCard/AnswerCard";
 import CommentModal from "@/app/components/Modal/CommentModal";
 import { CommentCard } from "@/app/components/CommentCard/CommentCard";
-
+// import { AuthProvider } from "@/contexts/AuthContext";
 export default function QuestionDetail() {
   const params = useParams();
   const { questionId } = params as { questionId: string };
@@ -90,6 +90,7 @@ export default function QuestionDetail() {
   if (!question) return <div>Question not found</div>;
 
   return (
+    // <AuthProvider>
     <div>
       <Header links={LINKS_HOME} />
       <div className={styles.container}>
@@ -153,5 +154,6 @@ export default function QuestionDetail() {
         />
       )}
     </div>
+    // </AuthProvider>
   );
 }
