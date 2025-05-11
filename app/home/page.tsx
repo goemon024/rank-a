@@ -16,11 +16,8 @@ export default async function Page({ searchParams }: Props) {
   const keyword = typeof params.keyword === "string" ? params.keyword : "";
   const sort = typeof params.sort === "string" ? params.sort : "newest";
   const tags = typeof params.tags === "string" ? params.tags : "";
+  const filter = typeof params.filter === "string" ? params.filter : "";
 
-  // const orderBy =
-  // sort === "popular"
-  //   ? { upvotes: "desc" } // 人気順（仮に投票数で）
-  //   : { createdAt: "desc" }; // 新着順
 
   const queryParams = new URLSearchParams({
     page,
@@ -28,6 +25,7 @@ export default async function Page({ searchParams }: Props) {
     keyword,
     sort,
     tags,
+    filter,
   }).toString();
 
   const res = await fetch(`${BASE_URL}/api/questions?${queryParams}`, {

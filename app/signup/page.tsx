@@ -13,6 +13,8 @@ import {
 } from "../components/PasswordStrength";
 import { EmailWarning, isValidEmail } from "../components/EmailWarning";
 import { useAuth } from "@/contexts/AuthContext";
+import { signupSchema } from "@/schemas/signupSchema";
+import { signinSchema } from "@/schemas/signinSchema";
 // import { signIn } from 'next-auth/react'
 
 export default function SignUpPage() {
@@ -47,13 +49,14 @@ export default function SignUpPage() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setMessage("パスワードが一致しません");
+    if (!recaptchaToken) {
+      setMessage("reCAPTCHAを完了してください");
       return;
     }
 
-    if (!recaptchaToken) {
-      setMessage("reCAPTCHAを完了してください");
+    const validationResult = signupSchema.safeParse({ username, email, password, confirmPassword });
+    if (!validationResult.success) {
+      setMessage(validationResult.error.errors[0].message);
       return;
     }
 
@@ -63,7 +66,7 @@ export default function SignUpPage() {
         "Content-Type": "application/json",
         "x-recaptcha-token": recaptchaToken,
       },
-      body: JSON.stringify({ username, email, password }),
+      body: JSON.stringify({ username, email, password, confirmPassword }),
     });
 
     const data = await res.json();

@@ -20,6 +20,22 @@
 .autherInfo {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.autherInfoContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  gap: 20px;
+}
+
+.bestAnswerButton {
+  display: flex;
+  flex-direction: row;
   justify-content: left;
   align-items: center;
   gap: 20px;

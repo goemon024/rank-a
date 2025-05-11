@@ -66,3 +66,15 @@
   background-color: #909090;
   cursor: not-allowed;
 }
+
+.unselectedBestAnswerButton {
+  cursor: pointer;
+  color: #3366ee;
+  text-decoration: underline;
+}
+
+.selectedBestAnswerButton {
+  background-color: #e03366;
+  color: white;
+  cursor: pointer;
+}

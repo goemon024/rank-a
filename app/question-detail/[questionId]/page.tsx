@@ -38,6 +38,8 @@ export default function QuestionDetail() {
 
   // コメントモーダルで選択された回答のIDを保持する
   const [selectedAnswerId, setSelectedAnswerId] = useState<number | null>(null);
+  // ベスト回答のIDを保持する
+  const [bestAnswerId, setBestAnswerId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -45,6 +47,7 @@ export default function QuestionDetail() {
         const res = await fetch(`/api/questions/${questionId}`);
         const question = (await res.json()) as QuestionWithUserAndTags;
         setQuestion(question);
+        setBestAnswerId(question.bestAnswerId ?? null);
 
         const answersRes = await fetch(`/api/questions/${questionId}/answers`);
         const { answers: answerList, count } = (await answersRes.json()) as {
@@ -77,6 +80,10 @@ export default function QuestionDetail() {
     };
     fetchQuestion();
   }, [questionId]);
+
+  useEffect(() => {
+    console.log("bestAnswerId", bestAnswerId);
+  }, [bestAnswerId]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -116,6 +123,12 @@ export default function QuestionDetail() {
                   key={answer.id}
                   answer={answer}
                   votes={votes[answer.id]}
+                  onBest={setBestAnswerId}
+                  isBest={bestAnswerId === answer.id}
+                  bestInfo={{
+                    questionUserId: question.userId,
+                    bestAnswerId: question.bestAnswerId ?? 0,
+                  }}
                   commentCount={answerComments.length}
                   setCommentButtonClick={() => {
                     setSelectedAnswerId(answer.id);

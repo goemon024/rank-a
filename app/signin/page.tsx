@@ -8,6 +8,7 @@ import { GetStrength } from "../components/PasswordStrength";
 import { useAuth } from "@/contexts/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import { UserPayload } from "@/types/auth";
+import { signinSchema } from "@/schemas/signinSchema";
 
 export default function LoginPage() {
   // const [identifier, setIdentifier] = useState('')
@@ -23,8 +24,9 @@ export default function LoginPage() {
     e.preventDefault();
     const usernameOrEmail = username || email;
 
-    if (!usernameOrEmail || !password) {
-      setError("ユーザー名またはパスワードを入力してください");
+    const validationResult = signinSchema.safeParse({ usernameOrEmail, password });
+    if (!validationResult.success) {
+      setError(validationResult.error.errors[0].message);
       return;
     }
 
@@ -48,7 +50,7 @@ export default function LoginPage() {
       setUser(decoded);
       router.push("/");
     } catch (error: unknown) {
-      // eslint-disable-next-line no-console
+
       console.error("ログインエラー:", error);
       setError("エラーが発生しました");
     }

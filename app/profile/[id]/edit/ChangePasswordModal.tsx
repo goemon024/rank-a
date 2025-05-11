@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import {
   getPasswordScore,
   changePasswordSchema,
-} from "@/schemas/passswordSchema";
+} from "@/schemas/passwordSchema";
 
 type Props = {
   onClose: () => void;

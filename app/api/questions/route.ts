@@ -13,10 +13,14 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "10", 10);
     const keyword = searchParams.get("keyword") || "";
     const tagParam = searchParams.get("tags") || "";
-    const sort = searchParams.get("sort") || "newest";
+    const sort = searchParams.get("sort") || "newer";
+    const filter = searchParams.get("filter") || "";
     const skip = (page - 1) * limit;
     const userId = parseInt(searchParams.get("userId") || "0", 10);
     const isDraft = searchParams.get("isDraft") || "false";
+
+    console.log("searchParams", searchParams.toString());
+    console.log(searchParams.get("filter"));
 
     const tagIds = tagParam
       ? tagParam
@@ -26,9 +30,15 @@ export async function GET(req: NextRequest) {
       : [];
 
     const orderBy =
-      sort === "oldest"
-        ? { createdAt: "asc" as const } // 古い順
-        : { createdAt: "desc" as const }; // 新着順
+      sort === "older"
+        ? { createdAt: "asc" as const }
+        : sort === "popular"
+          ? { score: "desc" as const }
+          : sort === "upvote"
+            ? { upvoteCount: "desc" as const }
+            : sort === "answerCount"
+              ? { answerCount: "desc" as const }
+              : { createdAt: "desc" as const };
 
     if (page < 1 || limit < 1 || limit > 100) {
       return NextResponse.json(
@@ -79,6 +89,26 @@ export async function GET(req: NextRequest) {
             },
           },
         ],
+      });
+    }
+
+    if (filter === "oneWeek") {
+      conditions.push({
+        createdAt: {
+          gte: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+        },
+      });
+    } else if (filter === "havingAnswer") {
+      conditions.push({
+        answerCount: {
+          gt: 0,
+        },
+      });
+    } else if (filter === "notHavingAnswer") {
+      conditions.push({
+        answerCount: {
+          equals: 0,
+        },
       });
     }
 

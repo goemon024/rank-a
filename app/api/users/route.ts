@@ -5,16 +5,17 @@ import bcrypt from "bcrypt";
 import { verifyCaptcha } from "@/utils/verifyCaptcha";
 import { sanitizeInput } from "@/utils/sanitize";
 import { NextResponse, NextRequest } from "next/server";
+import { signupSchema } from "@/schemas/signupSchema";
 
 export async function POST(req: NextRequest) {
   try {
-    const { username, email, password } = await req.json();
+    const { username, email, password, confirmPassword } = await req.json();
     const sanitizedUsername = sanitizeInput(username);
     const sanitizedEmail = sanitizeInput(email);
     const recaptchaToken = req.headers.get("x-recaptcha-token");
 
     //zodスキーマを使う
-    if (!sanitizedUsername || !sanitizedEmail || !password) {
+    if (!sanitizedUsername || !sanitizedEmail || !password || !confirmPassword) {
       return NextResponse.json(
         { error: "全ての項目を入力してください" },
         { status: 400 },
@@ -32,6 +33,14 @@ export async function POST(req: NextRequest) {
     if (!isHuman) {
       return NextResponse.json(
         { error: "ロボット判定されました（サイトを更新してください）" },
+        { status: 400 },
+      );
+    }
+
+    const validationResult = signupSchema.safeParse({ username, email, password, confirmPassword });
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { error: validationResult.error.errors[0].message },
         { status: 400 },
       );
     }

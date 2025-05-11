@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import { verifyToken } from "@/utils/auth";
-import { changePasswordSchema } from "@/schemas/passswordSchema";
+import { changePasswordSchema } from "@/schemas/passwordSchema";
 
 export async function PUT(req: NextRequest) {
   try {

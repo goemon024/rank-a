@@ -4,6 +4,8 @@ import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sanitizeInput } from "@/utils/sanitize";
+import { signinSchema } from "@/schemas/signinSchema";
+
 
 // ログイン試行回数を追跡するための簡易的なメモリストア
 const loginAttempts = new Map<string, { count: number; lastAttempt: number }>();
@@ -41,10 +43,11 @@ export async function POST(req: Request) {
 
     const sanitizedUsernameOrEmail = sanitizeInput(usernameOrEmail);
 
-    if (!usernameOrEmail || !password) {
+    const validationResult = signinSchema.safeParse({ usernameOrEmail, password });
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: "ログインに必要な情報が不足しています" },
-        { status: 401 },
+        { error: validationResult.error.errors[0].message },
+        { status: 400 },
       );
     }
 

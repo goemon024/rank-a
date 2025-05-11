@@ -4,12 +4,14 @@ export async function POST() {
     // 1. isDraftがfalseのquestionIDを取得
     const questionsAll = await prisma.question.findMany({
         where: { isDraft: false },
-        select: { id: true },
+        select: {
+            id: true,
+        },
     });
     const questionIds = questionsAll.map((q) => q.id);
 
     // 2．questionに紐づくanswer件数
-    const answerCounts = await Promise.all(
+    const answerNewCounts = await Promise.all(
         questionIds.map((q) =>
             prisma.answer.count({
                 where: { questionId: q },
@@ -17,12 +19,12 @@ export async function POST() {
         ),
     );
 
-    // 3. 各questionのanswerCountをupdate
+    // 3. 各questionのanswerNewCountをupdate
     await Promise.all(
         questionIds.map((qId, idx) =>
             prisma.question.update({
                 where: { id: qId },
-                data: { answerCount: answerCounts[idx] },
+                data: { answerCount: answerNewCounts[idx] },
             })
         )
     );
@@ -50,6 +52,20 @@ export async function POST() {
         await prisma.question.update({
             where: { id: qId },
             data: { upvoteCount: totalUpvotes },
+        });
+
+        // 5. 各questionのscoreをupdate（upvoteCount + answerCount * 2）
+        // answerCountはすでに更新済みなのでDBから取得
+        const question = await prisma.question.findUnique({
+            where: { id: qId },
+            select: { upvoteCount: true, answerCount: true },
+        });
+        const score = (question?.upvoteCount ?? 0) + (question?.answerCount ?? 0) * 2;
+        await prisma.question.update({
+            where: { id: qId },
+            data: {
+                score: score,
+            },
         });
     }
 
