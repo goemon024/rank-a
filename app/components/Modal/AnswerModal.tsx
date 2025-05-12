@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./modal.module.css";
 import { answerSchema } from "@/schemas/answerSchema";
 import { AnswerWithUser } from "@/types";
 import { useRouter } from "next/navigation";
+
+import { MarkdownToolbar } from "../Button/MarkdownToolbar";
 
 // POSTとPUTに対応させている。
 type AnswerModalProps = {
@@ -22,8 +24,9 @@ const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
 
   const [content, setContent] = useState(answer?.content || "");
   const [errorAnswer, setErrorAnswer] = useState<string | null>(null);
-
   const token = localStorage.getItem("token");
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async () => {
     // Zodバリデーションを追加
@@ -89,11 +92,19 @@ const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
           )}
         </div>
         <div>
+          <MarkdownToolbar
+            content={content}
+            setContent={setContent}
+            textareaRef={textareaRef}
+          />
+        </div>
+        <div>
           <textarea
             className={styles.textarea}
             placeholder="ここに回答を入力..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            ref={textareaRef}
           />
         </div>
         <div>

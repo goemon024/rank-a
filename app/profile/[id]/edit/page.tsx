@@ -161,7 +161,6 @@ export default function ProfilePage() {
     >
       <div className={styles.ProfileImageContainer}>
         <label>
-          <p>プロフィール画像</p>
           <img
             className={styles.ProfileImageEdit}
             src={previewImage || user?.imagePath || "/profile_default.jpg"}
@@ -170,12 +169,16 @@ export default function ProfilePage() {
             sizes="30px"
           />
           <input
+            id="file-upload"
             type="file"
             name="imagePath"
             accept="image/*"
             onChange={handleImageChange}
             hidden
           />
+        </label>
+        <label htmlFor="file-upload" className={styles.fileUploadLabel}>
+          ファイル選択
         </label>
       </div>
 

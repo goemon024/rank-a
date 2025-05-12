@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./modal.module.css";
 import { useRouter } from "next/navigation";
 import { commentSchema } from "@/schemas/commentSchema";
+import { MarkdownToolbar } from "../Button/MarkdownToolbar";
 
 const CommentModal = ({
   setOpen,
@@ -18,6 +19,8 @@ const CommentModal = ({
   const router = useRouter();
   const token = localStorage.getItem("token");
   const [errorComment, setErrorComment] = useState<string | null>(null);
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async () => {
     try {
@@ -65,11 +68,17 @@ const CommentModal = ({
           )}
         </div>
         <div>
+          <MarkdownToolbar
+            content={content}
+            setContent={setContent}
+            textareaRef={textareaRef}
+          />
           <textarea
             className={styles.textarea}
             placeholder="ここにコメントを入力..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            ref={textareaRef}
           />
         </div>
         <div>

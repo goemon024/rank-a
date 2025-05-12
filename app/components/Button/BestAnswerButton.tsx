@@ -20,7 +20,7 @@ export const BestAnswerButton = ({
   isBest,
   onBest,
 }: BestAnswerButtonProps) => {
-  const { user: authUser } = useAuth();
+  const { isAuthenticated, user: authUser } = useAuth();
   const token = localStorage.getItem("token");
 
   const handleBestAnswer = async () => {
@@ -87,7 +87,9 @@ export const BestAnswerButton = ({
           {isBest ? "★★Best Answer★★" : "Best Answerに選択する"}
         </p>
       ) : (
-        <p></p>
+        <p className={styles.selectedBestAnswerButton}>
+          {isBest ? "★★Best Answer★★" : ""}
+        </p>
       )}
     </div>
   );

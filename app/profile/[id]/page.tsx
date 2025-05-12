@@ -62,8 +62,19 @@ export default function ProfilePage() {
         )}
       </div>
       <div className={styles.ProfileSection}>
-        <h3>{user?.username} さんのプロフィール</h3>
-        {isAuthenticated ? <p>Email: {user?.email}</p> : <p>Email: ******</p>}
+        <div className={styles.ProfileAndEmailAndBotton}>
+          <div className={styles.ProfileAndEmail}>
+            <h3>{user?.username} さんのプロフィール</h3>
+            {isAuthenticated ? <p>Email: {user?.email}</p> : <p>Email: ******</p>}
+          </div>
+          {String(authUser?.userId) === userId ? (
+            <button className={styles.editButton} onClick={() => {
+              router.push(`/profile/${userId}/edit`);
+            }}>編集</button>
+          ) : (
+            <button className={styles.disabledEditButton}>編集</button>
+          )}
+        </div>
         <p className={styles.Introduce}>infomation: {user?.introduce}</p>
         {user?.createdAt && (
           <p>登録日: {new Date(user.createdAt).toLocaleDateString()}</p>
@@ -79,11 +90,14 @@ export default function ProfilePage() {
         <div className={styles.LoadingContainer}>
           <p className={styles.Blink}>Loading...</p>
         </div>
-      ) : String(authUser?.userId) === userId ? (
-        <Link href={`/profile/${userId}/edit`}>{ProfileContent}</Link>
-      ) : (
-        ProfileContent
-      )}
+      ) : (ProfileContent)
+
+        // : String(authUser?.userId) === userId ? (
+        //   <Link href={`/profile/${userId}/edit`}>{ProfileContent}</Link>
+        // ) : (
+        // //   ProfileContent
+        // )
+      }
     </div>
   );
 }

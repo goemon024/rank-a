@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Header } from "@/app/components/Header/Header";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,6 @@ import CreateTitle from "@/app/components/Forms/CreateTitle";
 import CreateDescription from "@/app/components/Forms/CreateDescription";
 import TagSelector from "@/app/components/Forms/TagSelector";
 import { LINKS_HOME } from "@/constants";
-import { useRef } from "react";
 
 import { parseJwt } from "@/lib/parseJwt";
 import { QuestionCard } from "@/app/components/QuestionCard/QuestionCard";

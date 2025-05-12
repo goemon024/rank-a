@@ -4,6 +4,12 @@
   justify-content: flex-start;
 }
 
+.container2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .label,
 .labelRed {
   color: #4a5568;
