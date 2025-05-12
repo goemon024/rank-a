@@ -44,9 +44,7 @@ const CreateDescription: React.FC<CreateDescriptionProps> = ({
           textareaRef={textareaRef}
         />
       </div>
-      <div>
-
-      </div>
+      <div></div>
       <textarea
         className={styles.DescriptionInput}
         id="DescriptionInput"

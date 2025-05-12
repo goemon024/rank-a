@@ -2,8 +2,9 @@ name: Update Question Scores
 
 on:
   schedule:
-    - cron: '35 6 * * *'   # 毎日15時半に実行
-    - cron: '35 18 * * *'  # 毎日3時半に実行
+    - cron: "35 6 * * *" # 毎日6時半に実行
+    - cron: "35 18 * * *" # 毎日18時半に実行
+    - cron: "50 5 * * *" # 毎日0時半に実行
 
 jobs:
   update-scores:

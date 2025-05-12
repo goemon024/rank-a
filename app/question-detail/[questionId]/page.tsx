@@ -18,6 +18,9 @@ import AnswerModal from "@/app/components/Modal/AnswerModal";
 import { AnswerCard } from "@/app/components/AnswerCard/AnswerCard";
 import CommentModal from "@/app/components/Modal/CommentModal";
 import { CommentCard } from "@/app/components/CommentCard/CommentCard";
+import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
+import { useRouter } from "next/navigation";
+
 // import { AuthProvider } from "@/contexts/AuthContext";
 export default function QuestionDetail() {
   const params = useParams();
@@ -30,8 +33,9 @@ export default function QuestionDetail() {
   const [comments, setComments] = useState<CommentWithUser[]>([]);
   const [votes, setVotes] = useState<VoteMap>({});
   const [count, setCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const [isAnswerModalOpen, setIsAnswerModalOpen] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
@@ -72,10 +76,10 @@ export default function QuestionDetail() {
           comments: CommentWithUser[];
         };
         setComments(commentList);
+        setIsLoading(false);
       } catch (error) {
         setError(error as string);
-      } finally {
-        setLoading(false);
+        router.push("/");
       }
     };
     fetchQuestion();
@@ -85,12 +89,12 @@ export default function QuestionDetail() {
     console.log("bestAnswerId", bestAnswerId);
   }, [bestAnswerId]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!question) return <div>Question not found</div>;
+  if (error) return null;
+  if (!question) return null;
 
-  return (
-    // <AuthProvider>
+  return isLoading ? (
+    <LoadingModal />
+  ) : (
     <div>
       <Header links={LINKS_HOME} />
       <div className={styles.container}>

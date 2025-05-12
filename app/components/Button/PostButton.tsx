@@ -10,7 +10,12 @@ const PostButton = () => {
   return (
     <div className={styles.postButton}>
       <Link href="/question-post">
-        <button className={styles.postButton} disabled={!isAuthenticated}>
+        <button
+          className={
+            isAuthenticated ? styles.postButton : styles.postButtonDisabled
+          }
+          disabled={!isAuthenticated}
+        >
           質問を投稿する
         </button>
       </Link>

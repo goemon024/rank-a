@@ -7,6 +7,7 @@ import { AnswerWithUser } from "@/types";
 import { useRouter } from "next/navigation";
 
 import { MarkdownToolbar } from "../Button/MarkdownToolbar";
+import LoadingModal from "../LoadingModal/LoadingModal";
 
 // POSTとPUTに対応させている。
 type AnswerModalProps = {
@@ -25,8 +26,8 @@ const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
   const [content, setContent] = useState(answer?.content || "");
   const [errorAnswer, setErrorAnswer] = useState<string | null>(null);
   const token = localStorage.getItem("token");
-
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
     // Zodバリデーションを追加
@@ -37,6 +38,7 @@ const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
     }
 
     setErrorAnswer(null);
+    setIsLoading(true);
     try {
       let res;
       if (questionId) {
@@ -76,12 +78,14 @@ const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
       // location.reload()
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
       setErrorAnswer("投稿エラー：もう一度お試しください");
     }
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={() => setOpen(false)}>
+    <div className={styles.modalOverlay}>
+      {isLoading && <LoadingModal />}
       <div className={styles.answerModal} onClick={(e) => e.stopPropagation()}>
         <div>
           <h3>回答を投稿</h3>
@@ -107,9 +111,12 @@ const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
             ref={textareaRef}
           />
         </div>
-        <div>
+        <div className={styles.buttonArea}>
           <button onClick={handleSubmit} className={styles.button}>
             投稿
+          </button>
+          <button onClick={() => setOpen(false)} className={styles.button}>
+            戻る
           </button>
         </div>
       </div>

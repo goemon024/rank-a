@@ -1,5 +1,6 @@
 /* styles.module.css など */
-.postButton {
+.postButton,
+.postButtonDisabled {
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -21,6 +22,11 @@
 
 .postButton:hover {
   background-color: #dd8333;
+}
+
+.postButtonDisabled {
+  background-color: #909090;
+  cursor: not-allowed;
 }
 
 .answerButton,

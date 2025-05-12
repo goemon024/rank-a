@@ -18,7 +18,7 @@ export default function TagSelector({
     setSelectedTags(newValue);
 
     const selectedIndexes = newValue
-      .map((tag: string) => TAGS.indexOf(tag as typeof TAGS[number]))
+      .map((tag: string) => TAGS.indexOf(tag as (typeof TAGS)[number]))
       .filter((index) => index !== -1);
 
     onChange(selectedIndexes);

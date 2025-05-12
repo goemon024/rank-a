@@ -76,7 +76,7 @@ export default function SignUpPage() {
 
     if (data.success) {
       setMessage("登録成功！扉ページへ");
-      setTimeout(() => { }, 2000);
+      setTimeout(() => {}, 2000);
       const usernameOrEmail = email;
 
       const res = await fetch("/api/users/login", {

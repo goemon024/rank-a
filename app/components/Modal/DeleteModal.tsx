@@ -8,6 +8,7 @@ import {
   QuestionWithUserAndTags,
   CommentWithUser,
 } from "@/types";
+import LoadingModal from "../LoadingModal/LoadingModal";
 
 type DeleteModalProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,12 +29,13 @@ const DeleteModal = ({
 
   const [errorDelete, setErrorDelete] = useState<string | null>(null);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const token = localStorage.getItem("token");
 
   const handleSubmit = async () => {
     setErrorDelete(null);
-
+    setIsLoading(true);
     try {
       let res;
       if (answer?.id) {
@@ -65,19 +67,16 @@ const DeleteModal = ({
       if (!res?.ok) {
         throw new Error("削除に失敗しました");
       }
-
-      // 投稿成功したらモーダルを閉じる
       router.push("/");
-      // 必要ならページをリロードしたり、回答リストを更新したりもできる
-      // location.reload()
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
       setErrorDelete("削除に失敗しました");
     }
   };
-
   return (
     <div className={styles.modalOverlay} onClick={() => setOpen(false)}>
+      {isLoading && <LoadingModal />}
       <div className={styles.answerModal} onClick={(e) => e.stopPropagation()}>
         <div>
           <h3>本当に削除しますか？</h3>
@@ -87,15 +86,12 @@ const DeleteModal = ({
             <p></p>
           )}
         </div>
-        <div className={styles.DeleteButtonContainer}>
-          <button onClick={handleSubmit} className={styles.DeleteButton}>
+        <div className={styles.buttonArea}>
+          <button onClick={handleSubmit} className={styles.button}>
             削除
           </button>
-          <button
-            onClick={() => setOpen(false)}
-            className={styles.DeleteButton}
-          >
-            キャンセル
+          <button onClick={() => setOpen(false)} className={styles.button}>
+            戻る
           </button>
         </div>
       </div>
@@ -104,48 +100,3 @@ const DeleteModal = ({
 };
 
 export default DeleteModal;
-
-// // components/DeleteDialog.tsx
-// import {
-//   Dialog,
-//   DialogTitle,
-//   DialogContent,
-//   DialogActions,
-//   Button,
-// } from "@mui/material";
-
-// type Props = {
-//   open: boolean;
-//   onClose: () => void;
-//   onDelete: () => void;
-//   targetLabel: string;
-//   loading?: boolean;
-//   children?: React.ReactNode;
-// };
-
-// export default function DeleteModal({
-//   open,
-//   onClose,
-//   onDelete,
-//   targetLabel,
-//   loading,
-//   children,
-// }: Props) {
-//   return (
-//     <Dialog open={open} onClose={onClose}>
-//       <DialogTitle>{targetLabel}の削除</DialogTitle>
-//       <DialogContent>
-//         本当にこの{targetLabel}を削除しますか？この操作は取り消せません。
-//       </DialogContent>
-//       {children}
-//       <DialogActions>
-//         <Button onClick={onClose} disabled={loading}>
-//           キャンセル
-//         </Button>
-//         <Button onClick={onDelete} color="error" disabled={loading}>
-//           削除する
-//         </Button>
-//       </DialogActions>
-//     </Dialog>
-//   );
-// }

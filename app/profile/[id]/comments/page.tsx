@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 
-// import { parseJwt } from "@/lib/parseJwt";
-// import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Header } from "@/app/components/Header/Header";
 import { getLinksProfile } from "@/constants/index";
@@ -12,30 +10,23 @@ import Link from "next/link";
 import { CommentWithUser } from "@/types";
 import dayjs from "dayjs";
 import { UserIconButton } from "@/app/components/UserIconButton/UserIconButton";
+import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function UserCommentsPage() {
   const params = useParams();
   const userId = parseInt(params.id as string);
   const [comments, setComments] = useState<CommentWithUser[]>([]);
-  // const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [userImagePath, setUserImagePath] = useState<string | null>(null);
-
-  const links = getLinksProfile(params.id as string);
+  const { user: authUser } = useAuth();
+  const links = getLinksProfile(
+    String(userId),
+    String(authUser?.userId) === String(userId),
+  );
 
   useEffect(() => {
-    // const token = localStorage.getItem("token");
-    // const payload = token ? parseJwt(token) : null;
-    // const userIdFromToken = payload?.userId;
-    // const username = payload?.username;
-    // setUsername(payload?.username);
-
-    // if (userIdFromToken !== userId) {
-    //   router.push("/");
-    //   return;
-    // }
-
     const fetchComments = async () => {
       setIsLoading(true);
       const res = await fetch(`/api/comments?userId=${userId}`, {
@@ -54,7 +45,9 @@ export default function UserCommentsPage() {
     fetchComments();
   }, []);
 
-  return (
+  return isLoading ? (
+    <LoadingModal />
+  ) : (
     <div>
       <div>
         <Header links={links} />
@@ -65,9 +58,7 @@ export default function UserCommentsPage() {
           <h2>{username} さんのコメント履歴</h2>
         </div>
 
-        {isLoading ? (
-          <p>読み込み中...</p>
-        ) : comments.length === 0 ? (
+        {comments.length === 0 ? (
           <p>コメントの投稿はありません。</p>
         ) : (
           comments.map((c: CommentWithUser) => (

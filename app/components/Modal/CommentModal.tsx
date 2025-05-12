@@ -5,6 +5,7 @@ import styles from "./modal.module.css";
 import { useRouter } from "next/navigation";
 import { commentSchema } from "@/schemas/commentSchema";
 import { MarkdownToolbar } from "../Button/MarkdownToolbar";
+import LoadingModal from "../LoadingModal/LoadingModal";
 
 const CommentModal = ({
   setOpen,
@@ -19,20 +20,21 @@ const CommentModal = ({
   const router = useRouter();
   const token = localStorage.getItem("token");
   const [errorComment, setErrorComment] = useState<string | null>(null);
-
+  const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = async () => {
+    const result = commentSchema.safeParse({
+      content,
+    });
+
+    if (!result.success) {
+      setErrorComment(result.error.errors[0].message);
+      return;
+    }
+
+    setIsLoading(true);
     try {
-      const result = commentSchema.safeParse({
-        content,
-      });
-
-      if (!result.success) {
-        setErrorComment(result.error.errors[0].message);
-        return;
-      }
-
       const res = await fetch("/api/comments", {
         method: "POST",
         headers: {
@@ -51,13 +53,15 @@ const CommentModal = ({
 
       router.push("/");
     } catch (error) {
+      setIsLoading(false);
       setErrorComment("投稿エラー：もう一度お試しください");
       console.error(error);
     }
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={() => setOpen(false)}>
+    <div className={styles.modalOverlay}>
+      {isLoading && <LoadingModal />}
       <div className={styles.commentModal} onClick={(e) => e.stopPropagation()}>
         <div>
           <h2>コメントを投稿</h2>
@@ -81,9 +85,12 @@ const CommentModal = ({
             ref={textareaRef}
           />
         </div>
-        <div>
+        <div className={styles.buttonArea}>
           <button onClick={handleSubmit} className={styles.button}>
             投稿
+          </button>
+          <button onClick={() => setOpen(false)} className={styles.button}>
+            戻る
           </button>
         </div>
       </div>

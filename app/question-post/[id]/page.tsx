@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { Header } from "@/app/components/Header/Header";
-// import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import styles from "../question-post.module.css";
 import CreateTitle from "@/app/components/Forms/CreateTitle";
 import CreateDescription from "@/app/components/Forms/CreateDescription";
 import TagSelector from "@/app/components/Forms/TagSelector";
-import { LINKS_HOME } from "@/constants";
+import { getLinksProfile } from "@/constants";
 import { useRef } from "react";
 
 import DeleteQuestionModal from "@/app/components/Modal/DeleteQuestionModal";
@@ -20,6 +20,7 @@ import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
 import { QuestionWithUserAndTags } from "@/types";
 import { useParams } from "next/navigation";
 import { questionSchema } from "@/schemas/qustionSchema";
+import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 
 export default function QuestionPut({}) {
   const params = useParams();
@@ -32,14 +33,16 @@ export default function QuestionPut({}) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [tags, setTags] = useState<number[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const isDrafrRef = useRef(false);
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
   const [error, setError] = useState<string | null>(null);
+
+  const { user: authUser } = useAuth();
+  const links = getLinksProfile(String(authUser?.userId));
 
   const [payload, setPayload] = useState<{
     userId: number;
@@ -63,10 +66,16 @@ export default function QuestionPut({}) {
         },
       });
       const data = await response.json();
-      setQuestion(data);
-      setTitle(data.title);
-      setDescription(data.description);
-      setTags(data.questionTags.map((t: { tagId: number }) => t.tagId));
+
+      if (String(data.userId) === String(authUser?.userId)) {
+        setQuestion(data);
+        setTitle(data.title);
+        setDescription(data.description);
+        setTags(data.questionTags.map((t: { tagId: number }) => t.tagId));
+        setIsLoading(false);
+      } else {
+        router.push("/home");
+      }
     };
     fetchQuestion();
     console.log(tags);
@@ -124,8 +133,10 @@ export default function QuestionPut({}) {
 
       if (isDraft) {
         router.push("/profile/" + payload?.userId + "/drafts");
+        return;
       } else {
         router.push("/");
+        return;
       }
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -179,9 +190,11 @@ export default function QuestionPut({}) {
     })),
   };
 
-  return (
+  return isLoading ? (
+    <LoadingModal />
+  ) : (
     <div>
-      <Header links={LINKS_HOME} />
+      <Header links={links} />
       <div className={styles.container}>
         <h2 className={styles.title}>質問を投稿</h2>
         <form className={styles.form} onSubmit={handleSubmit}>

@@ -1,9 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
-// import { parseJwt } from "@/lib/parseJwt";
-// import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Header } from "@/app/components/Header/Header";
 import { getLinksProfile } from "@/constants/index";
@@ -12,33 +9,23 @@ import Link from "next/link";
 import { QuestionWithUserAndTags } from "@/types";
 import dayjs from "dayjs";
 import { UserIconButton } from "@/app/components/UserIconButton/UserIconButton";
+import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function UserCommentsPage() {
   const params = useParams();
   const userId = parseInt(params.id as string);
   const [questions, setQuestions] = useState<QuestionWithUserAndTags[]>([]);
-  // const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [userImagePath, setUserImagePath] = useState<string | null>(null);
-
-  const links = getLinksProfile(params.id as string);
+  const [isLoading, setIsLoading] = useState(true);
+  const { user: authUser } = useAuth();
+  const links = getLinksProfile(
+    String(userId),
+    String(authUser?.userId) === String(userId),
+  );
 
   useEffect(() => {
-    // const token = localStorage.getItem("token");
-    // const payload = token ? parseJwt(token) : null;
-    // const userIdFromToken = payload?.userId;
-    // const username = payload?.username;
-    // setUsername(payload?.username);
-
-    // console.log("userIdFromToken", userIdFromToken);
-    // console.log(userIdFromToken, userId);
-
-    // if (userIdFromToken !== userId) {
-    //   router.push("/");
-    //   return;
-    // }
-
     const fetchQuestions = async () => {
       setIsLoading(true);
       const res = await fetch(`/api/questions?userId=${userId}&limit=50`, {
@@ -57,7 +44,9 @@ export default function UserCommentsPage() {
     fetchQuestions();
   }, []);
 
-  return (
+  return isLoading ? (
+    <LoadingModal />
+  ) : (
     <div>
       <div>
         <Header links={links} />
@@ -67,9 +56,7 @@ export default function UserCommentsPage() {
           <UserIconButton userId={userId} imagePath={userImagePath} />
           <h3>{username} さんの質問履歴（直近100件までの表示）</h3>
         </div>
-        {isLoading ? (
-          <p>読み込み中...</p>
-        ) : questions.length === 0 ? (
+        {questions.length === 0 ? (
           <p>質問の投稿はありません。</p>
         ) : (
           questions.map((q: QuestionWithUserAndTags) => (

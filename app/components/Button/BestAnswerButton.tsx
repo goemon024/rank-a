@@ -20,7 +20,7 @@ export const BestAnswerButton = ({
   isBest,
   onBest,
 }: BestAnswerButtonProps) => {
-  const { isAuthenticated, user: authUser } = useAuth();
+  const { user: authUser } = useAuth();
   const token = localStorage.getItem("token");
 
   const handleBestAnswer = async () => {

@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 
-// import { parseJwt } from "@/lib/parseJwt";
-// import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Header } from "@/app/components/Header/Header";
 import { getLinksProfile } from "@/constants/index";
@@ -11,29 +9,24 @@ import styles from "./UserAnswers.module.css";
 import Link from "next/link";
 import { AnswerWithUserAndQuestion } from "@/types";
 import dayjs from "dayjs";
+import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function UserCommentsPage() {
   const params = useParams();
   const userId = parseInt(params.id as string);
   const [answers, setAnswers] = useState<AnswerWithUserAndQuestion[]>([]);
-  // const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const links = getLinksProfile(params.id as string);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { user: authUser } = useAuth();
+  const links = getLinksProfile(
+    String(userId),
+    String(authUser?.userId) === String(userId),
+  );
 
   useEffect(() => {
-    // const token = localStorage.getItem("token");
-    // const payload = token ? parseJwt(token) : null;
-    // const userIdFromToken = payload?.userId;
-    // setUsername(payload?.username);
-
-    // if (userIdFromToken !== userId) {
-    //   router.push("/");
-    //   return;
-    // }
-
     const fetchComments = async () => {
-      setIsLoading(true);
       const res = await fetch(`/api/answers?userId=${userId}`, {
         headers: {
           // Authorization: `Bearer ${token}`,
@@ -49,7 +42,9 @@ export default function UserCommentsPage() {
     fetchComments();
   }, []);
 
-  return (
+  return isLoading ? (
+    <LoadingModal />
+  ) : (
     <div>
       <div>
         <Header links={links} />

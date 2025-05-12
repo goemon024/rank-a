@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Header } from "@/app/components/Header/Header";
@@ -14,10 +13,11 @@ export default function ProfilePage() {
   const params = useParams();
   const userId = params.id as string;
   const [user, setUser] = useState<User | null>(null);
-  const links = getLinksProfile(userId);
   const { isAuthenticated, user: authUser } = useAuth();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+
+  const links = getLinksProfile(userId, String(authUser?.userId) === userId);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -65,12 +65,21 @@ export default function ProfilePage() {
         <div className={styles.ProfileAndEmailAndBotton}>
           <div className={styles.ProfileAndEmail}>
             <h3>{user?.username} さんのプロフィール</h3>
-            {isAuthenticated ? <p>Email: {user?.email}</p> : <p>Email: ******</p>}
+            {isAuthenticated ? (
+              <p>Email: {user?.email}</p>
+            ) : (
+              <p>Email: ******</p>
+            )}
           </div>
           {String(authUser?.userId) === userId ? (
-            <button className={styles.editButton} onClick={() => {
-              router.push(`/profile/${userId}/edit`);
-            }}>編集</button>
+            <button
+              className={styles.editButton}
+              onClick={() => {
+                router.push(`/profile/${userId}/edit`);
+              }}
+            >
+              編集
+            </button>
           ) : (
             <button className={styles.disabledEditButton}>編集</button>
           )}
@@ -90,14 +99,9 @@ export default function ProfilePage() {
         <div className={styles.LoadingContainer}>
           <p className={styles.Blink}>Loading...</p>
         </div>
-      ) : (ProfileContent)
-
-        // : String(authUser?.userId) === userId ? (
-        //   <Link href={`/profile/${userId}/edit`}>{ProfileContent}</Link>
-        // ) : (
-        // //   ProfileContent
-        // )
-      }
+      ) : (
+        ProfileContent
+      )}
     </div>
   );
 }

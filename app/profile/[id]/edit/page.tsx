@@ -19,13 +19,14 @@ export default function ProfilePage() {
   const userId = params.id as string;
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
-  const links = getLinksProfile(userId);
   const { isAuthenticated, user: authUser, setUser: setAuthUser } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  const links = getLinksProfile(userId, String(authUser?.userId) === userId);
 
   // const [loading, setLoading] = useState(true)
   // const [error, setError] = useState<string | null>(null)

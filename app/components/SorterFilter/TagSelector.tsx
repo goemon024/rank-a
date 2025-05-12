@@ -20,7 +20,7 @@ export default function TagSelector({ onChange }: TagSelectorProps) {
     setSelectedTags(newValue);
 
     const selectedIndexes = newValue
-      .map((tag: string) => TAGS.indexOf(tag as typeof TAGS[number]))
+      .map((tag: string) => TAGS.indexOf(tag as (typeof TAGS)[number]))
       .filter((index) => index !== -1);
 
     onChange(selectedIndexes);
@@ -63,7 +63,9 @@ export default function TagSelector({ onChange }: TagSelectorProps) {
               setSelectedTags(newTags);
               onChange(
                 newTags
-                  .map((tag: string) => TAGS.indexOf(tag as typeof TAGS[number]))
+                  .map((tag: string) =>
+                    TAGS.indexOf(tag as (typeof TAGS)[number]),
+                  )
                   .filter((index: number) => index !== -1),
               );
             }}

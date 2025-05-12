@@ -8,13 +8,15 @@ import styles from "./question-post.module.css";
 import CreateTitle from "@/app/components/Forms/CreateTitle";
 import CreateDescription from "@/app/components/Forms/CreateDescription";
 import TagSelector from "@/app/components/Forms/TagSelector";
-import { LINKS_HOME } from "@/constants";
+import { getLinksProfile } from "@/constants";
 
 import { parseJwt } from "@/lib/parseJwt";
 import { QuestionCard } from "@/app/components/QuestionCard/QuestionCard";
 import { DescriptionCard } from "@/app/components/QuestionCard/DescriptionCard";
 import { QuestionWithUserAndTags, JwtPayload } from "@/types";
 import { questionSchema } from "@/schemas/qustionSchema";
+
+import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 
 export default function QuestionPost() {
   const { isAuthenticated } = useAuth();
@@ -29,6 +31,9 @@ export default function QuestionPost() {
   const isDrafrRef = useRef(false);
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  const { user: authUser } = useAuth();
+  const links = getLinksProfile(String(authUser?.userId));
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -113,12 +118,16 @@ export default function QuestionPost() {
     questionTags: tags.map((tagId) => ({ questionId: -1, tagId })),
   };
 
-  return (
+  // if (typeof isAuthenticated === "undefined") {
+  //   return <LoadingModal />;
+  // }
+
+  return isAuthenticated ? (
     <div>
-      <Header links={LINKS_HOME} />
+      <Header links={links} />
       <div className={styles.container}>
-        <h2 className={styles.title}>質問を投稿</h2>
         <form className={styles.form} onSubmit={handleSubmit}>
+          <h2 className={styles.title}>質問を投稿</h2>
           {error && <p className={styles.alert}>{error}</p>}
           <CreateTitle title={title} setTitle={setTitle} />
           <CreateDescription
@@ -212,5 +221,7 @@ export default function QuestionPost() {
         </div>
       )}
     </div>
+  ) : (
+    <LoadingModal />
   );
 }

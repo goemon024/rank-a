@@ -11,6 +11,8 @@ import { getLinksProfile } from "@/constants/index";
 import styles from "./drafts.module.css";
 import Link from "next/link";
 import dayjs from "dayjs";
+import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function DraftPage() {
   const params = useParams();
@@ -18,9 +20,13 @@ export default function DraftPage() {
   const [questions, setQuestions] = useState<QuestionWithUserAndTags[]>([]);
   const router = useRouter();
   const [username, setUsername] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const links = getLinksProfile(params.id as string);
+  const { user: authUser } = useAuth();
+  const links = getLinksProfile(
+    String(userId),
+    String(authUser?.userId) === String(userId),
+  );
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,13 +38,7 @@ export default function DraftPage() {
     console.log("userIdFromToken", userIdFromToken);
     console.log(userIdFromToken, userId);
 
-    if (userIdFromToken !== userId) {
-      router.push("/");
-      return;
-    }
-
     const fetchQuestions = async () => {
-      setIsLoading(true);
       const res = await fetch(`/api/questions?isDraft=true&userId=${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,10 +49,18 @@ export default function DraftPage() {
       setQuestions(data.questions);
       setIsLoading(false);
     };
-    fetchQuestions();
+
+    if (userIdFromToken !== userId) {
+      router.push("/");
+      return;
+    } else {
+      fetchQuestions();
+    }
   }, []);
 
-  return (
+  return isLoading ? (
+    <LoadingModal />
+  ) : (
     <div>
       <div>
         <Header links={links} />

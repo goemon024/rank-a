@@ -18,7 +18,7 @@
   border-radius: 8px;
   padding: 24px;
   width: 90%;
-  max-width: 600px;
+  max-width: 750px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
@@ -29,13 +29,27 @@
   margin-top: 12px;
   padding: 8px;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #666666;
   border-radius: 4px;
 }
 
 .buttonArea {
   text-align: right;
-  margin-top: 16px;
+  margin-top: 12px;
+  display: flex;
+  justify-content: right;
+  gap: 12px;
+}
+
+.button {
+  background-color: #1976d2;
+  color: white;
+  padding: 4px 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 80px;
 }
 
 .postButton {

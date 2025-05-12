@@ -11,8 +11,8 @@ import dayjs from "dayjs";
 // import DOMPurify from "dompurify";
 // import { marked } from "marked";
 
-import DOMPurify from 'isomorphic-dompurify'
-import { marked } from 'marked'
+import DOMPurify from "isomorphic-dompurify";
+import { marked } from "marked";
 
 import { TAGS } from "@/constants";
 
