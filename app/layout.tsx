@@ -27,7 +27,11 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <RouteLoadingHandler />
+
+        <Suspense fallback={null}>
+          <RouteLoadingHandler />
+        </Suspense>
+
         <Suspense fallback={<div>Loading...</div>}>
           <AuthProvider>{children}</AuthProvider>
         </Suspense>
