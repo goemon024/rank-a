@@ -131,6 +131,8 @@ export default function ProfilePage() {
         role: data.role,
         exp: exp ?? 0,
       });
+
+      router.push(`/profile/${userId}`);
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error("プロフィールの更新に失敗しました:", err);

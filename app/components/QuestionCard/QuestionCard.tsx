@@ -8,8 +8,6 @@ import Link from "next/link";
 import { QuestionWithUserAndTags } from "@/types";
 
 import dayjs from "dayjs";
-// import DOMPurify from "dompurify";
-// import { marked } from "marked";
 
 import DOMPurify from "isomorphic-dompurify";
 import { marked } from "marked";
@@ -18,12 +16,28 @@ import { TAGS } from "@/constants";
 
 export const QuestionCard = ({
   question,
+  linkDisabled = false,
+  query,
 }: {
   question: QuestionWithUserAndTags;
+  linkDisabled?: boolean;
+  query?: URLSearchParams;
 }) => {
-  return (
-    <div className={styles.questionCard}>
-      <Link href={`/question-detail/${question.id}`}>
+  const queryParams = query ? Object.fromEntries(query.entries()) : {};
+
+  const QuestionCardContent = ({
+    question,
+    linkDisabled,
+  }: {
+    question: QuestionWithUserAndTags;
+    linkDisabled: boolean;
+  }) => {
+    return (
+      <div
+        className={
+          linkDisabled ? styles.LinkDisabledQuestionCard : styles.questionCard
+        }
+      >
         <h2
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(
@@ -47,17 +61,31 @@ export const QuestionCard = ({
             />
           ))}
         </Stack>
-      </Link>
-      <div className={styles.autherInfo}>
-        <UserIconButton
-          userId={question.userId}
-          imagePath={question.user.imagePath}
-        />
-        <div className={styles.autherInfoText}>
-          <p>{question.user.username}</p>
-          <p>{dayjs(question.createdAt).format("YYYY年MM月DD日 HH時mm分")}</p>
+
+        <div className={styles.autherInfo}>
+          <UserIconButton
+            userId={question.userId}
+            imagePath={question.user.imagePath}
+          />
+          <div className={styles.autherInfoText}>
+            <p>{question.user.username}</p>
+            <p>{dayjs(question.createdAt).format("YYYY年MM月DD日 HH時mm分")}</p>
+          </div>
         </div>
       </div>
-    </div>
+    );
+  };
+
+  return linkDisabled ? (
+    <QuestionCardContent question={question} linkDisabled={true} />
+  ) : (
+    <Link
+      href={{
+        pathname: `/question-detail/${question.id}`,
+        query: queryParams,
+      }}
+    >
+      <QuestionCardContent question={question} linkDisabled={false} />
+    </Link>
   );
 };

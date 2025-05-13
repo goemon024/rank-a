@@ -34,7 +34,7 @@ export default function TagSelector({
   return (
     <div>
       <label className={styles.label} htmlFor="TagInput">
-        タグを入力：
+        タグを選択（１つ以上）：
       </label>
       <Autocomplete
         multiple
@@ -64,43 +64,3 @@ export default function TagSelector({
     </div>
   );
 }
-
-//   const [selected, setSelected] = useState<number[]>([]);
-
-//   const toggleTag = (index: number) => {
-//     const newSelected = selected.includes(index)
-//       ? selected.filter((i) => i !== index)
-//       : [...selected, index];
-
-//     setSelected(newSelected);
-//     onChange(newSelected);
-//   };
-
-//   return (
-//     <div>
-//       <label className={styles.label}>タグ : </label>
-//       <Stack direction="row" spacing={2} flexWrap="wrap">
-//         {TAGS.map((tag, index) => {
-//           const isSelected = selected.includes(index);
-//           return (
-//             <Chip
-//               key={index}
-//               label={tag}
-//               clickable
-//               onClick={() => toggleTag(index)}
-//               color={isSelected ? "primary" : "default"}
-//               variant={isSelected ? "filled" : "outlined"}
-//               sx={{
-//                 fontSize: "1.0rem",
-//                 padding: "3px 5px",
-//                 margin: "3px",
-//                 bgcolor: isSelected ? "primary.main" : "grey.300", // ← 背景色
-//                 color: isSelected ? "white" : "black", // ← 文字色
-//               }}
-//             />
-//           );
-//         })}
-//       </Stack>
-//     </div>
-//   );
-// }

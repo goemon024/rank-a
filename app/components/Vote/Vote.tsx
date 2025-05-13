@@ -3,9 +3,12 @@ import { useState } from "react";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { IconButton, Stack, Typography } from "@mui/material";
+import { useAuth } from "@/contexts/AuthContext";
+import styles from "./Vote.module.css";
 
 type Props = {
   answerId: number;
+  answerUserId: number;
   initialVote: "Upvote" | "Downvote" | null;
   initialUpvotes: number;
   initialDownvotes: number;
@@ -14,6 +17,7 @@ type Props = {
 
 export default function UpvoteDownvote({
   answerId,
+  answerUserId,
   initialVote,
   initialUpvotes,
   initialDownvotes,
@@ -23,10 +27,22 @@ export default function UpvoteDownvote({
   const [upvotes, setUpvotes] = useState(initialUpvotes);
   const [downvotes, setDownvotes] = useState(initialDownvotes);
   const [isVoteId, setIsVoteId] = useState<number | undefined>(voteId);
+  const [isLoading, setIsLoading] = useState(false);
+  const { user: authUser } = useAuth();
 
   const token = localStorage.getItem("token");
 
   const handleVote = async (type: "Upvote" | "Downvote") => {
+    console.log(authUser?.userId, answerUserId);
+    console.log(String(authUser?.userId) === String(answerUserId));
+
+    if (String(authUser?.userId) === String(answerUserId)) {
+      // 自分の回答には投票できないようにする。
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
     try {
       if (!vote) {
         // まだ投票していない → 新規作成
@@ -66,7 +82,6 @@ export default function UpvoteDownvote({
         });
         if (!res.ok) throw new Error("投票の更新に失敗しました");
       }
-
       // Toggle処理
       if (vote === type) {
         // 同じ投票→キャンセル
@@ -82,28 +97,12 @@ export default function UpvoteDownvote({
           setDownvotes((prev) => prev + 1);
           if (vote === "Upvote") setUpvotes((prev) => prev - 1);
         }
-
         setVote(type);
       }
     } catch (err) {
       console.error("投票エラー:", err);
-
-      // // // ❗ ロールバック処理
-      // if (vote === type) {
-      //     // UIではvote削除してたので戻す
-      //     setVote(type);
-      //     if (type === "Upvote") setUpvotes((prev) => prev + 1);
-      //     else setDownvotes((prev) => prev + 1);
-      // } else {
-      //     setVote(vote); // 前のvoteに戻す
-      //     if (type === "Upvote") {
-      //         setUpvotes((prev) => prev - 1);
-      //         if (vote === "Downvote") setDownvotes((prev) => prev + 1);
-      //     } else {
-      //         setDownvotes((prev) => prev - 1);
-      //         if (vote === "Upvote") setUpvotes((prev) => prev + 1);
-      //     }
-      // }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -112,6 +111,12 @@ export default function UpvoteDownvote({
       <IconButton
         onClick={() => handleVote("Upvote")}
         color={vote === "Upvote" ? "primary" : "default"}
+        disabled={isLoading}
+        className={
+          String(authUser?.userId) === String(answerUserId)
+            ? styles.disabled
+            : ""
+        }
       >
         <ThumbUpIcon />
       </IconButton>
@@ -120,6 +125,12 @@ export default function UpvoteDownvote({
       <IconButton
         onClick={() => handleVote("Downvote")}
         color={vote === "Downvote" ? "error" : "default"}
+        disabled={isLoading}
+        className={
+          String(authUser?.userId) === String(answerUserId)
+            ? styles.disabled
+            : ""
+        }
       >
         <ThumbDownIcon />
       </IconButton>

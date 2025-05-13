@@ -42,3 +42,12 @@ export const getLinksProfile = (
     ];
   }
 };
+
+export const getLinkQuestionDetail = (searchParams: URLSearchParams) => {
+  console.log("searchParams", searchParams);
+  if (!searchParams || searchParams.toString() === "") {
+    return [{ label: "ＴＯＰに戻る", href: `/home` }];
+  } else {
+    return [{ label: "検索結果に戻る", href: `/home`, query: searchParams }];
+  }
+};

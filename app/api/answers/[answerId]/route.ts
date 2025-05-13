@@ -109,9 +109,9 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json(deletedAnswer, { status: 200 });
   } catch (error) {
-    console.error("Error updating answer:", error);
+    console.error("Error deleting answer:", error);
     return NextResponse.json(
-      { error: "回答の更新に失敗しました" },
+      { error: "回答の削除に失敗しました" },
       { status: 500 },
     );
   }

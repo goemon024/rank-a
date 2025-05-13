@@ -135,7 +135,7 @@ export default function QuestionPut({}) {
         router.push("/profile/" + payload?.userId + "/drafts");
         return;
       } else {
-        router.push("/");
+        router.push(`/question-detail/${data.question.id}`);
         return;
       }
     } catch (error) {

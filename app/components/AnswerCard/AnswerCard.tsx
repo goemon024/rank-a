@@ -67,6 +67,7 @@ export const AnswerCard = ({
       <div className={styles.infomationContainer}>
         <Vote
           answerId={answer.id}
+          answerUserId={answer.userId}
           initialVote={votes.userVote}
           initialUpvotes={votes.upvotes}
           initialDownvotes={votes.downvotes}

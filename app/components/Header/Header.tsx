@@ -12,12 +12,14 @@ import { ProfileWindow } from "./ProfileWindow";
 import { NavLinks } from "@/types";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export const Header = ({ links }: { links: NavLinks[] }) => {
   const { isAuthenticated, user: authUser } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,18 +39,20 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
             <img src="/favicon.ico" alt="Blog Logo" className={styles.logo} />
           </Link>
 
-          <form className={styles.searchForm} onSubmit={handleSearch}>
-            <button type="submit" className={styles.searchIconButton}>
-              🔍
-            </button>
-            <input
-              className={styles.searchWrapper}
-              type="text"
-              placeholder="検索"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </form>
+          {pathname === "/home" && (
+            <form className={styles.searchForm} onSubmit={handleSearch}>
+              <button type="submit" className={styles.searchIconButton}>
+                🔍
+              </button>
+              <input
+                className={styles.searchWrapper}
+                type="text"
+                placeholder="検索"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </form>
+          )}
 
           <nav className={styles.nav}>
             {isAuthenticated ? (

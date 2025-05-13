@@ -19,7 +19,10 @@ export const UserIconButton = ({ userId, imagePath }: UserIconButtonProps) => {
   return (
     <button
       className={styles.userIconButton}
-      onClick={() => goToProfile(userId)}
+      onClick={(e) => {
+        e.preventDefault();
+        goToProfile(userId);
+      }}
     >
       <Image
         className={styles.userIcon}

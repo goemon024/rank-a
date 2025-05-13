@@ -11,6 +11,7 @@ export type QuestionWithUserAndTags = Question & {
 export interface NavLinks {
   label: string;
   href: string;
+  query?: URLSearchParams;
 }
 
 export type AnswerWithUser = Answer & {

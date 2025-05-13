@@ -5,7 +5,7 @@ import Script from "next/script";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Suspense } from "react";
 import RouteLoadingHandler from "@/app/components/LoadingModal/RouteLoadingHandler";
-
+import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,12 +27,11 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-
-        <Suspense fallback={null}>
+        <Suspense fallback={<LoadingModal />}>
           <RouteLoadingHandler />
         </Suspense>
 
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<LoadingModal />}>
           <AuthProvider>{children}</AuthProvider>
         </Suspense>
       </body>

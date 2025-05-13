@@ -59,6 +59,7 @@ export default function QuestionPost() {
     }
 
     setIsLoading(true);
+
     try {
       const response = await fetch("/api/questions", {
         method: "POST",
@@ -73,23 +74,17 @@ export default function QuestionPost() {
           tags: tags,
         }),
       });
+
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || "質問の投稿に失敗しました");
       }
 
-      // 成功時の処理
-      // await router.refresh();
-      // await new Promise((resolve) => setTimeout(resolve, 100));
-
-      // router.push("/");
+      router.push(`/question-detail/${data.question.id}`);
     } catch (error) {
       // eslint-disable-next-line no-console
       setError("エラーが発生しました");
       console.error("Error:", error);
-    } finally {
-      setIsLoading(false);
-      router.push("/");
     }
   };
 

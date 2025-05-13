@@ -39,7 +39,7 @@ const CreateTitle: React.FC<CreateTitleProps> = ({ title, setTitle }) => {
         name="title"
         maxLength={100}
         value={title}
-        placeholder="質問のタイトルを入力してください"
+        placeholder="[タイトル]：問題の要点を1行で書いてください"
         onChange={handleInputTitle}
       ></input>
     </div>

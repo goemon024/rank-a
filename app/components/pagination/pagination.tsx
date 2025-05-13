@@ -60,6 +60,7 @@ export const Pagination = ({
         className={styles.nextButton}
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
+        // style={{ background: "inherit" }}
       >
         Next Page
         <span className={styles.spanStyle}></span>

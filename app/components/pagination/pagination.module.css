@@ -4,22 +4,26 @@
   margin: 0 10px;
   align-items: center;
   border: none;
-  background-color: #ffffff;
+  color: #ffffff;
+  font-size: 12px;
+  background-color: inherit;
 }
 
 .currentButton {
   color: white;
   border-radius: 50%;
   background-color: black;
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
 }
 
 .pagiButton {
   border: none;
-  background-color: #ffffff;
+  color: #ffffff;
   width: 25px;
   height: 25px;
+  font-size: 12px;
+  background-color: inherit;
 }
 
 .pagination {

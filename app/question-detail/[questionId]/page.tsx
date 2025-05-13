@@ -11,7 +11,7 @@ import {
   CommentWithUser,
   VoteMap,
 } from "@/types";
-import { LINKS_HOME } from "@/constants";
+// import { LINKS_HOME } from "@/constants";
 import { useParams } from "next/navigation";
 import { AnswerTop } from "@/app/components/AnswerCard/AnswerTop";
 import AnswerModal from "@/app/components/Modal/AnswerModal";
@@ -19,7 +19,8 @@ import { AnswerCard } from "@/app/components/AnswerCard/AnswerCard";
 import CommentModal from "@/app/components/Modal/CommentModal";
 import { CommentCard } from "@/app/components/CommentCard/CommentCard";
 import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getLinkQuestionDetail } from "@/constants";
 
 // import { AuthProvider } from "@/contexts/AuthContext";
 export default function QuestionDetail() {
@@ -35,8 +36,6 @@ export default function QuestionDetail() {
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
-
   const [isAnswerModalOpen, setIsAnswerModalOpen] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
@@ -44,6 +43,13 @@ export default function QuestionDetail() {
   const [selectedAnswerId, setSelectedAnswerId] = useState<number | null>(null);
   // ベスト回答のIDを保持する
   const [bestAnswerId, setBestAnswerId] = useState<number | null>(null);
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  // const LINKS = [
+  //   { label: "検索結果に戻る", href: "/home", query: searchParams },
+  // ];
 
   useEffect(() => {
     const fetchQuestion = async () => {
@@ -96,9 +102,9 @@ export default function QuestionDetail() {
     <LoadingModal />
   ) : (
     <div>
-      <Header links={LINKS_HOME} />
+      <Header links={getLinkQuestionDetail(searchParams)} />
       <div className={styles.container}>
-        <QuestionCard question={question} />
+        <QuestionCard question={question} linkDisabled={true} />
         <DescriptionCard question={question} />
 
         {Array.isArray(comments) &&
@@ -158,6 +164,5 @@ export default function QuestionDetail() {
         />
       )}
     </div>
-    // </AuthProvider>
   );
 }

@@ -51,7 +51,7 @@ const CreateDescription: React.FC<CreateDescriptionProps> = ({
         name="description"
         maxLength={2000}
         value={description}
-        placeholder="質問の本文を入力してください"
+        placeholder="[状況説明]や[試したこと]を記述してください"
         onChange={handleInputContent}
         ref={textareaRef}
       />

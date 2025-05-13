@@ -62,19 +62,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "userId is required" }, { status: 400 });
   }
 
-  // クエリuserIdとトークンを照合する場合
-  // const authHeader = req.headers.get("authorization");
-  // if (!authHeader || !authHeader.startsWith("Bearer ")) {
-  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  // }
-  // const token = authHeader.split(" ")[1];
-  // const payload = jwt.verify(token, JWT_SECRET) as { userId: number };
-  // if (!userId || payload.userId !== parseInt(userId, 10)) {
-  //   console.log("payload.userId", payload.userId);
-  //   console.log("userId", userId);
-  //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  // }
-
   try {
     const comment = await prisma.comment.findMany({
       where: {
