@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./signIn.module.css";
+import styles from "./signin.module.css";
 import Link from "next/link";
 import { GetStrength } from "../components/PasswordStrength";
 import { useAuth } from "@/contexts/AuthContext";

@@ -46,6 +46,11 @@ export type VoteWithQuestion = Vote & {
   };
 };
 
+
+// 投票サマリー
+// userVote:アクセスユーザがupかdownか
+// voteId:アクセスユーザの投票のi
+// up,downvotes:回答の合計up,down数
 export type VoteSummary = {
   upvotes: number;
   downvotes: number;

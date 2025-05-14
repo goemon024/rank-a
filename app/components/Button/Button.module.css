@@ -84,3 +84,26 @@
   color: white;
   cursor: pointer;
 }
+
+
+@media (max-width: 476px) {
+
+  .postButton,
+  .postButtonDisabled {
+    width: 135px;
+    height: 40px;
+    font-size: 15px;
+    padding: 0;
+  }
+
+  .commentButton,
+  .commentDisabledButton,
+  .answerButton,
+  .answerDisabledButton {
+    height: 35px;
+    width: 120px;
+    font-size: 15px;
+  }
+
+
+}

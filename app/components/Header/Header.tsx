@@ -34,18 +34,52 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
   try {
     return (
       <header className={styles.header}>
-        <div className={styles.inner}>
-          <Link href="/">
-            <img src="/favicon.ico" alt="Blog Logo" className={styles.logo} />
-          </Link>
+        <div className={styles.mobileInner}>
+
+          <div className={styles.inner}>
+            <Link href="/">
+              <img src="/favicon.ico" alt="Blog Logo" className={styles.logo} />
+            </Link>
+
+            {pathname === "/home" && (
+              <form className={styles.searchForm1} onSubmit={handleSearch}>
+                <button type="submit" className={styles.searchIconButton1}>
+                  🔍
+                </button>
+                <input
+                  className={styles.searchWrapper1}
+                  type="text"
+                  placeholder="検索"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </form>
+            )}
+
+            <nav className={styles.nav}>
+              {isAuthenticated ? (
+                <>
+                  <UserIconButton
+                    userId={
+                      authUser?.userId ? parseInt(authUser.userId, 10) : undefined
+                    }
+                    imagePath={authUser?.imagePath || null}
+                  />
+                  <ProfileWindow />
+                </>
+              ) : (
+                <SignupSignin />
+              )}
+            </nav>
+          </div>
 
           {pathname === "/home" && (
-            <form className={styles.searchForm} onSubmit={handleSearch}>
-              <button type="submit" className={styles.searchIconButton}>
-                🔍
+            <form className={styles.searchForm2} onSubmit={handleSearch}>
+              <button type="submit" className={styles.searchIconButton2}>
+                ボタン
               </button>
               <input
-                className={styles.searchWrapper}
+                className={styles.searchWrapper2}
                 type="text"
                 placeholder="検索"
                 value={searchTerm}
@@ -54,21 +88,6 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
             </form>
           )}
 
-          <nav className={styles.nav}>
-            {isAuthenticated ? (
-              <>
-                <UserIconButton
-                  userId={
-                    authUser?.userId ? parseInt(authUser.userId, 10) : undefined
-                  }
-                  imagePath={authUser?.imagePath || null}
-                />
-                <ProfileWindow />
-              </>
-            ) : (
-              <SignupSignin />
-            )}
-          </nav>
         </div>
 
         <NavigationMenu links={links} />

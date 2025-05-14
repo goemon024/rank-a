@@ -21,6 +21,7 @@ export const QuestionArea = ({
           question={question}
           linkDisabled={false}
           query={searchParams}
+          bestAnswerId={question.bestAnswerId}
         />
       ))}
     </div>

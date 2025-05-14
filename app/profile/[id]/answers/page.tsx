@@ -36,7 +36,7 @@ export default function UserCommentsPage() {
 
       const data = await res.json();
       setAnswers(data.answer);
-      setUsername(data.answer[0].user.username);
+      setUsername(data.answer[0]?.user?.username || authUser?.username);
       setIsLoading(false);
     };
     fetchComments();

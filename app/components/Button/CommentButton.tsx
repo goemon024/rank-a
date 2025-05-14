@@ -6,8 +6,10 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const CommentButton = ({
   setCommentButtonClick,
+  isDraft = false,
 }: {
   setCommentButtonClick: () => void;
+  isDraft?: boolean;
 }) => {
   const { isAuthenticated } = useAuth();
 
@@ -15,17 +17,18 @@ const CommentButton = ({
     setCommentButtonClick();
   };
   return (
-    <div>
-      <button
-        onClick={() => handleClick()}
-        className={
-          !isAuthenticated ? styles.commentDisabledButton : styles.commentButton
-        }
-        disabled={!isAuthenticated}
-      >
-        コメントを投稿
-      </button>
-    </div>
+
+    <button
+      onClick={() => handleClick()}
+      className={
+        !isAuthenticated ? styles.commentDisabledButton :
+          isDraft ? styles.commentDisabledButton : styles.commentButton
+      }
+      disabled={!isAuthenticated || isDraft}
+    >
+      コメントを投稿
+    </button>
+
   );
 };
 

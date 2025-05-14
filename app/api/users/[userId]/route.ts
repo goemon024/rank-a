@@ -50,21 +50,21 @@ export async function GET(req: NextRequest) {
       where: { id: parseInt(userId, 10) },
       select: isSelf
         ? {
-            id: true,
-            username: true,
-            email: true,
-            role: true,
-            imagePath: true,
-            introduce: true,
-            createdAt: true,
-          }
+          id: true,
+          username: true,
+          email: true,
+          role: true,
+          imagePath: true,
+          introduce: true,
+          createdAt: true,
+        }
         : {
-            id: true,
-            username: true,
-            imagePath: true,
-            introduce: true,
-            createdAt: true,
-          },
+          id: true,
+          username: true,
+          imagePath: true,
+          introduce: true,
+          createdAt: true,
+        },
     });
 
     if (!user) {
@@ -125,9 +125,13 @@ export async function PUT(req: NextRequest) {
   let oldFileName: string | null = null;
   try {
     if (currentUser?.imagePath) {
-      const url = new URL(currentUser.imagePath);
-      const parts = url.pathname.split("/");
+      // const url = new URL(currentUser.imagePath);
+      // const parts = url.pathname.split("/");
+      // oldFileName = parts[parts.length - 1];
+
+      const parts = currentUser.imagePath.split("/");
       oldFileName = parts[parts.length - 1];
+
     }
   } catch (e) {
     console.warn("旧画像ファイル名の取得に失敗しました（ログのみ）", e);
@@ -172,7 +176,12 @@ export async function PUT(req: NextRequest) {
   let imagePath: string | null = null;
   if (file && file.size > 0) {
     const buffer = Buffer.from(await file.arrayBuffer());
-    const fileName = `user_${userId}_${Date.now()}.jpg`;
+
+    // const ext = file.type.split("/")[1];
+    const ext = "jpg";
+    const fileName = `user_${userId}_${Date.now()}.${ext}`;
+
+    // const fileName = `user_${userId}_${Date.now()}.jpg`;
 
     const { error } = await supabase.storage
       .from("avatars") // バケット名
@@ -189,10 +198,13 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    const { data: urlData } = supabase.storage
-      .from("avatars")
-      .getPublicUrl(fileName);
-    imagePath = urlData.publicUrl;
+    imagePath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${fileName}`;
+    console.log("imagePath", imagePath);
+
+    // const { data: urlData } = supabase.storage
+    //   .from("avatars")
+    //   .getPublicUrl(fileName);
+    // imagePath = urlData.publicUrl;
   }
 
   try {

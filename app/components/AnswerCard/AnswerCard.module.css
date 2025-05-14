@@ -55,6 +55,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: left;
+  gap: 10px;
 }
 
 .buttonContainer {
@@ -94,4 +95,23 @@
   background-color: #777777;
   color: white;
   cursor: default;
+}
+
+@media (max-width: 476px) {
+  .answerTop {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .answerContent {
+    font-size: 0.9rem;
+  }
+
+  .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+  }
+
 }

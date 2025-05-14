@@ -4,18 +4,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { UserPayload } from "../types/auth";
 
-// export enum Role {
-//     Student = "Student",
-//     Admin = "Admin"
-//   }
-
-//   export type UserPayload = {
-//     userId: string
-//     username: string
-//     imagePath: string
-//     role: Role
-//     exp: number
-//   }
 
 type AuthContextType = {
   user: UserPayload | null;

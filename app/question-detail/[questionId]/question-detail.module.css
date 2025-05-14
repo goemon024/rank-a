@@ -1,9 +1,4 @@
 .container {
-  /* font-family: Arial, sans-serif;
-    max-width: 900px;
-    margin: 120px auto 40px auto;
-    padding: 0px 20px; */
-
   background-color: #f6f6f6;
   padding: 20px;
   border-radius: 10px;
@@ -12,8 +7,9 @@
   position: relative;
   z-index: 1010;
   min-height: 100vh;
-  width: 800px;
+  max-width: 800px;
   margin: 120px auto 40px auto;
+  box-sizing: border-box;
 }
 
 .questionDescription {
@@ -85,4 +81,11 @@
 .commentButtonDisabled {
   background-color: #666666;
   color: #aaaaaa;
+}
+
+@media (max-width: 576px) {
+  .container {
+    max-width: 100%;
+    margin: 100px 5px;
+  }
 }

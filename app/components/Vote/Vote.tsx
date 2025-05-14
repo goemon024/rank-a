@@ -5,28 +5,30 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { IconButton, Stack, Typography } from "@mui/material";
 import { useAuth } from "@/contexts/AuthContext";
 import styles from "./Vote.module.css";
+import { VoteSummary } from "@/types";
 
 type Props = {
   answerId: number;
   answerUserId: number;
-  initialVote: "Upvote" | "Downvote" | null;
-  initialUpvotes: number;
-  initialDownvotes: number;
-  voteId: number | undefined;
+  votes?: VoteSummary;
+  setVotes: (votes: VoteSummary) => void;
+  // initialVote: "Upvote" | "Downvote" | null;
+  // initialUpvotes: number;
+  // initialDownvotes: number;
+  // voteId: number | undefined;
 };
 
 export default function UpvoteDownvote({
   answerId,
   answerUserId,
-  initialVote,
-  initialUpvotes,
-  initialDownvotes,
-  voteId,
+  votes,
+  setVotes,
 }: Props) {
-  const [vote, setVote] = useState<"Upvote" | "Downvote" | null>(initialVote);
-  const [upvotes, setUpvotes] = useState(initialUpvotes);
-  const [downvotes, setDownvotes] = useState(initialDownvotes);
-  const [isVoteId, setIsVoteId] = useState<number | undefined>(voteId);
+  const [vote, setVote] = useState<"Upvote" | "Downvote" | null>(votes?.userVote || null,
+  );
+  const [upvotes, setUpvotes] = useState(votes?.upvotes || 0);
+  const [downvotes, setDownvotes] = useState(votes?.downvotes || 0);
+  const [isVoteId, setIsVoteId] = useState<number | undefined>(votes?.voteId);
   const [isLoading, setIsLoading] = useState(false);
   const { user: authUser } = useAuth();
 
@@ -59,6 +61,13 @@ export default function UpvoteDownvote({
         const result = await res.json();
 
         setIsVoteId(parseInt(result.id, 10));
+        setVotes({
+          ...votes,
+          voteId: parseInt(result.id, 10),
+          userVote: type,
+          upvotes: type === "Upvote" ? upvotes + 1 : upvotes,
+          downvotes: type === "Downvote" ? downvotes + 1 : downvotes,
+        });
       } else if (vote === type) {
         // 同じ投票をもう一度押した → 取消（DELETE）
         const res = await fetch(`/api/votes/${isVoteId}`, {
@@ -70,6 +79,13 @@ export default function UpvoteDownvote({
         });
         if (!res.ok) throw new Error("投票の取り消しに失敗しました");
         setIsVoteId(undefined);
+        setVotes({
+          ...votes,
+          voteId: undefined,
+          userVote: null,
+          upvotes: type === "Upvote" ? upvotes - 1 : upvotes,
+          downvotes: type === "Downvote" ? downvotes - 1 : downvotes,
+        });
       } else {
         // 異なる投票に切り替え（PUT）
         const res = await fetch(`/api/votes/${isVoteId}`, {
@@ -81,21 +97,39 @@ export default function UpvoteDownvote({
           body: JSON.stringify({ type }),
         });
         if (!res.ok) throw new Error("投票の更新に失敗しました");
+
+        let newUpvotes = upvotes;
+        let newDownvotes = downvotes;
+
+        if (type === "Upvote") {
+          if (vote === "Downvote") newDownvotes -= 1;
+          newUpvotes += 1;
+        } else if (type === "Downvote") {
+          if (vote === "Upvote") newUpvotes -= 1;
+          newDownvotes += 1;
+        }
+
+        setVotes({
+          ...votes,
+          userVote: type,
+          upvotes: newUpvotes,
+          downvotes: newDownvotes,
+        });
       }
       // Toggle処理
       if (vote === type) {
         // 同じ投票→キャンセル
         setVote(null);
-        if (type === "Upvote") setUpvotes((prev) => prev - 1);
-        else setDownvotes((prev) => prev - 1);
+        if (type === "Upvote") setUpvotes((prev: number) => prev - 1);
+        else setDownvotes((prev: number) => prev - 1);
       } else {
         // 切り替えまたは新規投票
         if (type === "Upvote") {
-          setUpvotes((prev) => prev + 1);
-          if (vote === "Downvote") setDownvotes((prev) => prev - 1);
+          setUpvotes((prev: number) => prev + 1);
+          if (vote === "Downvote") setDownvotes((prev: number) => prev - 1);
         } else {
-          setDownvotes((prev) => prev + 1);
-          if (vote === "Upvote") setUpvotes((prev) => prev - 1);
+          setDownvotes((prev: number) => prev + 1);
+          if (vote === "Upvote") setUpvotes((prev: number) => prev - 1);
         }
         setVote(type);
       }

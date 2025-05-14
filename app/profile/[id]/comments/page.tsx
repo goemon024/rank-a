@@ -38,8 +38,8 @@ export default function UserCommentsPage() {
 
       const data = await res.json();
       setComments(data.comment);
-      setUsername(data.comment[0].user.username);
-      setUserImagePath(data.comment[0].user.imagePath);
+      setUsername(data.comment[0]?.user?.username || authUser?.username);
+      setUserImagePath(data.comment[0]?.user?.imagePath || authUser?.imagePath);
       setIsLoading(false);
     };
     fetchComments();

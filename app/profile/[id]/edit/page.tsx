@@ -142,13 +142,19 @@ export default function ProfilePage() {
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      setErrorMessage("画像を選択してください");
+      return;
+    }
+
 
     const result = imageUploadSchema.safeParse(file);
     if (!result.success) {
       setErrorMessage(result.error.errors[0].message);
       return;
     }
+
+
 
     const reader = new FileReader();
     reader.onloadend = () => setPreviewImage(reader.result as string);
@@ -210,14 +216,14 @@ export default function ProfilePage() {
 
         <div className={styles.ButtonGroup}>
           <button type="submit" className={styles.updateButton}>
-            プロフィールを更新する
+            プロフィール更新
           </button>
           <button
             type="button"
             onClick={() => setShowPasswordModal(true)}
             className={styles.passwordButton}
           >
-            パスワードを変更する
+            パスワード変更
           </button>
 
           {showPasswordModal && (

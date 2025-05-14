@@ -7,11 +7,13 @@ export const AnswerTop = ({
   setOpen,
   count,
   isUser,
+  isDraft,
   setCommentButtonClick,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   count: number;
   isUser: number;
+  isDraft: boolean;
   setCommentButtonClick: () => void;
 }) => {
   return (
@@ -21,7 +23,8 @@ export const AnswerTop = ({
         <AnswerButton setOpen={setOpen} isUser={isUser} />
       </div>
       <div>
-        <CommentButton setCommentButtonClick={setCommentButtonClick} />
+        <CommentButton setCommentButtonClick={setCommentButtonClick}
+          isDraft={isDraft} />
       </div>
     </div>
   );

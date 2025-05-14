@@ -39,6 +39,7 @@ body {
 body,
 html {
   background-color: #5555ff;
+  overflow-x: hidden;
 }
 
 * {

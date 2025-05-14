@@ -18,26 +18,37 @@ export const QuestionCard = ({
   question,
   linkDisabled = false,
   query,
+  bestAnswerId,
 }: {
   question: QuestionWithUserAndTags;
   linkDisabled?: boolean;
   query?: URLSearchParams;
+  bestAnswerId?: number | null;
 }) => {
+
   const queryParams = query ? Object.fromEntries(query.entries()) : {};
 
-  const QuestionCardContent = ({
-    question,
-    linkDisabled,
-  }: {
-    question: QuestionWithUserAndTags;
-    linkDisabled: boolean;
-  }) => {
+  const QuestionCardContent = ({ question, linkDisabled, }:
+    { question: QuestionWithUserAndTags; linkDisabled: boolean; }) => {
     return (
       <div
-        className={
-          linkDisabled ? styles.LinkDisabledQuestionCard : styles.questionCard
-        }
+        className={[
+          linkDisabled ? styles.LinkDisabledQuestionCard : styles.questionCard,
+          bestAnswerId ? styles.bestAnswer : ""
+        ].filter(Boolean).join(" ")}
       >
+        {question.isDraft && (
+          <div className={styles.draftBadge}>
+            <h2>- DRAFT -</h2>
+          </div>
+        )}
+
+        {bestAnswerId && (
+          <div className={styles.solvedBadge}>
+            <h4>-- 解決済み --</h4>
+          </div>
+        )}
+
         <h2
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(

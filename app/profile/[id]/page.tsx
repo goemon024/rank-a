@@ -66,9 +66,9 @@ export default function ProfilePage() {
           <div className={styles.ProfileAndEmail}>
             <h3>{user?.username} さんのプロフィール</h3>
             {isAuthenticated ? (
-              <p>Email: {user?.email}</p>
+              <p>Email： {user?.email}</p>
             ) : (
-              <p>Email: ******</p>
+              <p>Email： ******</p>
             )}
           </div>
           {String(authUser?.userId) === userId ? (

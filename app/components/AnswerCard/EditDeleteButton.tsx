@@ -12,7 +12,7 @@ export default function EditDeleteButton({
   commentCount,
 }: {
   answer: AnswerWithUser;
-  votes: VoteSummary;
+  votes?: VoteSummary;
   commentCount: number;
 }) {
   const { user: authUser } = useAuth();
@@ -21,11 +21,11 @@ export default function EditDeleteButton({
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
   const isDisabled =
-    commentCount > 0 || votes.upvotes > 0 || votes.downvotes > 0;
+    commentCount > 0 || (votes?.upvotes ?? 0) > 0 || (votes?.downvotes ?? 0) > 0;
 
   useEffect(() => {
     console.log("votes", votes);
-  }, []);
+  }, [votes]);
 
   return (
     <>

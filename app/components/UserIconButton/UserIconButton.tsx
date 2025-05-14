@@ -1,7 +1,10 @@
+"use client";
+
 import styles from "./UserIconButton.module.css";
 import Image from "next/image";
 // import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
+
 
 interface UserIconButtonProps {
   userId: number | undefined;
@@ -11,8 +14,14 @@ interface UserIconButtonProps {
 export const UserIconButton = ({ userId, imagePath }: UserIconButtonProps) => {
   // const auth = useAuth();
   const router = useRouter();
+  const src = imagePath ? imagePath.replace("https://https://", "https://")
+    : "/profile_default.jpg";
+  console.log("imagePath", imagePath);
 
   const goToProfile = (userId: number | undefined) => {
+    if (userId === undefined || userId === null) {
+      return;
+    }
     router.push(`/profile/${userId}`);
   };
 
@@ -26,7 +35,7 @@ export const UserIconButton = ({ userId, imagePath }: UserIconButtonProps) => {
     >
       <Image
         className={styles.userIcon}
-        src={imagePath || "/profile_default.jpg"}
+        src={src}
         alt="User Icon"
         width={30}
         height={30}

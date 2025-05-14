@@ -15,23 +15,8 @@
   pointer-events: none;
 }
 
-/* .descriptionPart {
-  margin-top: -1rem;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-} */
-
 .descriptionCard {
   margin-top: -0.75rem;
-}
-
-.questionCard h3 {
-  margin: 0 0 0.5rem 0;
-  color: #333;
 }
 
 .autherInfo {
@@ -49,4 +34,52 @@
   /* 上下に均等配置 */
   height: 30px;
   /* 任意の高さを指定（これ重要） */
+}
+
+.draftBadge {
+  margin-bottom: 5px;
+  color: #dd3466
+}
+
+.bestAnswer {
+  background-color: #ffdfdf;
+  border: 2px solid #ffc0c0;
+}
+
+.solvedBadge {
+  margin-top: -10px;
+  text-align: center;
+  color: #dd3466;
+}
+
+@media (max-width: 576px) {
+
+  .questionCard,
+  .LinkDisabledQuestionCard,
+  .descriptionCard {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+
+  .descriptionCard {
+    margin-top: -0.5rem;
+  }
+
+  .autherInfoText {
+    /* height: auto; */
+    font-size: 0.9rem;
+  }
+
+  .questionCard h2,
+  .LinkDisabledQuestionCard h2,
+  .descriptionCard h2 {
+    font-size: 1.2rem;
+    /* タブレット以下で24px */
+  }
+
+  .draftBadge {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+  }
 }

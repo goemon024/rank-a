@@ -47,10 +47,6 @@ export default function QuestionDetail() {
 
   const searchParams = useSearchParams();
 
-  // const LINKS = [
-  //   { label: "検索結果に戻る", href: "/home", query: searchParams },
-  // ];
-
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
@@ -91,9 +87,6 @@ export default function QuestionDetail() {
     fetchQuestion();
   }, [questionId]);
 
-  useEffect(() => {
-    console.log("bestAnswerId", bestAnswerId);
-  }, [bestAnswerId]);
 
   if (error) return null;
   if (!question) return null;
@@ -104,7 +97,7 @@ export default function QuestionDetail() {
     <div>
       <Header links={getLinkQuestionDetail(searchParams)} />
       <div className={styles.container}>
-        <QuestionCard question={question} linkDisabled={true} />
+        <QuestionCard question={question} linkDisabled={true} bestAnswerId={bestAnswerId} />
         <DescriptionCard question={question} />
 
         {Array.isArray(comments) &&
@@ -118,40 +111,51 @@ export default function QuestionDetail() {
           setOpen={setIsAnswerModalOpen}
           count={count}
           isUser={question.userId}
+          isDraft={question.isDraft}
           setCommentButtonClick={() => {
             setSelectedAnswerId(null);
             setIsCommentModalOpen(true);
           }}
         />
         {Array.isArray(answers) &&
-          answers.map((answer) => {
-            const answerComments = Array.isArray(comments)
-              ? comments.filter((comment) => comment.answerId === answer.id)
-              : [];
-            return (
-              <div key={answer.id}>
-                <AnswerCard
-                  key={answer.id}
-                  answer={answer}
-                  votes={votes[answer.id]}
-                  onBest={setBestAnswerId}
-                  isBest={bestAnswerId === answer.id}
-                  bestInfo={{
-                    questionUserId: question.userId,
-                    bestAnswerId: question.bestAnswerId ?? 0,
-                  }}
-                  commentCount={answerComments.length}
-                  setCommentButtonClick={() => {
-                    setSelectedAnswerId(answer.id);
-                    setIsCommentModalOpen(true);
-                  }}
-                />
-                {answerComments.map((comment) => (
-                  <CommentCard key={comment.id} comment={comment} />
-                ))}
-              </div>
-            );
-          })}
+          [...answers]
+            .sort((a, b) => {
+              if (a.id === bestAnswerId) return -1;
+              if (b.id === bestAnswerId) return 1;
+
+              const aVotes = votes[a.id]?.upvotes || 0;
+              const bVotes = votes[b.id]?.upvotes || 0;
+              return bVotes - aVotes;
+            })
+            .map((answer) => {
+              const answerComments = Array.isArray(comments)
+                ? comments.filter((comment) => comment.answerId === answer.id)
+                : [];
+              return (
+                <div key={answer.id}>
+                  <AnswerCard
+                    key={answer.id}
+                    answer={answer}
+                    votes={votes[answer.id]}
+                    setVotes={setVotes}
+                    onBest={setBestAnswerId}
+                    isBest={bestAnswerId === answer.id}
+                    bestInfo={{
+                      questionUserId: question.userId,
+                      bestAnswerId: question.bestAnswerId ?? 0,
+                    }}
+                    commentCount={answerComments.length}
+                    setCommentButtonClick={() => {
+                      setSelectedAnswerId(answer.id);
+                      setIsCommentModalOpen(true);
+                    }}
+                  />
+                  {answerComments.map((comment) => (
+                    <CommentCard key={comment.id} comment={comment} />
+                  ))}
+                </div>
+              );
+            })}
       </div>
       {isAnswerModalOpen && (
         <AnswerModal setOpen={setIsAnswerModalOpen} questionId={questionId} />

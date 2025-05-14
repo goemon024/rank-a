@@ -19,6 +19,7 @@ import DOMPurify from "dompurify";
 export const AnswerCard = ({
   answer,
   votes,
+  setVotes,
   commentCount,
   bestInfo,
   isBest,
@@ -27,6 +28,7 @@ export const AnswerCard = ({
 }: {
   answer: AnswerWithUser;
   votes: VoteSummary;
+  setVotes: (votes: VoteSummary) => void;
   commentCount: number;
   bestInfo: {
     questionUserId: number;
@@ -68,10 +70,8 @@ export const AnswerCard = ({
         <Vote
           answerId={answer.id}
           answerUserId={answer.userId}
-          initialVote={votes.userVote}
-          initialUpvotes={votes.upvotes}
-          initialDownvotes={votes.downvotes}
-          voteId={votes.voteId}
+          votes={votes}
+          setVotes={setVotes}
         />
         <div className={styles.buttonContainer}>
           <CommentButton setCommentButtonClick={setCommentButtonClick} />

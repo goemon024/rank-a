@@ -90,22 +90,33 @@
   background-color: #3898ff;
 }
 
-/* .signupContainer {
-  margin-top: 30px;
-}
 
-.signupText {
-  font-size: 15px;
-  color: #333;
-}
+@media (max-width: 576px) {
+  .signinContainer {
+    width: 90%;
+    margin: 20px auto;
+    padding: 16px;
+  }
 
-.signupLink {
-  font-size: 1rem;
-  color: #56a8ff;
-  font-weight: bold;
-  text-decoration: none;
-}
+  .signinHeader {
+    font-size: 35px;
+  }
 
-.signupLink:hover {
-  text-decoration: underline;
-} */
+  .formInput {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  .signinButton {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  .formLabel {
+    font-size: 0.9rem;
+  }
+
+  .signinDescription {
+    font-size: 0.85rem;
+  }
+}
