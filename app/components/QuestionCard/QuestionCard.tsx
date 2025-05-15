@@ -6,12 +6,13 @@ import { UserIconButton } from "../UserIconButton/UserIconButton";
 import { Stack, Chip } from "@mui/material";
 import Link from "next/link";
 import { QuestionWithUserAndTags } from "@/types";
+import Vote from "../Vote/Vote";
 
 import dayjs from "dayjs";
+import { VoteMap } from "@/types";
 
 import DOMPurify from "isomorphic-dompurify";
 import { marked } from "marked";
-
 import { TAGS } from "@/constants";
 
 export const QuestionCard = ({
@@ -19,11 +20,19 @@ export const QuestionCard = ({
   linkDisabled = false,
   query,
   bestAnswerId,
+  answerCountDisplay = false,
+  questionVoteDisplay = false,
+  votes,
+  setVotes,
 }: {
   question: QuestionWithUserAndTags;
   linkDisabled?: boolean;
   query?: URLSearchParams;
   bestAnswerId?: number | null;
+  answerCountDisplay?: boolean;
+  questionVoteDisplay?: boolean;
+  votes?: VoteMap;
+  setVotes?: (votes: VoteMap) => void;
 }) => {
 
   const queryParams = query ? Object.fromEntries(query.entries()) : {};
@@ -82,6 +91,23 @@ export const QuestionCard = ({
             <p>{question.user.username}</p>
             <p>{dayjs(question.createdAt).format("YYYY年MM月DD日 HH時mm分")}</p>
           </div>
+          {answerCountDisplay && (
+            <div className={styles.answerCount}>
+              <p>回答数：{question.answerCountDirect}件</p>
+            </div>
+          )}
+          {questionVoteDisplay && (
+            <div className={styles.voteContainer}>
+              <Vote
+                targetId={question.id}
+                targetUserId={question.userId}
+                votes={votes}
+                setVotes={setVotes}
+                isQuestion={true}
+              />
+            </div>
+          )}
+
         </div>
       </div>
     );

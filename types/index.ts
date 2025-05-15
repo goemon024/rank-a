@@ -1,11 +1,13 @@
 import { Question, Answer, QuestionTag, Comment, Vote } from "@prisma/client";
 
+
 export type QuestionWithUserAndTags = Question & {
   user: {
     username: string;
     imagePath: string | null;
   };
   questionTags: QuestionTag[];
+  answerCountDirect: number; // 直接取得した回答数:現段階で名称に反映しない
 };
 
 export interface NavLinks {
@@ -59,8 +61,12 @@ export type VoteSummary = {
 };
 
 export type VoteMap = {
-  [answerId: number]: VoteSummary;
+  [targetId: number]: VoteSummary;
 };
+
+// export type VoteMapQuestion = {
+//   [questionId: number]: VoteSummary;
+// };
 
 export type JwtPayload = {
   userId: number;

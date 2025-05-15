@@ -22,7 +22,7 @@ import { useParams } from "next/navigation";
 import { questionSchema } from "@/schemas/qustionSchema";
 import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 
-export default function QuestionPut({}) {
+export default function QuestionPut({ }) {
   const params = useParams();
   const questionId = params.id as string;
 
@@ -179,6 +179,7 @@ export default function QuestionPut({}) {
     bestAnswerId: null,
     score: 0,
     answerCount: 0,
+    answerCountDirect: 0,
     upvoteCount: 0,
     user: {
       username: payload?.username || "未ログインユーザー",

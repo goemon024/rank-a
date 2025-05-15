@@ -45,14 +45,14 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // 対象の回答＋投票を取得
-    const answers = await prisma.answer.findMany({
-      where: { questionId },
-      include: { votes: true },
+    // 対象の質問＋投票を取得
+    const question = await prisma.question.findUnique({
+      where: { id: questionId },
+      include: { voteQuestion: true },
     });
 
-    const voteMap: {
-      [answerId: number]: {
+    const voteMapQuestion: {
+      [questionId: number]: {
         upvotes: number;
         downvotes: number;
         userVote: "Upvote" | "Downvote" | null;
@@ -60,35 +60,31 @@ export async function GET(req: NextRequest) {
       };
     } = {};
 
-    for (const answer of answers) {
-      const upvotes = answer.votes.filter((v) => v.type === "Upvote").length;
-      const downvotes = answer.votes.filter(
-        (v) => v.type === "Downvote",
-      ).length;
+    const upvotes = question?.voteQuestion.filter((v) => v.type === "Upvote").length;
+    const downvotes = question?.voteQuestion.filter((v) => v.type === "Downvote").length;
 
-      let userVote: "Upvote" | "Downvote" | null = null;
-      let voteId: number | undefined = undefined;
+    let userVote: "Upvote" | "Downvote" | null = null;
+    let voteId: number | undefined = undefined;
 
-      if (userId !== null) {
-        const userVoteObj = answer.votes.find((v) => v.userId === userId);
-        if (userVoteObj) {
-          userVote = userVoteObj.type as "Upvote" | "Downvote";
-          voteId = userVoteObj.id;
-        }
+    if (userId !== null) {
+      const userVoteObj = question?.voteQuestion.find((v) => v.userId === userId);
+      if (userVoteObj) {
+        userVote = userVoteObj.type as "Upvote" | "Downvote";
+        voteId = userVoteObj.id;
       }
-
-      // console.log("userVote", userVote);
-      // console.log("voteId", voteId);
-
-      voteMap[answer.id] = {
-        upvotes,
-        downvotes,
-        userVote: userVote as "Upvote" | "Downvote" | null,
-        voteId,
-      };
     }
 
-    return NextResponse.json(voteMap, { status: 200 });
+    // console.log("userVote", userVote);
+    // console.log("voteId", voteId);
+
+    voteMapQuestion[questionId] = {
+      upvotes: upvotes || 0,
+      downvotes: downvotes || 0,
+      userVote: userVote as "Upvote" | "Downvote" | null,
+      voteId: voteId || undefined,
+    };
+
+    return NextResponse.json(voteMapQuestion, { status: 200 });
   } catch (err) {
     console.error("Error fetching votes:", err);
     return NextResponse.json(
@@ -97,6 +93,9 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -120,9 +119,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const existingVote = await prisma.vote.findFirst({
+    const existingVote = await prisma.voteQuestion.findFirst({
       where: {
-        answerId: targetId,
+        questionId: targetId,
         userId,
       },
     });
@@ -134,9 +133,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const createVote = await prisma.vote.create({
+    const createVote = await prisma.voteQuestion.create({
       data: {
-        answerId: targetId,
+        questionId: targetId,
         userId,
         type,
       },

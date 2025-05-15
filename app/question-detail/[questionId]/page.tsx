@@ -9,7 +9,7 @@ import {
   QuestionWithUserAndTags,
   AnswerWithUser,
   CommentWithUser,
-  VoteMap,
+  VoteMap
 } from "@/types";
 // import { LINKS_HOME } from "@/constants";
 import { useParams } from "next/navigation";
@@ -33,6 +33,8 @@ export default function QuestionDetail() {
   const [answers, setAnswers] = useState<AnswerWithUser[]>([]);
   const [comments, setComments] = useState<CommentWithUser[]>([]);
   const [votes, setVotes] = useState<VoteMap>({});
+  const [votesQuestion, setVotesQuestion] = useState<VoteMap>({});
+
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -63,6 +65,7 @@ export default function QuestionDetail() {
         setAnswers(answerList);
         setCount(count ?? 0);
 
+        // answerの投票数を取得
         const votesRes = await fetch(`/api/votes?questionId=${questionId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
@@ -71,6 +74,16 @@ export default function QuestionDetail() {
         const voteMap = (await votesRes.json()) as VoteMap;
         setVotes(voteMap);
 
+        // questionの投票数を取得
+        const votesQuestionRes = await fetch(`/api/votesQuestion?questionId=${questionId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          },
+        });
+        const voteMapQuestion = (await votesQuestionRes.json()) as VoteMap;
+        setVotesQuestion(voteMapQuestion);
+
+        // comment取得
         const commentsRes = await fetch(
           `/api/questions/${questionId}/comments`,
         );
@@ -79,6 +92,7 @@ export default function QuestionDetail() {
         };
         setComments(commentList);
         setIsLoading(false);
+
       } catch (error) {
         setError(error as string);
         router.push("/");
@@ -97,7 +111,14 @@ export default function QuestionDetail() {
     <div>
       <Header links={getLinkQuestionDetail(searchParams)} />
       <div className={styles.container}>
-        <QuestionCard question={question} linkDisabled={true} bestAnswerId={bestAnswerId} />
+        <QuestionCard
+          question={question}
+          linkDisabled={true}
+          bestAnswerId={bestAnswerId}
+          questionVoteDisplay={true}
+          votes={votesQuestion}
+          setVotes={setVotesQuestion}
+        />
         <DescriptionCard question={question} />
 
         {Array.isArray(comments) &&
@@ -136,7 +157,8 @@ export default function QuestionDetail() {
                   <AnswerCard
                     key={answer.id}
                     answer={answer}
-                    votes={votes[answer.id]}
+                    // votes={votes[answer.id]}
+                    votes={votes}
                     setVotes={setVotes}
                     onBest={setBestAnswerId}
                     isBest={bestAnswerId === answer.id}

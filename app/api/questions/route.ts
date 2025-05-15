@@ -24,9 +24,9 @@ export async function GET(req: NextRequest) {
 
     const tagIds = tagParam
       ? tagParam
-          .split(",")
-          .map((id) => parseInt(id, 10))
-          .filter((id) => !isNaN(id))
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id))
       : [];
 
     const orderBy =
@@ -124,11 +124,9 @@ export async function GET(req: NextRequest) {
       conditions.push(...allTagsConditions);
     }
 
-    console.log("userId", userId);
-    console.log(conditions);
     const whereClause = conditions.length > 0 ? { AND: conditions } : {};
 
-    const [questions, totalCount] = await Promise.all([
+    const [dbQuestions, totalCount] = await Promise.all([
       prisma.question.findMany({
         where: whereClause,
         include: {
@@ -140,6 +138,9 @@ export async function GET(req: NextRequest) {
           },
           answers: true,
           questionTags: true,
+          _count: {
+            select: { answers: true },
+          },
         },
         skip,
         take: limit,
@@ -149,6 +150,11 @@ export async function GET(req: NextRequest) {
         where: whereClause,
       }),
     ]);
+
+    const questions = dbQuestions.map((question) => ({
+      ...question,
+      answerCountDirect: question._count.answers,
+    }));
 
     return NextResponse.json({ questions, totalCount }, { status: 200 });
   } catch (err) {

@@ -15,15 +15,20 @@ export const QuestionArea = ({
 
   return (
     <div className={styles.questionArea}>
-      {questions.map((question) => (
-        <QuestionCard
-          key={question.id}
-          question={question}
-          linkDisabled={false}
-          query={searchParams}
-          bestAnswerId={question.bestAnswerId}
-        />
-      ))}
+      {questions.length === 0 ? (
+        <div>検索された質問がありません</div>
+      ) : (
+        questions.map((question) => (
+          <QuestionCard
+            key={question.id}
+            question={question}
+            linkDisabled={false}
+            query={searchParams}
+            bestAnswerId={question.bestAnswerId}
+            answerCountDisplay={true}
+          />
+        ))
+      )}
     </div>
   );
 };

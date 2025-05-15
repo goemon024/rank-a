@@ -28,7 +28,7 @@ export default function QuestionPost() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isDrafrRef = useRef(false);
+  const isDraftRef = useRef(false);
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
@@ -44,7 +44,7 @@ export default function QuestionPost() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const isDraft = isDrafrRef.current;
+    const isDraft = isDraftRef.current;
 
     const result = questionSchema.safeParse({
       title,
@@ -105,6 +105,7 @@ export default function QuestionPost() {
     bestAnswerId: null,
     score: 0,
     answerCount: 0,
+    answerCountDirect: 0,
     upvoteCount: 0,
     user: {
       username: payload?.username || "未ログインユーザー",
@@ -138,7 +139,7 @@ export default function QuestionPost() {
                 value="draft"
                 type="submit"
                 disabled={isLoading}
-                onClick={() => (isDrafrRef.current = true)}
+                onClick={() => (isDraftRef.current = true)}
               >
                 下書き保存
               </button>
@@ -158,7 +159,7 @@ export default function QuestionPost() {
               value="publish"
               type="submit"
               disabled={isLoading}
-              onClick={() => (isDrafrRef.current = false)}
+              onClick={() => (isDraftRef.current = false)}
             >
               投稿
             </button>
@@ -186,7 +187,7 @@ export default function QuestionPost() {
                     value="draft"
                     type="submit"
                     disabled={isLoading}
-                    onClick={() => (isDrafrRef.current = true)}
+                    onClick={() => (isDraftRef.current = true)}
                   >
                     下書き保存
                   </button>
@@ -206,7 +207,7 @@ export default function QuestionPost() {
                   value="publish"
                   type="submit"
                   disabled={isLoading}
-                  onClick={() => (isDrafrRef.current = false)}
+                  onClick={() => (isDraftRef.current = false)}
                 >
                   投稿
                 </button>

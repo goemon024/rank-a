@@ -21,6 +21,7 @@ model User {
   comments     Comment[]
   questions    Question[]
   votes        Vote[]
+  voteQuestion VoteQuestion[]
 
   @@map("User")
 }
@@ -38,6 +39,7 @@ model Question {
   upvoteCount  Int           @default(0) @map("upvote_count")
   answers      Answer[]      @relation("AllAnswers")
   comments     Comment[]
+  voteQuestion VoteQuestion[]
   answer       Answer?       @relation("BestAnswer", fields: [bestAnswerId], references: [id])
   user         User          @relation(fields: [userId], references: [id])
   questionTags QuestionTag[]
@@ -71,6 +73,20 @@ model Vote {
   @@unique([answerId, userId])
   @@map("Vote")
 }
+
+model VoteQuestion {
+  type            String
+  id              Int       @id @default(autoincrement())
+  questionId      Int       @map("question_id")
+  userId          Int       @map("user_id")
+  question        Question  @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  user            User      @relation(fields: [userId], references: [id])
+
+  @@unique([questionId, userId])
+  @@map("VoteQuestion")
+}
+
+
 
 model Tag {
   name      String

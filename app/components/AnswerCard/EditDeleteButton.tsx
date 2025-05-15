@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./AnswerCard.module.css";
 import { useAuth } from "@/contexts/AuthContext";
-import { AnswerWithUser, VoteSummary } from "@/types";
+import { AnswerWithUser, VoteMap } from "@/types";
 import AnswerModal from "../Modal/AnswerModal";
 import DeleteModal from "../Modal/DeleteModal";
 
@@ -12,7 +12,7 @@ export default function EditDeleteButton({
   commentCount,
 }: {
   answer: AnswerWithUser;
-  votes?: VoteSummary;
+  votes?: VoteMap;
   commentCount: number;
 }) {
   const { user: authUser } = useAuth();
@@ -21,7 +21,7 @@ export default function EditDeleteButton({
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
   const isDisabled =
-    commentCount > 0 || (votes?.upvotes ?? 0) > 0 || (votes?.downvotes ?? 0) > 0;
+    commentCount > 0 || (votes?.[answer.id]?.upvotes ?? 0) > 0 || (votes?.[answer.id]?.downvotes ?? 0) > 0;
 
   useEffect(() => {
     console.log("votes", votes);

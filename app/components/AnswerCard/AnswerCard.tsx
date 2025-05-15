@@ -11,7 +11,7 @@ import Vote from "../Vote/Vote";
 import EditDeleteButton from "./EditDeleteButton";
 
 import dayjs from "dayjs";
-import { VoteSummary } from "@/types";
+import { VoteMap } from "@/types";
 
 import { marked } from "marked";
 import DOMPurify from "dompurify";
@@ -27,8 +27,9 @@ export const AnswerCard = ({
   onBest,
 }: {
   answer: AnswerWithUser;
-  votes: VoteSummary;
-  setVotes: (votes: VoteSummary) => void;
+  // votes: VoteSummary;
+  votes: VoteMap;
+  setVotes: (votes: VoteMap) => void;
   commentCount: number;
   bestInfo: {
     questionUserId: number;
@@ -68,8 +69,8 @@ export const AnswerCard = ({
       </div>
       <div className={styles.infomationContainer}>
         <Vote
-          answerId={answer.id}
-          answerUserId={answer.userId}
+          targetId={answer.id}
+          targetUserId={answer.userId}
           votes={votes}
           setVotes={setVotes}
         />
