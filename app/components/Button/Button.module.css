@@ -85,9 +85,7 @@
   cursor: pointer;
 }
 
-
 @media (max-width: 476px) {
-
   .postButton,
   .postButtonDisabled {
     width: 135px;
@@ -104,6 +102,4 @@
     width: 120px;
     font-size: 15px;
   }
-
-
 }

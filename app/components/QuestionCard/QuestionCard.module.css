@@ -38,7 +38,7 @@
 
 .draftBadge {
   margin-bottom: 5px;
-  color: #dd3466
+  color: #dd3466;
 }
 
 .bestAnswer {
@@ -57,8 +57,6 @@
   margin: auto;
   font-size: 1rem;
 }
-
-
 
 .editButton,
 .deleteButton,
@@ -91,7 +89,6 @@
 }
 
 @media (max-width: 576px) {
-
   .questionCard,
   .LinkDisabledQuestionCard,
   .descriptionCard {

@@ -79,7 +79,6 @@
   cursor: not-allowed;
 }
 
-
 @media (max-width: 576px) {
   .signupContainer {
     margin: 16px auto;

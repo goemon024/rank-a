@@ -147,14 +147,11 @@ export default function ProfilePage() {
       return;
     }
 
-
     const result = imageUploadSchema.safeParse(file);
     if (!result.success) {
       setErrorMessage(result.error.errors[0].message);
       return;
     }
-
-
 
     const reader = new FileReader();
     reader.onloadend = () => setPreviewImage(reader.result as string);

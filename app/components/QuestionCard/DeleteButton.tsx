@@ -4,7 +4,7 @@ import styles from "./QuestionCard.module.css";
 import { useAuth } from "@/contexts/AuthContext";
 import { QuestionWithUserAndTags } from "@/types"; //voteSummaryは今回省略
 // import AnswerModal from "../Modal/AnswerModal";
-import DeleteModal from "../Modal/DeleteModal";  // DeleteQuesionModalではなく今回はこちらを使う。
+import DeleteModal from "../Modal/DeleteModal"; // DeleteQuesionModalではなく今回はこちらを使う。
 
 export default function EditDeleteButton({
   question,
@@ -15,7 +15,6 @@ export default function EditDeleteButton({
   // votes?: VoteSummary;
   // commentCount: number;
 }) {
-
   const { user: authUser } = useAuth();
   const isAuther = Number(authUser?.userId) === question.userId;
   // const [editModal, setEditModal] = useState<boolean>(false);
@@ -46,13 +45,15 @@ export default function EditDeleteButton({
             styles.deleteButton
           }
           onClick={() => setDeleteModal(true)}
-        // disabled={isDisabled}
+          // disabled={isDisabled}
         >
           削除
         </button>
         // </div>
       )}
-      {deleteModal && <DeleteModal setOpen={setDeleteModal} question={question} />}
+      {deleteModal && (
+        <DeleteModal setOpen={setDeleteModal} question={question} />
+      )}
     </>
   );
 }

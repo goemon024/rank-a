@@ -37,7 +37,9 @@ export default function UserCommentsPage() {
 
       const data = await res.json();
       setQuestions(data.questions);
-      setUserImagePath(data.questions[0]?.user?.imagePath || authUser?.imagePath);
+      setUserImagePath(
+        data.questions[0]?.user?.imagePath || authUser?.imagePath,
+      );
       setUsername(data.questions[0]?.user?.username || authUser?.username);
       setIsLoading(false);
     };

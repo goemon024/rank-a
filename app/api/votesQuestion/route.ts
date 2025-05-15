@@ -60,14 +60,20 @@ export async function GET(req: NextRequest) {
       };
     } = {};
 
-    const upvotes = question?.voteQuestion.filter((v) => v.type === "Upvote").length;
-    const downvotes = question?.voteQuestion.filter((v) => v.type === "Downvote").length;
+    const upvotes = question?.voteQuestion.filter(
+      (v) => v.type === "Upvote",
+    ).length;
+    const downvotes = question?.voteQuestion.filter(
+      (v) => v.type === "Downvote",
+    ).length;
 
     let userVote: "Upvote" | "Downvote" | null = null;
     let voteId: number | undefined = undefined;
 
     if (userId !== null) {
-      const userVoteObj = question?.voteQuestion.find((v) => v.userId === userId);
+      const userVoteObj = question?.voteQuestion.find(
+        (v) => v.userId === userId,
+      );
       if (userVoteObj) {
         userVote = userVoteObj.type as "Upvote" | "Downvote";
         voteId = userVoteObj.id;
@@ -93,9 +99,6 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
-
-
 
 export async function POST(req: NextRequest) {
   try {

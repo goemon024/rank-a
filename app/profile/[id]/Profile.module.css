@@ -119,8 +119,6 @@
   gap: 15px;
 }
 
-
-
 .updateButton {
   background-color: #f9f9f9;
   border: 1px solid #000000;
@@ -206,7 +204,6 @@
 }
 
 @keyframes blink {
-
   0%,
   49% {
     opacity: 1;
@@ -229,7 +226,6 @@
     font-size: 15px;
     height: 45px;
   }
-
 
   .updateButton,
   .disabledUpdateButton,

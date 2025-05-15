@@ -50,21 +50,21 @@ export async function GET(req: NextRequest) {
       where: { id: parseInt(userId, 10) },
       select: isSelf
         ? {
-          id: true,
-          username: true,
-          email: true,
-          role: true,
-          imagePath: true,
-          introduce: true,
-          createdAt: true,
-        }
+            id: true,
+            username: true,
+            email: true,
+            role: true,
+            imagePath: true,
+            introduce: true,
+            createdAt: true,
+          }
         : {
-          id: true,
-          username: true,
-          imagePath: true,
-          introduce: true,
-          createdAt: true,
-        },
+            id: true,
+            username: true,
+            imagePath: true,
+            introduce: true,
+            createdAt: true,
+          },
     });
 
     if (!user) {
@@ -131,7 +131,6 @@ export async function PUT(req: NextRequest) {
 
       const parts = currentUser.imagePath.split("/");
       oldFileName = parts[parts.length - 1];
-
     }
   } catch (e) {
     console.warn("旧画像ファイル名の取得に失敗しました（ログのみ）", e);

@@ -27,10 +27,16 @@ export default function UpvoteDownvote({
   isQuestion = false,
 }: Props) {
   const safeVotes = votes ?? {};
-  const [vote, setVote] = useState<"Upvote" | "Downvote" | null>(safeVotes[targetId]?.userVote || null);
+  const [vote, setVote] = useState<"Upvote" | "Downvote" | null>(
+    safeVotes[targetId]?.userVote || null,
+  );
   const [upvotes, setUpvotes] = useState(safeVotes[targetId]?.upvotes || 0);
-  const [downvotes, setDownvotes] = useState(safeVotes[targetId]?.downvotes || 0);
-  const [isVoteId, setIsVoteId] = useState<number | undefined>(safeVotes[targetId]?.voteId);
+  const [downvotes, setDownvotes] = useState(
+    safeVotes[targetId]?.downvotes || 0,
+  );
+  const [isVoteId, setIsVoteId] = useState<number | undefined>(
+    safeVotes[targetId]?.voteId,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const { user: authUser } = useAuth();
 
@@ -64,16 +70,18 @@ export default function UpvoteDownvote({
         const result = await res.json();
 
         setIsVoteId(parseInt(result.id, 10));
-        setVotes && setVotes({
-          ...safeVotes,
-          [targetId]: {
-            ...safeVotes[targetId],
-            voteId: parseInt(result.id, 10),
-            userVote: type,
-            upvotes: type === "Upvote" ? upvotes + 1 : upvotes,
-            downvotes: type === "Downvote" ? downvotes + 1 : downvotes,
-          },
-        });
+        if (setVotes) {
+          setVotes({
+            ...safeVotes,
+            [targetId]: {
+              ...safeVotes[targetId],
+              voteId: parseInt(result.id, 10),
+              userVote: type,
+              upvotes: type === "Upvote" ? upvotes + 1 : upvotes,
+              downvotes: type === "Downvote" ? downvotes + 1 : downvotes,
+            },
+          });
+        }
       } else if (vote === type) {
         // 同じ投票をもう一度押した → 取消（DELETE）
         const res = await fetch(`${apiPath}/${isVoteId}`, {
@@ -86,16 +94,18 @@ export default function UpvoteDownvote({
         if (!res.ok) throw new Error("投票の取り消しに失敗しました");
         setIsVoteId(undefined);
 
-        setVotes && setVotes({
-          ...safeVotes,
-          [targetId]: {
-            ...safeVotes[targetId],
-            voteId: undefined,
-            userVote: null,
-            upvotes: type === "Upvote" ? upvotes - 1 : upvotes,
-            downvotes: type === "Downvote" ? downvotes - 1 : downvotes,
-          },
-        });
+        if (setVotes) {
+          setVotes({
+            ...safeVotes,
+            [targetId]: {
+              ...safeVotes[targetId],
+              voteId: undefined,
+              userVote: null,
+              upvotes: type === "Upvote" ? upvotes - 1 : upvotes,
+              downvotes: type === "Downvote" ? downvotes - 1 : downvotes,
+            },
+          });
+        }
       } else {
         // 異なる投票に切り替え（PUT）
         const res = await fetch(`${apiPath}/${isVoteId}`, {
@@ -119,15 +129,17 @@ export default function UpvoteDownvote({
           newDownvotes += 1;
         }
 
-        setVotes && setVotes({
-          ...safeVotes,
-          [targetId]: {
-            ...safeVotes[targetId],
-            userVote: type,
-            upvotes: newUpvotes,
-            downvotes: newDownvotes,
-          },
-        });
+        if (setVotes) {
+          setVotes({
+            ...safeVotes,
+            [targetId]: {
+              ...safeVotes[targetId],
+              userVote: type,
+              upvotes: newUpvotes,
+              downvotes: newDownvotes,
+            },
+          });
+        }
       }
       // Toggle処理
       if (vote === type) {
@@ -158,7 +170,7 @@ export default function UpvoteDownvote({
       <IconButton
         onClick={(e) => {
           e.preventDefault();
-          handleVote("Upvote")
+          handleVote("Upvote");
         }}
         color={vote === "Upvote" ? "primary" : "default"}
         disabled={isLoading}
@@ -175,7 +187,7 @@ export default function UpvoteDownvote({
       <IconButton
         onClick={(e) => {
           e.preventDefault();
-          handleVote("Downvote")
+          handleVote("Downvote");
         }}
         color={vote === "Downvote" ? "error" : "default"}
         disabled={isLoading}

@@ -21,7 +21,9 @@ export default function EditDeleteButton({
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
   const isDisabled =
-    commentCount > 0 || (votes?.[answer.id]?.upvotes ?? 0) > 0 || (votes?.[answer.id]?.downvotes ?? 0) > 0;
+    commentCount > 0 ||
+    (votes?.[answer.id]?.upvotes ?? 0) > 0 ||
+    (votes?.[answer.id]?.downvotes ?? 0) > 0;
 
   useEffect(() => {
     console.log("votes", votes);

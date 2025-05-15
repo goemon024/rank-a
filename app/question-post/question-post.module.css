@@ -96,7 +96,6 @@
 }
 
 @media (max-width: 576px) {
-
   .form {
     background-color: #e2e8f0;
     padding: 0.5rem 1.5rem;
@@ -114,5 +113,4 @@
   .button {
     width: 280px;
   }
-
 }

@@ -5,7 +5,6 @@ import Image from "next/image";
 // import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
-
 interface UserIconButtonProps {
   userId: number | undefined;
   imagePath: string | null;
@@ -14,7 +13,8 @@ interface UserIconButtonProps {
 export const UserIconButton = ({ userId, imagePath }: UserIconButtonProps) => {
   // const auth = useAuth();
   const router = useRouter();
-  const src = imagePath ? imagePath.replace("https://https://", "https://")
+  const src = imagePath
+    ? imagePath.replace("https://https://", "https://")
     : "/profile_default.jpg";
   console.log("imagePath", imagePath);
 

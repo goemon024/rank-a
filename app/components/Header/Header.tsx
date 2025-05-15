@@ -35,7 +35,6 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
     return (
       <header className={styles.header}>
         <div className={styles.mobileInner}>
-
           <div className={styles.inner}>
             <Link href="/">
               <img src="/favicon.ico" alt="Blog Logo" className={styles.logo} />
@@ -61,7 +60,9 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
                 <>
                   <UserIconButton
                     userId={
-                      authUser?.userId ? parseInt(authUser.userId, 10) : undefined
+                      authUser?.userId
+                        ? parseInt(authUser.userId, 10)
+                        : undefined
                     }
                     imagePath={authUser?.imagePath || null}
                   />
@@ -87,7 +88,6 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
               />
             </form>
           )}
-
         </div>
 
         <NavigationMenu links={links} />

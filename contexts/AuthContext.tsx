@@ -4,7 +4,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { UserPayload } from "../types/auth";
 
-
 type AuthContextType = {
   user: UserPayload | null;
   isAuthenticated: boolean;

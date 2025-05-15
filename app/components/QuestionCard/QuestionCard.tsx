@@ -34,17 +34,23 @@ export const QuestionCard = ({
   votes?: VoteMap;
   setVotes?: (votes: VoteMap) => void;
 }) => {
-
   const queryParams = query ? Object.fromEntries(query.entries()) : {};
 
-  const QuestionCardContent = ({ question, linkDisabled, }:
-    { question: QuestionWithUserAndTags; linkDisabled: boolean; }) => {
+  const QuestionCardContent = ({
+    question,
+    linkDisabled,
+  }: {
+    question: QuestionWithUserAndTags;
+    linkDisabled: boolean;
+  }) => {
     return (
       <div
         className={[
           linkDisabled ? styles.LinkDisabledQuestionCard : styles.questionCard,
-          bestAnswerId ? styles.bestAnswer : ""
-        ].filter(Boolean).join(" ")}
+          bestAnswerId ? styles.bestAnswer : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
       >
         {question.isDraft && (
           <div className={styles.draftBadge}>
@@ -107,7 +113,6 @@ export const QuestionCard = ({
               />
             </div>
           )}
-
         </div>
       </div>
     );

@@ -23,8 +23,10 @@ export const AnswerTop = ({
         <AnswerButton setOpen={setOpen} isUser={isUser} />
       </div>
       <div>
-        <CommentButton setCommentButtonClick={setCommentButtonClick}
-          isDraft={isDraft} />
+        <CommentButton
+          setCommentButtonClick={setCommentButtonClick}
+          isDraft={isDraft}
+        />
       </div>
     </div>
   );

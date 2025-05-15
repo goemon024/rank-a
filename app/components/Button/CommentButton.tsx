@@ -17,18 +17,19 @@ const CommentButton = ({
     setCommentButtonClick();
   };
   return (
-
     <button
       onClick={() => handleClick()}
       className={
-        !isAuthenticated ? styles.commentDisabledButton :
-          isDraft ? styles.commentDisabledButton : styles.commentButton
+        !isAuthenticated
+          ? styles.commentDisabledButton
+          : isDraft
+            ? styles.commentDisabledButton
+            : styles.commentButton
       }
       disabled={!isAuthenticated || isDraft}
     >
       コメントを投稿
     </button>
-
   );
 };
 

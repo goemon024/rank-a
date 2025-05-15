@@ -4,17 +4,16 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'jnpxbqroccjpcvlofztq.supabase.co',
-        pathname: '/**',
-      }
-    ]
+        protocol: "https",
+        hostname: "jnpxbqroccjpcvlofztq.supabase.co",
+        pathname: "/**",
+      },
+    ],
   },
   /* config options here */
 };
 
 export default nextConfig;
-
 
 // import type { NextConfig } from "next";
 
@@ -29,4 +28,3 @@ export default nextConfig;
 // };
 
 // export default nextConfig;
-

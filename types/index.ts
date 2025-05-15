@@ -1,6 +1,5 @@
 import { Question, Answer, QuestionTag, Comment, Vote } from "@prisma/client";
 
-
 export type QuestionWithUserAndTags = Question & {
   user: {
     username: string;
@@ -47,7 +46,6 @@ export type VoteWithQuestion = Vote & {
     questionId: number;
   };
 };
-
 
 // 投票サマリー
 // userVote:アクセスユーザがupかdownか

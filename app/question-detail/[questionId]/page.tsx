@@ -9,7 +9,7 @@ import {
   QuestionWithUserAndTags,
   AnswerWithUser,
   CommentWithUser,
-  VoteMap
+  VoteMap,
 } from "@/types";
 // import { LINKS_HOME } from "@/constants";
 import { useParams } from "next/navigation";
@@ -75,11 +75,14 @@ export default function QuestionDetail() {
         setVotes(voteMap);
 
         // questionの投票数を取得
-        const votesQuestionRes = await fetch(`/api/votesQuestion?questionId=${questionId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+        const votesQuestionRes = await fetch(
+          `/api/votesQuestion?questionId=${questionId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+            },
           },
-        });
+        );
         const voteMapQuestion = (await votesQuestionRes.json()) as VoteMap;
         setVotesQuestion(voteMapQuestion);
 
@@ -92,7 +95,6 @@ export default function QuestionDetail() {
         };
         setComments(commentList);
         setIsLoading(false);
-
       } catch (error) {
         setError(error as string);
         router.push("/");
@@ -100,7 +102,6 @@ export default function QuestionDetail() {
     };
     fetchQuestion();
   }, [questionId]);
-
 
   if (error) return null;
   if (!question) return null;

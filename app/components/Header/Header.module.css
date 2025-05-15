@@ -147,8 +147,6 @@
   border-radius: 3px;
 }
 
-
-
 .searchIconButton1 {
   height: 2.5rem;
   width: 2.5rem;
@@ -217,10 +215,7 @@
     gap: 5px;
     max-width: 150px;
     height: 80%;
-
   }
-
-
 
   .signinHeader,
   .profileLink,
@@ -275,5 +270,4 @@
       font-size: 11px;
     }
   }
-
 }
