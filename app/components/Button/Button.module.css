@@ -85,7 +85,31 @@
   cursor: pointer;
 }
 
+.bookmark {
+  font-size: 1.0rem;
+  color: #ff8833;
+  border: solid 1px #ff8833;
+  background-color: transparent;
+  cursor: pointer;
+  margin-left: auto;
+  text-decoration: underline;
+  font-weight: bold;
+  pointer-events: auto;
+  padding: 1px;
+}
+
+.unbookmark {
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  border: solid 1px #444444;
+  cursor: pointer;
+  background-color: transparent;
+  pointer-events: auto;
+  padding: 1px;
+}
+
 @media (max-width: 476px) {
+
   .postButton,
   .postButtonDisabled {
     width: 135px;

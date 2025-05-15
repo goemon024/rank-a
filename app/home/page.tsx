@@ -1,6 +1,7 @@
 import Home from "./home";
 import { QuestionWithUserAndTags } from "@/types";
 
+
 const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
     [key: string]: string | string[] | undefined;
   }>;
 }
+
 
 export default async function Page({ searchParams }: Props) {
   const params = await searchParams;
@@ -17,6 +19,8 @@ export default async function Page({ searchParams }: Props) {
   const sort = typeof params.sort === "string" ? params.sort : "newest";
   const tags = typeof params.tags === "string" ? params.tags : "";
   const filter = typeof params.filter === "string" ? params.filter : "";
+  const userId = typeof params.userId === "string" ? params.userId : "";
+
 
   const queryParams = new URLSearchParams({
     page,
@@ -25,6 +29,7 @@ export default async function Page({ searchParams }: Props) {
     sort,
     tags,
     filter,
+    userId
   }).toString();
 
   const res = await fetch(`${BASE_URL}/api/questions?${queryParams}`, {

@@ -73,3 +73,14 @@ export type JwtPayload = {
   imagePath: string | null;
   exp?: number; // トークンの有効期限
 };
+
+export type Bookmark = {
+  id: number;
+  questionId: number;
+  userId: number;
+};
+
+export type UserBookmarks = {
+  questionId: number;
+  bookmarkId: number | null;
+}

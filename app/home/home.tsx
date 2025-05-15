@@ -8,13 +8,14 @@ import { Pagination } from "../components/pagination/pagination";
 import PostButton from "../components/Button/PostButton";
 import { LINKS_HOME } from "@/constants";
 import { Footer } from "../components/Footer/Footer";
-import { QuestionWithUserAndTags } from "@/types";
+import { QuestionWithUserAndTags, Bookmark } from "@/types";
 
 interface HomeProps {
   questions: QuestionWithUserAndTags[];
   currentPage: number;
   totalPages: number;
   keyword: string;
+  userbookmarks?: Bookmark[];
 }
 
 export default function Home({

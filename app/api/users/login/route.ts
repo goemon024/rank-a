@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sanitizeInput } from "@/utils/sanitize";
 import { signinSchema } from "@/schemas/signinSchema";
+// import { serialize } from "cookie";
 
 // ログイン試行回数を追跡するための簡易的なメモリストア
 const loginAttempts = new Map<string, { count: number; lastAttempt: number }>();
@@ -91,6 +92,19 @@ export async function POST(req: Request) {
       JWT_SECRET,
       { expiresIn: "3h" },
     );
+
+    // Cookieをセット
+    // const response = NextResponse.json({ success: true, user });
+    // response.headers.set(
+    //   "Set-Cookie",
+    //   serialize("token", token, {
+    //     httpOnly: true,
+    //     path: "/",
+    //     maxAge: 60 * 60 * 24 * 7, // 1 week
+    //     sameSite: "lax",
+    //     secure: process.env.NODE_ENV === "production",
+    //   })
+    // );
 
     return NextResponse.json({ token }, { status: 200 });
   } catch (error) {

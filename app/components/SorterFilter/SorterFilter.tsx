@@ -8,10 +8,11 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function SorterFilter() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user: authUser } = useAuth();
   const searchParams = useSearchParams();
   const [sort, setSort] = useState(searchParams.get("sort") || "newer");
   const [filter, setFilter] = useState(searchParams.get("filter") || "");
+
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newSort = e.target.value;
@@ -25,9 +26,13 @@ export default function SorterFilter() {
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newFilter = e.target.value;
     setFilter(newFilter);
+
     const params = new URLSearchParams(searchParams.toString());
     params.set("filter", newFilter);
     params.set("page", "1"); // ページもリセット
+    if (newFilter === "bookmarked") {
+      params.set("userId", String(authUser?.userId) || "");
+    }
     router.push(`?${params.toString()}`);
   };
 
@@ -64,8 +69,16 @@ export default function SorterFilter() {
         <option value="oneWeek">１週間以内の質問</option>
         <option value="havingAnswer">回答ありの質問</option>
         {isAuthenticated && (
+          <option value="bookmarked">ブックマーク済みの質問</option>
+        )}
+        {isAuthenticated && (
           <option value="notHavingAnswer">回答無しの質問</option>
         )}
+        {isAuthenticated && (
+          <option value="user">自分の質問</option>
+        )}
+
+
       </select>
       <p>タグ</p>
       <TagSelector onChange={handleTagChange} />

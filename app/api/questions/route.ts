@@ -19,14 +19,15 @@ export async function GET(req: NextRequest) {
     const userId = parseInt(searchParams.get("userId") || "0", 10);
     const isDraft = searchParams.get("isDraft") || "false";
 
-    console.log("searchParams", searchParams.toString());
-    console.log(searchParams.get("filter"));
+    console.log("req.url:", req.url);
+    console.log("searchParams:", searchParams.toString());
+    console.log("userId param:", searchParams.get("userId"));
 
     const tagIds = tagParam
       ? tagParam
-          .split(",")
-          .map((id) => parseInt(id, 10))
-          .filter((id) => !isNaN(id))
+        .split(",")
+        .map((id) => parseInt(id, 10))
+        .filter((id) => !isNaN(id))
       : [];
 
     const orderBy =
@@ -110,6 +111,14 @@ export async function GET(req: NextRequest) {
           equals: 0,
         },
       });
+    } else if (filter === "bookmarked") {
+      conditions.push({
+        bookmark: {
+          some: {
+            userId: userId,
+          },
+        },
+      });
     }
 
     // tagIds がある場合の条件
@@ -142,9 +151,9 @@ export async function GET(req: NextRequest) {
             select: { answers: true },
           },
         },
+        orderBy,
         skip,
         take: limit,
-        orderBy,
       }),
       prisma.question.count({
         where: whereClause,

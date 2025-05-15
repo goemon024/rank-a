@@ -7,9 +7,10 @@ import { Stack, Chip } from "@mui/material";
 import Link from "next/link";
 import { QuestionWithUserAndTags } from "@/types";
 import Vote from "../Vote/Vote";
+import BookmarkButton from "../Button/BookmarkButton";
 
 import dayjs from "dayjs";
-import { VoteMap } from "@/types";
+import { VoteMap, UserBookmarks } from "@/types";
 
 import DOMPurify from "isomorphic-dompurify";
 import { marked } from "marked";
@@ -24,6 +25,7 @@ export const QuestionCard = ({
   questionVoteDisplay = false,
   votes,
   setVotes,
+  bookmark,
 }: {
   question: QuestionWithUserAndTags;
   linkDisabled?: boolean;
@@ -33,16 +35,20 @@ export const QuestionCard = ({
   questionVoteDisplay?: boolean;
   votes?: VoteMap;
   setVotes?: (votes: VoteMap) => void;
+  bookmark?: UserBookmarks;
 }) => {
   const queryParams = query ? Object.fromEntries(query.entries()) : {};
 
   const QuestionCardContent = ({
     question,
     linkDisabled,
+    bookmark,
   }: {
     question: QuestionWithUserAndTags;
     linkDisabled: boolean;
+    bookmark?: UserBookmarks;
   }) => {
+
     return (
       <div
         className={[
@@ -62,6 +68,13 @@ export const QuestionCard = ({
           <div className={styles.solvedBadge}>
             <h4>-- 解決済み --</h4>
           </div>
+        )}
+
+        {bookmark !== null && bookmark !== undefined && (
+          <BookmarkButton
+            questionId={question.id}
+            bookmark={bookmark}
+          />
         )}
 
         <h2
@@ -119,7 +132,7 @@ export const QuestionCard = ({
   };
 
   return linkDisabled ? (
-    <QuestionCardContent question={question} linkDisabled={true} />
+    <QuestionCardContent question={question} linkDisabled={true} bookmark={bookmark} />
   ) : (
     <Link
       href={{
@@ -127,7 +140,7 @@ export const QuestionCard = ({
         query: queryParams,
       }}
     >
-      <QuestionCardContent question={question} linkDisabled={false} />
+      <QuestionCardContent question={question} linkDisabled={false} bookmark={bookmark} />
     </Link>
   );
 };

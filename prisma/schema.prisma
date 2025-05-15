@@ -21,6 +21,7 @@ model User {
   comments     Comment[]
   questions    Question[]
   votes        Vote[]
+  bookmark     Bookmark[]
   voteQuestion VoteQuestion[]
 
   @@map("User")
@@ -40,6 +41,7 @@ model Question {
   answers      Answer[]      @relation("AllAnswers")
   comments     Comment[]
   voteQuestion VoteQuestion[]
+  bookmark     Bookmark[]
   answer       Answer?       @relation("BestAnswer", fields: [bestAnswerId], references: [id])
   user         User          @relation(fields: [userId], references: [id])
   questionTags QuestionTag[]
@@ -86,6 +88,16 @@ model VoteQuestion {
   @@map("VoteQuestion")
 }
 
+model Bookmark {
+  id              Int       @id @default(autoincrement())
+  questionId      Int       @map("question_id")
+  userId          Int       @map("user_id")
+  question        Question  @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  user            User      @relation(fields: [userId], references: [id])
+
+  @@unique([questionId, userId])
+  @@map("Bookmark")
+}
 
 
 model Tag {
