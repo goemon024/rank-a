@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import NavigationMenu from "./NavigationMenu";
