@@ -13,7 +13,6 @@ import { NavLinks } from "@/types";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { usePathname } from "next/navigation";
-import debounce from "lodash.debounce";
 import LoadingModal from "../LoadingModal/LoadingModal";
 
 export const Header = ({ links }: { links: NavLinks[] }) => {
@@ -36,8 +35,6 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
     router.push(`?${params.toString()}`);
     setIsLoading(false);
   };
-
-  const debouncedSearch = useCallback(debounce(handleSearch, 300), []);
 
   try {
     return (
