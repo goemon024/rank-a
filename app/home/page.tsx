@@ -16,7 +16,7 @@ export default async function Page({ searchParams }: Props) {
   const page = typeof params.page === "string" ? params.page : "1";
   const limit = typeof params.limit === "string" ? params.limit : "10";
   const keyword = typeof params.keyword === "string" ? params.keyword : "";
-  const sort = typeof params.sort === "string" ? params.sort : "newest";
+  const sort = typeof params.sort === "string" ? params.sort : "newer";
   const tags = typeof params.tags === "string" ? params.tags : "";
   const filter = typeof params.filter === "string" ? params.filter : "";
   const userId = typeof params.userId === "string" ? params.userId : "";
@@ -28,8 +28,8 @@ export default async function Page({ searchParams }: Props) {
     keyword,
     sort,
     tags,
-    filter,
-    userId
+    userId,
+    filter
   }).toString();
 
   const res = await fetch(`${BASE_URL}/api/questions?${queryParams}`, {

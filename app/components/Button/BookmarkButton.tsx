@@ -45,8 +45,9 @@ export default function BookmarkButton({ questionId, bookmark }: Props) {
             // setIsBookmarked(!isBookmarked);
         } catch (err) {
             console.error(err);
+            // eslint-disable-next-line no-alert
+            console.log('ブックマークに失敗しました');
             setIsBookmarked(isBookmarked);
-            alert('ブックマークに失敗しました');
         } finally {
             setLoading(false);
         }

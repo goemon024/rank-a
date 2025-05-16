@@ -10,7 +10,15 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
     const page = parseInt(searchParams.get("page") || "1", 10);
+    if (isNaN(page) || page < 1) {
+      return NextResponse.json({ error: "pageは1以上の整数で指定してください" }, { status: 400 });
+    }
+
     const limit = parseInt(searchParams.get("limit") || "10", 10);
+    if (isNaN(limit) || limit < 1 || limit > 100) {
+      return NextResponse.json({ error: "limitは1〜100の整数で指定してください" }, { status: 400 });
+    }
+
     const keyword = searchParams.get("keyword") || "";
     const tagParam = searchParams.get("tags") || "";
     const sort = searchParams.get("sort") || "newer";
@@ -30,6 +38,12 @@ export async function GET(req: NextRequest) {
         .filter((id) => !isNaN(id))
       : [];
 
+    // const allowedSorts = ["newer", "older", "score", "upvote", "answerCount"];
+    // if (!allowedSorts.includes(sort)) {
+    //   return NextResponse.json({ error: "sortの値が不正です" }, { status: 400 });
+    // }
+    console.log("sort:", sort);
+
     const orderBy =
       sort === "older"
         ? { createdAt: "asc" as const }
@@ -41,20 +55,13 @@ export async function GET(req: NextRequest) {
               ? { answerCount: "desc" as const }
               : { createdAt: "desc" as const };
 
-    if (page < 1 || limit < 1 || limit > 100) {
-      return NextResponse.json(
-        { error: "Invalid pagination parameters" },
-        { status: 400 },
-      );
-    }
-
     const conditions: Prisma.QuestionWhereInput[] = [];
 
-    if (userId) {
-      conditions.push({
-        userId: userId,
-      });
-    }
+    // if (userId) {
+    //   conditions.push({
+    //     userId: userId,
+    //   });
+    // }
 
     if (isDraft === "true") {
       conditions.push({
@@ -112,12 +119,19 @@ export async function GET(req: NextRequest) {
         },
       });
     } else if (filter === "bookmarked") {
+      // if (!userId) {
+      //   return NextResponse.json({ error: "bookmarkedフィルタにはuserIdが必要です" }, { status: 400 });
+      // }
       conditions.push({
         bookmark: {
           some: {
             userId: userId,
           },
         },
+      });
+    } else if (filter === "user") {
+      conditions.push({
+        userId: userId,
       });
     }
 

@@ -30,8 +30,10 @@ export default function SorterFilter() {
     const params = new URLSearchParams(searchParams.toString());
     params.set("filter", newFilter);
     params.set("page", "1"); // ページもリセット
-    if (newFilter === "bookmarked") {
+    if (newFilter === "bookmarked" || newFilter === "user") {
       params.set("userId", String(authUser?.userId) || "");
+    } else {
+      params.delete("userId");
     }
     router.push(`?${params.toString()}`);
   };
