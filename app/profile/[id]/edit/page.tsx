@@ -14,7 +14,7 @@ import ChangePasswordModal from "./ChangePasswordModal";
 import { imageUploadSchema } from "@/schemas/imageUploadSchema";
 import { profileSchema } from "@/schemas/profileSchema";
 
-export default function ProfilePage() {
+export default function ProfileEditPage() {
   const params = useParams();
   const userId = params.id as string;
   const router = useRouter();
@@ -26,7 +26,10 @@ export default function ProfilePage() {
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  const links = getLinksProfile(userId, String(authUser?.userId) === userId);
+  const links = getLinksProfile(
+    userId,
+    String(authUser?.userId) === userId
+  );
 
   // const [loading, setLoading] = useState(true)
   // const [error, setError] = useState<string | null>(null)

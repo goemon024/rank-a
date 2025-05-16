@@ -5,6 +5,7 @@ import { commentSchema } from "@/schemas/commentSchema";
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key"; // .envで設定しておく
 
+
 export async function POST(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
 
@@ -36,6 +37,16 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    // 質問を取得して質問者のIDを特定
+    const question = await prisma.question.findUnique({
+      where: { id: parseInt(questionId, 10) },
+      select: { userId: true },
+    });
+
+    if (!question) {
+      return NextResponse.json({ error: "Question not found" }, { status: 404 });
+    }
+
     const comment = await prisma.comment.create({
       data: {
         questionId: parseInt(questionId, 10),
@@ -44,6 +55,18 @@ export async function POST(req: NextRequest) {
         content: content,
       },
     });
+
+    if (question.userId !== payload.userId) {
+      await prisma.notification.create({
+        data: {
+          userId: question.userId,
+          type: "comment",
+          entityId: comment.id,
+          questionId: parseInt(questionId, 10),
+        },
+      });
+    }
+
     return NextResponse.json(comment, { status: 201 });
   } catch (error) {
     console.error(error);

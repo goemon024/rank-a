@@ -27,9 +27,9 @@ export async function GET(req: NextRequest) {
     const userId = parseInt(searchParams.get("userId") || "0", 10);
     const isDraft = searchParams.get("isDraft") || "false";
 
-    console.log("req.url:", req.url);
-    console.log("searchParams:", searchParams.toString());
-    console.log("userId param:", searchParams.get("userId"));
+    // console.log("req.url:", req.url);
+    // console.log("searchParams:", searchParams.toString());
+    // console.log("userId param:", searchParams.get("userId"));
 
     const tagIds = tagParam
       ? tagParam
@@ -57,6 +57,11 @@ export async function GET(req: NextRequest) {
 
     const conditions: Prisma.QuestionWhereInput[] = [];
 
+    if (filter === "" && userId) {
+      conditions.push({
+        userId: userId,
+      });
+    }
     // if (userId) {
     //   conditions.push({
     //     userId: userId,
@@ -119,9 +124,6 @@ export async function GET(req: NextRequest) {
         },
       });
     } else if (filter === "bookmarked") {
-      // if (!userId) {
-      //   return NextResponse.json({ error: "bookmarkedフィルタにはuserIdが必要です" }, { status: 400 });
-      // }
       conditions.push({
         bookmark: {
           some: {

@@ -21,6 +21,7 @@ export default function UserCommentsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [userImagePath, setUserImagePath] = useState<string | null>(null);
   const { user: authUser } = useAuth();
+
   const links = getLinksProfile(
     String(userId),
     String(authUser?.userId) === String(userId),

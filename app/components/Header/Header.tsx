@@ -86,7 +86,7 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
             {pathname === "/home" && (
               <form className={styles.searchForm2} onSubmit={handleSearch}>
                 <button type="submit" className={styles.searchIconButton2}>
-                  ボタン
+                  🔍
                 </button>
                 <input
                   className={styles.searchWrapper2}

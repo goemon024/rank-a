@@ -23,9 +23,24 @@ model User {
   votes        Vote[]
   bookmark     Bookmark[]
   voteQuestion VoteQuestion[]
+  notification Notification[]
 
   @@map("User")
 }
+
+
+model Notification {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @map("user_id")
+  type       String
+  entityId   Int      @map("entry_id")
+  questionId Int      @map("question_id")
+  isRead     Boolean  @default(false) @map("is_read")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user       User     @relation(fields: [userId], references: [id])
+}
+
 
 model Question {
   title        String

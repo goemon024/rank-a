@@ -28,6 +28,7 @@ export const getLinksProfile = (
   if (isOwer) {
     return [
       { label: "プロフィール", href: `/profile/${userId}` },
+      { label: "ブックマーク", href: `/home?filter=bookmarked&userId=${userId}` },
       { label: "下書き一覧", href: `/profile/${userId}/drafts` },
       { label: "質問履歴", href: `/profile/${userId}/questions` },
       { label: "回答履歴", href: `/profile/${userId}/answers` },

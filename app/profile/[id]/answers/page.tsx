@@ -12,7 +12,7 @@ import dayjs from "dayjs";
 import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 import { useAuth } from "@/contexts/AuthContext";
 
-export default function UserCommentsPage() {
+export default function UserAnswersPage() {
   const params = useParams();
   const userId = parseInt(params.id as string);
   const [answers, setAnswers] = useState<AnswerWithUserAndQuestion[]>([]);

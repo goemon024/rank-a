@@ -23,6 +23,7 @@ export default function DraftPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   const { user: authUser } = useAuth();
+
   const links = getLinksProfile(
     String(userId),
     String(authUser?.userId) === String(userId),
@@ -39,7 +40,7 @@ export default function DraftPage() {
     console.log(userIdFromToken, userId);
 
     const fetchQuestions = async () => {
-      const res = await fetch(`/api/questions?isDraft=true&userId=${userId}`, {
+      const res = await fetch(`/api/questions?isDraft=true&userId=${userId}&limit=100`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

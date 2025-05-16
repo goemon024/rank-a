@@ -84,3 +84,12 @@ export type UserBookmarks = {
   questionId: number;
   bookmarkId: number | null;
 }
+
+export type Notification = {
+  id: number;
+  userId: number;
+  questionId: number;
+  type: "answer" | "comment";
+  isRead: boolean;
+}
+

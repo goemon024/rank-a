@@ -39,6 +39,17 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    // 質問を取得して質問者のIDを特定
+    const question = await prisma.question.findUnique({
+      where: { id: parseInt(questionId, 10) },
+      select: { userId: true },
+    });
+
+    if (!question) {
+      return NextResponse.json({ error: "Question not found" }, { status: 404 });
+    }
+
+    // 回答を作成
     const answer = await prisma.answer.create({
       data: {
         questionId: parseInt(questionId, 10),
@@ -46,6 +57,19 @@ export async function POST(req: NextRequest) {
         content: content,
       },
     });
+
+    // 回答を作成したユーザーに通知を作成
+    if (question.userId !== payload.userId) {
+      await prisma.notification.create({
+        data: {
+          userId: question.userId,
+          type: "answer",
+          entityId: answer.id,
+          questionId: parseInt(questionId, 10),
+        },
+      });
+    }
+
     return NextResponse.json(answer, { status: 201 });
   } catch (error) {
     console.error(error);
