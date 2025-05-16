@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Rank A 課題提出
 
-## Getting Started
+#### １．主要技術    
+- フロントエンド：Next.js(App Router,TypeScript,React 19),JWT(localStorageで管理)
+- バックエンド：Next.js(API Route),Prisma,JWT,Zod
+- データベース：supabase
 
-First, run the development server:
+#### ２．概説  
+　いただいた仕様書に沿って開発するとともに、全体的な調和や使い勝手を考慮してエンジニアブログを完成させました。この際、仕様書のphase2に記載の各種の機能（ブックマーク機能や、回答・コメントの通知システムなど）を実現するべく、当方でデータモデルを新設するなどして開発をしました。
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+#### ３．データモデル
+・bookmark
+・VoteQuestion（質問のいいね機能を実現）
+・Notification  
+を新設。
+　またQuestionモデルではsortやfilter機能を実現するため、score,answerCount,upvoteCountのフィールドを追加しました。これらのフィールドはgithub/workflowで1日2回スケジュール更新されます。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### ４．ヘッダーのナビゲーションメニュー  
+- トップページ（＝新規質問一覧）  
+ログイン後は、新規質問一覧、人気質問一覧、プロフィールへのリンクが表示。
+- 質問詳細ページ  
+ログイン後は、ＴＯＰに戻る、プロフィールへのリンクが表示。
+- プロフィールページ
+ログイン前は、プロフィール、質問履歴、コメント履歴へのリンクが表示。  
+ログイン後は、さらに、ブックマーク、下書き一覧が表示。なお質問履歴にて、新規回答やコメント通知機能を実装。またプロフィール内の編集ボタンにて、プロフィール編集が可能。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### ５．その他ページ遷移
+　左上のロゴからはトップページに遷移。右上の円形ユーザーアイコンや質問・回答カード内の円形アイコンからは、ユーザプロフィール画面に遷移。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### ６．質問詳細ページ  
+　質問に対して複数の回答が寄せられ、質問自体や各回答にコメントを付与できます。ただし質問や回答の編集削除については、無制限に許容すると掲示板秩序が崩れる可能性があるため、下記のようなコンセプトで機能を儲けています。
+- 質問：下書き機能があるため公開後の編集削除は不可。
+- 回答：いいね、コメントがない状態で編集削除が可能。
+- コメント：いつでも削除可。
 
-## Learn More
+#### ７．いいね機能  
+いいね、と、よくないね、を設けています。
+回答は、いいね数が多い順に整列されるように実装。
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### ８．ベストアンサー機能  
+　質問者がベストアンサーを設定すると、「解決済み」の質問となります。
+questionカードがピンク色に表示され、ベストアンサーに設定された回答は一番上位に配置されます。

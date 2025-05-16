@@ -4,7 +4,6 @@ on:
   schedule:
     - cron: "35 6 * * *" # 毎日6時半に実行
     - cron: "35 18 * * *" # 毎日18時半に実行
-    - cron: "18 18 * * *" # 毎日0時半に実行
 
 jobs:
   update-scores:

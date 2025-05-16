@@ -28,9 +28,6 @@ export default function ProfileEditPage() {
 
   const links = getLinksProfile(userId, String(authUser?.userId) === userId);
 
-  // const [loading, setLoading] = useState(true)
-  // const [error, setError] = useState<string | null>(null)
-
   useEffect(() => {
     if (!authUser || String(authUser?.userId) !== userId) {
       router.push("/home");
