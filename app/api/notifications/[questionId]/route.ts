@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key";
 
-
 export async function PUT(req: NextRequest) {
     try {
         // URLからquestionIdを抽出
@@ -13,18 +12,20 @@ export async function PUT(req: NextRequest) {
         const questionId = parseInt(pathParts.pop() || "", 10);
 
         if (isNaN(questionId)) {
-            return NextResponse.json({ error: "Invalid questionId" }, { status: 400 });
+            return NextResponse.json(
+                { error: "Invalid questionId" },
+                { status: 400 },
+            );
         }
 
         const authHeader = req.headers.get("authorization");
-        const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
+        const token = authHeader?.startsWith("Bearer ")
+            ? authHeader.split(" ")[1]
+            : null;
 
         if (!token) {
             return NextResponse.json({ error: "Missing token" }, { status: 401 });
         }
-
-        const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
-        const userId = decoded.userId;
 
         // 通知を既読化
         const result = await prisma.notification.updateMany({
@@ -40,6 +41,9 @@ export async function PUT(req: NextRequest) {
         return NextResponse.json({ success: true, updated: result.count });
     } catch (err) {
         console.error("通知更新エラー:", err);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 },
+        );
     }
 }

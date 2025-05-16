@@ -83,7 +83,7 @@ export type Bookmark = {
 export type UserBookmarks = {
   questionId: number;
   bookmarkId: number | null;
-}
+};
 
 export type Notification = {
   id: number;
@@ -91,5 +91,4 @@ export type Notification = {
   questionId: number;
   type: "answer" | "comment";
   isRead: boolean;
-}
-
+};

@@ -24,7 +24,7 @@ export const QuestionArea = ({
     const questionIdsString = questionIds.join(",");
     const params = new URLSearchParams({
       questionIds: questionIdsString,
-      userId: authUser?.userId || ""
+      userId: authUser?.userId || "",
     });
     const url = `/api/bookmarks?${params.toString()}`;
 
@@ -33,8 +33,8 @@ export const QuestionArea = ({
         const res = await fetch(url, {
           method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
           },
         });
 
@@ -63,8 +63,10 @@ export const QuestionArea = ({
             query={searchParams}
             bestAnswerId={question.bestAnswerId}
             answerCountDisplay={true}
-            bookmark={userBookmarks.find((bookmark) => bookmark.questionId === question.id)}
-          // 一致するものがあれば{qeusionId,bookmarkId}を返す。なければundefiendかnullが返る。
+            bookmark={userBookmarks.find(
+              (bookmark) => bookmark.questionId === question.id,
+            )}
+            // 一致するものがあれば{qeusionId,bookmarkId}を返す。なければundefiendかnullが返る。
           />
         ))
       )}

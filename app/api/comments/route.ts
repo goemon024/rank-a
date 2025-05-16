@@ -5,7 +5,6 @@ import { commentSchema } from "@/schemas/commentSchema";
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key"; // .envで設定しておく
 
-
 export async function POST(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
 
@@ -44,7 +43,10 @@ export async function POST(req: NextRequest) {
     });
 
     if (!question) {
-      return NextResponse.json({ error: "Question not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Question not found" },
+        { status: 404 },
+      );
     }
 
     const comment = await prisma.comment.create({

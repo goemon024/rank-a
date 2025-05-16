@@ -13,7 +13,6 @@ export default function SorterFilter() {
   const [sort, setSort] = useState(searchParams.get("sort") || "newer");
   const [filter, setFilter] = useState(searchParams.get("filter") || "");
 
-
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newSort = e.target.value;
     setSort(newSort);
@@ -76,11 +75,7 @@ export default function SorterFilter() {
         {isAuthenticated && (
           <option value="notHavingAnswer">回答無しの質問</option>
         )}
-        {isAuthenticated && (
-          <option value="user">自分の質問</option>
-        )}
-
-
+        {isAuthenticated && <option value="user">自分の質問</option>}
       </select>
       <p>タグ</p>
       <TagSelector onChange={handleTagChange} />

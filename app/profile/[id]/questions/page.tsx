@@ -40,7 +40,9 @@ export default function UserQuestionsPage() {
 
         const data = await res.json();
         setQuestions(data.questions);
-        const questionIds = data.questions.map((question: QuestionWithUserAndTags) => question.id);
+        const questionIds = data.questions.map(
+          (question: QuestionWithUserAndTags) => question.id,
+        );
 
         if (questionIds.length > 0) {
           const params = new URLSearchParams({
@@ -73,15 +75,19 @@ export default function UserQuestionsPage() {
     fetchQuestions();
   }, []);
 
-  const handleCardClick = async (question: QuestionWithUserAndTags) => {
+  const handleCardClick = async (question: QuestionWithUserAndTags, isUnread: boolean) => {
     try {
-      await fetch(`/api/notifications/${question.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // 認証が必要なら追加
-        },
-      });
+      if (isUnread) {
+        await fetch(`/api/notifications/${question.id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // 認証が必要なら追加
+          },
+        });
+      }
+
+
     } catch (err) {
       console.log(err);
     } finally {
@@ -106,16 +112,17 @@ export default function UserQuestionsPage() {
           <p>質問の投稿はありません。</p>
         ) : (
           questions.map((q: QuestionWithUserAndTags) => {
-
             const isUnread = notifications.some(
-              (n) => String(q.id) === String(n.questionId) && !n.isRead
+              (n) => String(q.id) === String(n.questionId) && !n.isRead,
             );
 
             return (
               <div
                 key={q.id}
-                className={isUnread ? styles.unreadQuestionCard : styles.questionCard}
-                onClick={() => handleCardClick(q)}
+                className={
+                  isUnread ? styles.unreadQuestionCard : styles.questionCard
+                }
+                onClick={() => handleCardClick(q, isUnread)}
                 style={{ cursor: "pointer" }}
               >
                 <div className={styles.questionHeader}>
@@ -124,9 +131,7 @@ export default function UserQuestionsPage() {
                       --新規回答・コメントあり--
                     </span>
                   )}
-                  <p className={styles.questionTitle}>
-                    {q.title}
-                  </p>
+                  <p className={styles.questionTitle}>{q.title}</p>
                 </div>
                 <p className={styles.questionTime}>
                   {dayjs(q.createdAt).format("YYYY/MM/DD")}
@@ -136,8 +141,6 @@ export default function UserQuestionsPage() {
             );
           })
         )}
-
-
 
         {/* <div
             key={q.id}

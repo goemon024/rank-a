@@ -10,7 +10,9 @@ export async function GET(req: NextRequest) {
 
     // 🔐 Authorizationヘッダーの取得とJWT解析
     const authHeader = req.headers.get("authorization");
-    const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
+    const token = authHeader?.startsWith("Bearer ")
+        ? authHeader.split(" ")[1]
+        : null;
 
     if (!token) {
         return NextResponse.json({ error: "Missing token" }, { status: 401 });
@@ -22,6 +24,7 @@ export async function GET(req: NextRequest) {
         const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
         userId = decoded.userId;
     } catch (err) {
+        console.log(err);
         return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
@@ -60,6 +63,9 @@ export async function GET(req: NextRequest) {
         return NextResponse.json(notifications, { status: 200 });
     } catch (error) {
         console.error("Failed to fetch notifications:", error);
-        return NextResponse.json({ error: "Failed to fetch notifications" }, { status: 500 });
+        return NextResponse.json(
+            { error: "Failed to fetch notifications" },
+            { status: 500 },
+        );
     }
 }

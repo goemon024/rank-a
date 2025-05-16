@@ -25,7 +25,6 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-
     e.preventDefault();
     setIsLoading(true);
     const keyword = inputRef.current?.value || "";
@@ -44,7 +43,11 @@ export const Header = ({ links }: { links: NavLinks[] }) => {
           <div className={styles.mobileInner}>
             <div className={styles.inner}>
               <Link href="/">
-                <img src="/favicon.ico" alt="Blog Logo" className={styles.logo} />
+                <img
+                  src="/favicon.ico"
+                  alt="Blog Logo"
+                  className={styles.logo}
+                />
               </Link>
 
               {pathname === "/home" && (

@@ -11,12 +11,18 @@ export async function GET(req: NextRequest) {
 
     const page = parseInt(searchParams.get("page") || "1", 10);
     if (isNaN(page) || page < 1) {
-      return NextResponse.json({ error: "pageは1以上の整数で指定してください" }, { status: 400 });
+      return NextResponse.json(
+        { error: "pageは1以上の整数で指定してください" },
+        { status: 400 },
+      );
     }
 
     const limit = parseInt(searchParams.get("limit") || "10", 10);
     if (isNaN(limit) || limit < 1 || limit > 100) {
-      return NextResponse.json({ error: "limitは1〜100の整数で指定してください" }, { status: 400 });
+      return NextResponse.json(
+        { error: "limitは1〜100の整数で指定してください" },
+        { status: 400 },
+      );
     }
 
     const keyword = searchParams.get("keyword") || "";
@@ -33,9 +39,9 @@ export async function GET(req: NextRequest) {
 
     const tagIds = tagParam
       ? tagParam
-        .split(",")
-        .map((id) => parseInt(id, 10))
-        .filter((id) => !isNaN(id))
+          .split(",")
+          .map((id) => parseInt(id, 10))
+          .filter((id) => !isNaN(id))
       : [];
 
     // const allowedSorts = ["newer", "older", "score", "upvote", "answerCount"];

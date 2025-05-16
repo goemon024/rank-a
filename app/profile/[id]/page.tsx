@@ -17,10 +17,7 @@ export default function ProfilePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
-  const links = getLinksProfile(
-    userId,
-    String(authUser?.userId) === userId
-  );
+  const links = getLinksProfile(userId, String(authUser?.userId) === userId);
 
   useEffect(() => {
     const fetchUser = async () => {

@@ -48,7 +48,6 @@ export const QuestionCard = ({
     linkDisabled: boolean;
     bookmark?: UserBookmarks;
   }) => {
-
     return (
       <div
         className={[
@@ -71,10 +70,7 @@ export const QuestionCard = ({
         )}
 
         {bookmark !== null && bookmark !== undefined && (
-          <BookmarkButton
-            questionId={question.id}
-            bookmark={bookmark}
-          />
+          <BookmarkButton questionId={question.id} bookmark={bookmark} />
         )}
 
         <h2
@@ -132,7 +128,11 @@ export const QuestionCard = ({
   };
 
   return linkDisabled ? (
-    <QuestionCardContent question={question} linkDisabled={true} bookmark={bookmark} />
+    <QuestionCardContent
+      question={question}
+      linkDisabled={true}
+      bookmark={bookmark}
+    />
   ) : (
     <Link
       href={{
@@ -140,7 +140,11 @@ export const QuestionCard = ({
         query: queryParams,
       }}
     >
-      <QuestionCardContent question={question} linkDisabled={false} bookmark={bookmark} />
+      <QuestionCardContent
+        question={question}
+        linkDisabled={false}
+        bookmark={bookmark}
+      />
     </Link>
   );
 };

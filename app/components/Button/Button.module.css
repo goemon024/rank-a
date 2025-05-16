@@ -86,7 +86,7 @@
 }
 
 .bookmark {
-  font-size: 1.0rem;
+  font-size: 1rem;
   color: #ff8833;
   border: solid 1px #ff8833;
   background-color: transparent;
@@ -109,7 +109,6 @@
 }
 
 @media (max-width: 476px) {
-
   .postButton,
   .postButtonDisabled {
     width: 135px;

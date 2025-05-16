@@ -46,7 +46,10 @@ export async function POST(req: NextRequest) {
     });
 
     if (!question) {
-      return NextResponse.json({ error: "Question not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Question not found" },
+        { status: 404 },
+      );
     }
 
     // 回答を作成

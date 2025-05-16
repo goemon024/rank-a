@@ -26,10 +26,7 @@ export default function ProfileEditPage() {
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  const links = getLinksProfile(
-    userId,
-    String(authUser?.userId) === userId
-  );
+  const links = getLinksProfile(userId, String(authUser?.userId) === userId);
 
   // const [loading, setLoading] = useState(true)
   // const [error, setError] = useState<string | null>(null)

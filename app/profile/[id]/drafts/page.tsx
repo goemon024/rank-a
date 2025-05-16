@@ -40,12 +40,15 @@ export default function DraftPage() {
     console.log(userIdFromToken, userId);
 
     const fetchQuestions = async () => {
-      const res = await fetch(`/api/questions?isDraft=true&userId=${userId}&limit=100`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `/api/questions?isDraft=true&userId=${userId}&limit=100`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
       const data = await res.json();
       setQuestions(data.questions);
       setIsLoading(false);
