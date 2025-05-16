@@ -117,7 +117,7 @@ export async function PUT(req: NextRequest) {
       { status: 200 },
     );
   } catch (err) {
-    console.error("🔥 PUT /vote/[voteId] エラー:", err);
+    console.error(" PUT /vote/[voteId] エラー:", err);
     return NextResponse.json(
       {
         error: "Server Error",

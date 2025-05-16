@@ -38,9 +38,9 @@ export async function GET(req: NextRequest) {
       try {
         const payload = jwt.verify(token, JWT_SECRET) as { userId: number };
         userId = payload.userId;
-        // console.log("✅ JWT payload:", payload);
+        // console.log("JWT payload:", payload);
       } catch (err) {
-        console.log("❌ JWT payload:", err);
+        console.log("JWT payload:", err);
         // console.warn("Invalid token, proceeding as guest");
       }
     }
@@ -79,9 +79,6 @@ export async function GET(req: NextRequest) {
         voteId = userVoteObj.id;
       }
     }
-
-    // console.log("userVote", userVote);
-    // console.log("voteId", voteId);
 
     voteMapQuestion[questionId] = {
       upvotes: upvotes || 0,

@@ -93,19 +93,6 @@ export async function POST(req: Request) {
       { expiresIn: "3h" },
     );
 
-    // Cookieをセット
-    // const response = NextResponse.json({ success: true, user });
-    // response.headers.set(
-    //   "Set-Cookie",
-    //   serialize("token", token, {
-    //     httpOnly: true,
-    //     path: "/",
-    //     maxAge: 60 * 60 * 24 * 7, // 1 week
-    //     sameSite: "lax",
-    //     secure: process.env.NODE_ENV === "production",
-    //   })
-    // );
-
     return NextResponse.json({ token }, { status: 200 });
   } catch (error) {
     return NextResponse.json(

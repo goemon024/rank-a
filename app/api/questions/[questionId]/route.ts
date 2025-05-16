@@ -3,15 +3,8 @@ import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { questionSchema } from "@/schemas/qustionSchema";
 
-export async function GET(
-  req: NextRequest,
-  // { params }: { params: { questionId: string } },
-) {
+export async function GET(req: NextRequest) {
   try {
-    // const { params } = await contextPromise
-    // const { questionId } = await Promise.resolve(params);
-    // parseInt(params.questionId, 10)
-
     const questionId = req.nextUrl.pathname.split("/").filter(Boolean)[2];
 
     if (isNaN(parseInt(questionId, 10))) {
@@ -158,7 +151,6 @@ export async function DELETE(req: NextRequest) {
   try {
     payload = jwt.verify(token, JWT_SECRET) as { userId: number };
   } catch (err: unknown) {
-    // eslint-disable-next-line no-console
     console.error("Token verification failed:", err);
     return NextResponse.json({ error: "Invalid token" }, { status: 403 });
   }
@@ -182,7 +174,6 @@ export async function DELETE(req: NextRequest) {
         { status: 404 },
       );
     }
-    // eslint-disable-next-line no-console
     console.error("DB error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },

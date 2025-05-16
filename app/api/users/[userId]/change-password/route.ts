@@ -26,16 +26,6 @@ export async function PUT(req: NextRequest) {
 
     const { currentPassword, newPassword, confirmPassword } = await req.json();
 
-    // if (!currentPassword || !newPassword) {
-    //   // eslint-disable-next-line no-console
-    //   console.log("すべての項目を入力してください");
-    //   return NextResponse.json({ error: "すべての項目を入力してください" }, { status: 400 });
-    // }
-
-    // if (newPassword.length < 8) {
-    //   return NextResponse.json({ error: "パスワードは8文字以上にしてください" }, { status: 400 });
-    // }
-
     const result = changePasswordSchema.safeParse({
       currentPassword,
       newPassword,

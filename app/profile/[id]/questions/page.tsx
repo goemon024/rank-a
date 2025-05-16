@@ -75,7 +75,10 @@ export default function UserQuestionsPage() {
     fetchQuestions();
   }, []);
 
-  const handleCardClick = async (question: QuestionWithUserAndTags, isUnread: boolean) => {
+  const handleCardClick = async (
+    question: QuestionWithUserAndTags,
+    isUnread: boolean,
+  ) => {
     try {
       if (isUnread) {
         await fetch(`/api/notifications/${question.id}`, {
@@ -86,8 +89,6 @@ export default function UserQuestionsPage() {
           },
         });
       }
-
-
     } catch (err) {
       console.log(err);
     } finally {

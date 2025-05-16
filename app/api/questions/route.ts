@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { Prisma } from "@prisma/client";
 import { questionSchema } from "@/schemas/qustionSchema";
-// import { getFilteredQuestions } from "@/lib/questionService";
 
 export async function GET(req: NextRequest) {
   try {
@@ -33,10 +32,6 @@ export async function GET(req: NextRequest) {
     const userId = parseInt(searchParams.get("userId") || "0", 10);
     const isDraft = searchParams.get("isDraft") || "false";
 
-    // console.log("req.url:", req.url);
-    // console.log("searchParams:", searchParams.toString());
-    // console.log("userId param:", searchParams.get("userId"));
-
     const tagIds = tagParam
       ? tagParam
           .split(",")
@@ -44,10 +39,6 @@ export async function GET(req: NextRequest) {
           .filter((id) => !isNaN(id))
       : [];
 
-    // const allowedSorts = ["newer", "older", "score", "upvote", "answerCount"];
-    // if (!allowedSorts.includes(sort)) {
-    //   return NextResponse.json({ error: "sortの値が不正です" }, { status: 400 });
-    // }
     console.log("sort:", sort);
 
     const orderBy =
@@ -68,11 +59,6 @@ export async function GET(req: NextRequest) {
         userId: userId,
       });
     }
-    // if (userId) {
-    //   conditions.push({
-    //     userId: userId,
-    //   });
-    // }
 
     if (isDraft === "true") {
       conditions.push({
@@ -212,7 +198,6 @@ export async function POST(req: NextRequest) {
   try {
     payload = jwt.verify(token, JWT_SECRET) as { userId: number };
   } catch (err: unknown) {
-    // eslint-disable-next-line no-console
     console.error("Token verification failed:", err);
     return NextResponse.json({ error: "Invalid token" }, { status: 403 });
   }
@@ -264,7 +249,6 @@ export async function POST(req: NextRequest) {
       { status: 201 },
     );
   } catch (error: unknown) {
-    // eslint-disable-next-line no-console
     console.error("DB error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },

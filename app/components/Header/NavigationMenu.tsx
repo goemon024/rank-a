@@ -5,7 +5,6 @@ import styles from "./Header.module.css";
 import { NavLinks } from "@/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePathname } from "next/navigation";
-import { parse } from "url";
 
 export default function NavigationMenu({ links }: { links: NavLinks[] }) {
   const { isAuthenticated, user: authUser } = useAuth();

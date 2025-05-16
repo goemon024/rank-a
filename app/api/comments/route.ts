@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import { commentSchema } from "@/schemas/commentSchema";
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key"; // .envで設定しておく
+const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_key";
 
 export async function POST(req: NextRequest) {
   const authHeader = req.headers.get("authorization");

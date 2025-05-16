@@ -17,7 +17,6 @@ export async function PATCH(req: NextRequest) {
   try {
     payload = jwt.verify(token, JWT_SECRET) as { userId: number };
   } catch (err: unknown) {
-    // eslint-disable-next-line no-console
     console.error("Token verification failed:", err);
     return NextResponse.json({ error: "Invalid token" }, { status: 403 });
   }

@@ -69,23 +69,4 @@ export async function POST() {
       },
     });
   }
-
-  // const commentCounts = await Promise.all(
-  //     questionIds.map((q) =>
-  //         prisma.comment.count({
-  //             where: { questionId: q },
-  //         }),
-  //     ),
-  // );
-
-  //eslint-disable-next-line no-console
-  // console.log(answerCounts);
-  //eslint-disable-next-line no-console
-  // console.log(commentCounts);
-
-  // 合計値;
-  //   console.log("################");
-  //   const sum = answerCounts.reduce((acc, curr) => acc + curr, 0);
-  //   const sum2 = commentCounts.reduce((acc, curr) => acc + curr, 0);
-  //   console.log(commentCounts);
 }

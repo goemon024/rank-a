@@ -125,10 +125,6 @@ export async function PUT(req: NextRequest) {
   let oldFileName: string | null = null;
   try {
     if (currentUser?.imagePath) {
-      // const url = new URL(currentUser.imagePath);
-      // const parts = url.pathname.split("/");
-      // oldFileName = parts[parts.length - 1];
-
       const parts = currentUser.imagePath.split("/");
       oldFileName = parts[parts.length - 1];
     }
@@ -199,11 +195,6 @@ export async function PUT(req: NextRequest) {
 
     imagePath = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${fileName}`;
     console.log("imagePath", imagePath);
-
-    // const { data: urlData } = supabase.storage
-    //   .from("avatars")
-    //   .getPublicUrl(fileName);
-    // imagePath = urlData.publicUrl;
   }
 
   try {
@@ -259,51 +250,3 @@ export async function PUT(req: NextRequest) {
     );
   }
 }
-
-// export const GET = async (
-//   req: NextRequest,
-//   // { params }: { params: { userId: string } },
-// ) => {
-//   try {
-//     const authHeader = req.headers.get("authorization");
-
-//     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-//       return NextResponse.json({ error: "Unauthorized" }, { status: 404 }); //401
-//     }
-
-//     const token = authHeader.split(" ")[1];
-//     const payload = await verifyToken(token);
-//     if (!payload) {
-//       return NextResponse.json({ error: "Invalid token" }, { status: 404 }); //401
-//     }
-
-//     // const { userId } = await Promise.resolve(params);
-//     const userId = req.nextUrl.pathname.split("/").filter(Boolean)[2];
-
-//     // DBからユーザー取得
-//     const user = await prisma.user.findUnique({
-//       where: { id: parseInt(userId, 10) },
-//       select: {
-//         id: true,
-//         username: true,
-//         email: true,
-//         passwordHash: true,
-//         role: true,
-//         imagePath: true,
-//         createdAt: true,
-//       },
-//     });
-
-//     if (!user) {
-//       return NextResponse.json({ error: "User not found" }, { status: 404 });
-//     }
-
-//     return NextResponse.json(user, { status: 200 });
-//   } catch (err) {
-//     console.error(err);
-//     return NextResponse.json(
-//       { error: "Internal Server Error" },
-//       { status: 500 },
-//     );
-//   }
-// };
