@@ -73,24 +73,52 @@ export default function LoginPage() {
           ログインは、ユーザ名又はEmailとパスワードを入力ください
         </p>
         <div className={styles.formGroup}>
-          <p className={email.length === 0 ? styles.formLabel : styles.formLabelDisabled}>ユーザー名</p>
+          <p
+            className={
+              email.length === 0 ? styles.formLabel : styles.formLabelDisabled
+            }
+          >
+            ユーザー名
+          </p>
           <input
-            className={email.length === 0 ? styles.formInput : styles.formInputDisabled}
+            className={
+              email.length === 0 ? styles.formInput : styles.formInputDisabled
+            }
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder={email.length === 0 ? "ユーザー名" : "ユーザー名又はEmailを入力してください"}
+            placeholder={
+              email.length === 0
+                ? "ユーザー名"
+                : "ユーザー名又はEmailを入力してください"
+            }
             disabled={email.length > 0}
           />
         </div>
         <div className={styles.formGroup}>
-          <p className={username.length === 0 ? styles.formLabel : styles.formLabelDisabled}>Email</p>
+          <p
+            className={
+              username.length === 0
+                ? styles.formLabel
+                : styles.formLabelDisabled
+            }
+          >
+            Email
+          </p>
           <input
-            className={username.length === 0 ? styles.formInput : styles.formInputDisabled}
+            className={
+              username.length === 0
+                ? styles.formInput
+                : styles.formInputDisabled
+            }
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder={username.length === 0 ? "Email" : "ユーザー名又はEmailを入力してください"}
+            placeholder={
+              username.length === 0
+                ? "Email"
+                : "ユーザー名又はEmailを入力してください"
+            }
             disabled={username.length > 0}
           />
         </div>

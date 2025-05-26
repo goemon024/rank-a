@@ -25,7 +25,7 @@ import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
 import { BreadDraftpage } from "@/constants";
 
-export default function QuestionPut({ }) {
+export default function QuestionPut({}) {
   const params = useParams();
   const questionId = params.id as string;
 
@@ -201,9 +201,9 @@ export default function QuestionPut({ }) {
       <Header links={links} />
       <Breadcrumbs
         hierarchy={BreadDraftpage(String(payload?.userId))}
-        pageCategory="overview" />
+        pageCategory="overview"
+      />
       <div className={styles.container}>
-
         <h2 className={styles.title}>質問を投稿</h2>
 
         <form className={styles.form} onSubmit={handleSubmit}>

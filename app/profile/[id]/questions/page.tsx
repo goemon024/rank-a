@@ -46,30 +46,34 @@ export default function UserQuestionsPage() {
           (question: QuestionWithUserAndTags) => question.id,
         );
 
-        if (questionIds.length > 0 && String(authUser?.userId) === String(userId)) {
+        if (
+          questionIds.length > 0 &&
+          String(authUser?.userId) === String(userId)
+        ) {
           const notificationParams = new URLSearchParams({
             questionIds: questionIds.join(","),
           });
-          const res = await fetch(`/api/notifications?${notificationParams.toString()}`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`, // 認証が必要なら追加
+          const res = await fetch(
+            `/api/notifications?${notificationParams.toString()}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`, // 認証が必要なら追加
+              },
             },
-          });
+          );
 
           const notifications = await res.json();
           setNotifications(notifications);
 
           console.log("#########");
           console.log(notifications);
-
         }
         setUserImagePath(
           data.questions[0]?.user?.imagePath || authUser?.imagePath,
         );
         setUsername(data.questions[0]?.user?.username || authUser?.username);
         setIsLoading(false);
-
       } catch (err) {
         console.log(err);
       }
@@ -106,7 +110,8 @@ export default function UserQuestionsPage() {
         <Header links={links} />
         <Breadcrumbs
           hierarchy={BreadProfilepage("質問履歴", String(userId))}
-          pageCategory="overview" />
+          pageCategory="overview"
+        />
       </div>
       <div className={styles.questionArea}>
         <div className={styles.userIconButtonContainer}>
@@ -147,7 +152,6 @@ export default function UserQuestionsPage() {
             );
           })
         )}
-
       </div>
     </div>
   );

@@ -55,12 +55,13 @@ export default function EditDeleteButton({
           </button>
         </div>
       )}
-      {editModal &&
+      {editModal && (
         <AnswerModal
           setOpen={setEditModal}
           answer={answer}
           onSuccess={onSuccessEdit}
-        />}
+        />
+      )}
       {deleteModal && (
         <DeleteModal
           setOpen={setDeleteModal}

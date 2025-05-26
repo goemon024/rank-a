@@ -13,7 +13,6 @@ import { QuestionWithUserAndTags, Bookmark } from "@/types";
 import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
 import { BreadHomepage } from "@/constants";
 
-
 interface HomeProps {
   questions: QuestionWithUserAndTags[];
   currentPage: number;

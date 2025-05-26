@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "./modal.module.css";
-import { useRouter } from "next/navigation";
+
 import {
   AnswerWithUser,
   QuestionWithUserAndTags,
@@ -30,7 +30,6 @@ const DeleteModal = ({
   }
 
   const [errorDelete, setErrorDelete] = useState<string | null>(null);
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const token = localStorage.getItem("token");
@@ -72,7 +71,6 @@ const DeleteModal = ({
 
       if (onSuccess) onSuccess();
       setOpen(false);
-
     } catch (error) {
       setIsLoading(false);
       console.error(error);

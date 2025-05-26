@@ -34,7 +34,7 @@ export default function SignUpPage() {
   useEffect(() => {
     const getToken = async () => {
       if (
-        typeof window !== 'undefined' &&
+        typeof window !== "undefined" &&
         window.grecaptcha &&
         process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
       ) {
@@ -42,11 +42,11 @@ export default function SignUpPage() {
           try {
             const token = await window.grecaptcha.execute(
               process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!,
-              { action: 'signup' }
+              { action: "signup" },
             );
             setRecaptchaToken(token);
           } catch (err) {
-            console.error('reCAPTCHA execute error:', err);
+            console.error("reCAPTCHA execute error:", err);
           }
         });
       }
@@ -86,7 +86,7 @@ export default function SignUpPage() {
 
     if (data.success) {
       setMessage("登録成功！扉ページへ");
-      setTimeout(() => { }, 2000);
+      setTimeout(() => {}, 2000);
       const usernameOrEmail = email;
 
       const res = await fetch("/api/users/login", {

@@ -19,8 +19,6 @@ export default function ProfilePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
-
-
   const links = getLinksProfile(userId, String(authUser?.userId) === userId);
 
   useEffect(() => {
@@ -99,9 +97,7 @@ export default function ProfilePage() {
   return (
     <div>
       <Header links={links} />
-      <Breadcrumbs
-        hierarchy={BreadProfilepage()}
-        pageCategory="profile" />
+      <Breadcrumbs hierarchy={BreadProfilepage()} pageCategory="profile" />
       {isLoading ? (
         <div className={styles.LoadingContainer}>
           <p className={styles.Blink}>Loading...</p>

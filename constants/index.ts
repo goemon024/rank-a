@@ -57,35 +57,38 @@ export const getLinkQuestionDetail = (searchParams: URLSearchParams) => {
 };
 
 export const BreadDetailpage = () => {
-  return [{ label: "ＴＯＰページ", href: `/home` },
-  { label: "質問詳細", href: "" },
-  ]
+  return [
+    { label: "ＴＯＰページ", href: `/home` },
+    { label: "質問詳細", href: "" },
+  ];
 };
 
 export const BreadHomepage = () => {
-  return [{ label: "ＴＯＰページ", href: `` },
-  ]
+  return [{ label: "ＴＯＰページ", href: `` }];
 };
 
 export const BreadNewPostpage = () => {
-  return [{ label: "ＴＯＰページ", href: `/home` },
-  { label: "質問投稿", href: "" },
-  ]
+  return [
+    { label: "ＴＯＰページ", href: `/home` },
+    { label: "質問投稿", href: "" },
+  ];
 };
 
 export const BreadDraftpage = (userId: string) => {
-  return [{ label: "ＴＯＰページ", href: `/home` },
-  { label: "下書き一覧", href: `/profile/${userId}/drafts` },
-  { label: "質問投稿", href: "" }]
+  return [
+    { label: "ＴＯＰページ", href: `/home` },
+    { label: "下書き一覧", href: `/profile/${userId}/drafts` },
+    { label: "質問投稿", href: "" },
+  ];
 };
 
 export const BreadProfilepage = (pagename?: string, userId?: string) => {
   const crumbs = [
     { label: "ＴＯＰページ", href: `/home` },
     { label: "プロフィール", href: `/profile/${userId}` },
-  ]
+  ];
   if (pagename && userId) {
-    crumbs.push({ label: pagename, href: "" })
+    crumbs.push({ label: pagename, href: "" });
   }
-  return crumbs
+  return crumbs;
 };

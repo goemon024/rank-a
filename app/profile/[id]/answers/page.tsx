@@ -15,7 +15,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
 import { BreadProfilepage } from "@/constants/index";
 
-
 export default function UserAnswersPage() {
   const params = useParams();
   const userId = parseInt(params.id as string);
@@ -54,7 +53,8 @@ export default function UserAnswersPage() {
         <Header links={links} />
         <Breadcrumbs
           hierarchy={BreadProfilepage("回答履歴", String(userId))}
-          pageCategory="overview" />
+          pageCategory="overview"
+        />
       </div>
       <div className={styles.questionArea}>
         <h2>{username} さんの回答履歴</h2>

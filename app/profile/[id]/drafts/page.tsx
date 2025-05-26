@@ -72,7 +72,8 @@ export default function DraftPage() {
         <Header links={links} />
         <Breadcrumbs
           hierarchy={BreadProfilepage("下書き一覧", String(userId))}
-          pageCategory="overview" />
+          pageCategory="overview"
+        />
       </div>
       <div className={styles.questionArea}>
         <h2>{username} さんの下書き一覧</h2>

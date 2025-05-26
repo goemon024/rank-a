@@ -53,7 +53,6 @@ const CommentModal = ({
 
       if (onSuccess) onSuccess();
       setOpen(false);
-
     } catch (error) {
       setIsLoading(false);
       setErrorComment("投稿エラー：もう一度お試しください");

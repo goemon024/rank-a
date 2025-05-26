@@ -17,7 +17,6 @@ import { profileSchema } from "@/schemas/profileSchema";
 import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
 import { BreadProfilepage } from "@/constants/index";
 
-
 export default function ProfileEditPage() {
   const params = useParams();
   const userId = params.id as string;
@@ -237,7 +236,8 @@ export default function ProfileEditPage() {
       <Header links={links} />
       <Breadcrumbs
         hierarchy={BreadProfilepage("profile edit", String(userId))}
-        pageCategory="profile" />
+        pageCategory="profile"
+      />
       {isLoading ? (
         <div className={styles.LoadingContainer}>
           <p className={styles.Blink}>Loading...</p>

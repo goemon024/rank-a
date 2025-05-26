@@ -21,7 +21,6 @@ import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
 import { BreadNewPostpage } from "@/constants";
 
-
 export default function QuestionPost() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();

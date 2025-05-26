@@ -16,8 +16,12 @@ type AnswerModalProps = {
   onSuccess?: () => void;
 };
 
-const AnswerModal = ({ setOpen, questionId, answer, onSuccess }: AnswerModalProps) => {
-
+const AnswerModal = ({
+  setOpen,
+  questionId,
+  answer,
+  onSuccess,
+}: AnswerModalProps) => {
   if (!questionId && !answer) {
     throw new Error("questionId または answer が必要です");
   }

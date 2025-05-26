@@ -56,7 +56,8 @@ export default function UserCommentsPage() {
         <Header links={links} />
         <Breadcrumbs
           hierarchy={BreadProfilepage("コメント履歴", String(userId))}
-          pageCategory="overview" />
+          pageCategory="overview"
+        />
       </div>
       <div className={styles.questionArea}>
         <div className={styles.userIconButtonContainer}>

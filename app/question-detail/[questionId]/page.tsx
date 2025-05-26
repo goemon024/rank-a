@@ -114,12 +114,9 @@ export default function QuestionDetail() {
   ) : (
     <div>
       <Header links={getLinkQuestionDetail(searchParams)} />
-      <Breadcrumbs
-        hierarchy={BreadDetailpage()}
-        pageCategory="detail" />
+      <Breadcrumbs hierarchy={BreadDetailpage()} pageCategory="detail" />
 
       <div className={styles.container}>
-
         <QuestionCard
           question={question}
           linkDisabled={true}
