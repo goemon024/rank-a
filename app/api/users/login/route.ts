@@ -77,7 +77,7 @@ export async function POST(req: Request) {
 
     if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
       return NextResponse.json(
-        { error: "パスワードが正しくありません" },
+        { error: "ユーザ名又はEmailアドレス、パスワードが正しくありません" },
         { status: 401 },
       );
     }

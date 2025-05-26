@@ -22,7 +22,10 @@ import { useParams } from "next/navigation";
 import { questionSchema } from "@/schemas/qustionSchema";
 import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 
-export default function QuestionPut({}) {
+import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
+import { BreadDraftpage } from "@/constants";
+
+export default function QuestionPut({ }) {
   const params = useParams();
   const questionId = params.id as string;
 
@@ -196,8 +199,13 @@ export default function QuestionPut({}) {
   ) : (
     <div>
       <Header links={links} />
+      <Breadcrumbs
+        hierarchy={BreadDraftpage(String(payload?.userId))}
+        pageCategory="overview" />
       <div className={styles.container}>
+
         <h2 className={styles.title}>質問を投稿</h2>
+
         <form className={styles.form} onSubmit={handleSubmit}>
           {error && <p className={styles.alert}>{error}</p>}
           <CreateTitle title={title} setTitle={setTitle} />

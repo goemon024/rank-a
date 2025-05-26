@@ -1,5 +1,7 @@
 .previousButton,
-.nextButton {
+.nextButton,
+.disabledPreviousButton,
+.disabledNextButton {
   display: flex;
   margin: 0 10px;
   align-items: center;
@@ -7,7 +9,14 @@
   color: #ffffff;
   font-size: 12px;
   background-color: inherit;
+  cursor: pointer;
 }
+
+.disabledPreviousButton,
+.disabledNextButton {
+  cursor: default;
+}
+
 
 .currentButton {
   color: white;
@@ -24,6 +33,7 @@
   height: 25px;
   font-size: 12px;
   background-color: inherit;
+  cursor: pointer;
 }
 
 .pagination {

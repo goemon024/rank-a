@@ -13,6 +13,8 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 import { useAuth } from "@/contexts/AuthContext";
+import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
+import { BreadProfilepage } from "@/constants/index";
 
 export default function DraftPage() {
   const params = useParams();
@@ -68,6 +70,9 @@ export default function DraftPage() {
     <div>
       <div>
         <Header links={links} />
+        <Breadcrumbs
+          hierarchy={BreadProfilepage("下書き一覧", String(userId))}
+          pageCategory="overview" />
       </div>
       <div className={styles.questionArea}>
         <h2>{username} さんの下書き一覧</h2>

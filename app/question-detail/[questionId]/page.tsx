@@ -20,7 +20,9 @@ import CommentModal from "@/app/components/Modal/CommentModal";
 import { CommentCard } from "@/app/components/CommentCard/CommentCard";
 import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getLinkQuestionDetail } from "@/constants";
+import { getLinkQuestionDetail, BreadDetailpage } from "@/constants";
+
+import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
 
 // import { AuthProvider } from "@/contexts/AuthContext";
 export default function QuestionDetail() {
@@ -43,6 +45,7 @@ export default function QuestionDetail() {
 
   // コメントモーダルで選択された回答のIDを保持する
   const [selectedAnswerId, setSelectedAnswerId] = useState<number | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
   // ベスト回答のIDを保持する
   const [bestAnswerId, setBestAnswerId] = useState<number | null>(null);
   const router = useRouter();
@@ -101,7 +104,7 @@ export default function QuestionDetail() {
       }
     };
     fetchQuestion();
-  }, [questionId]);
+  }, [questionId, reloadKey]);
 
   if (error) return null;
   if (!question) return null;
@@ -111,7 +114,12 @@ export default function QuestionDetail() {
   ) : (
     <div>
       <Header links={getLinkQuestionDetail(searchParams)} />
+      <Breadcrumbs
+        hierarchy={BreadDetailpage()}
+        pageCategory="detail" />
+
       <div className={styles.container}>
+
         <QuestionCard
           question={question}
           linkDisabled={true}
@@ -126,7 +134,11 @@ export default function QuestionDetail() {
           comments
             .filter((comment) => !comment.answerId)
             .map((comment) => (
-              <CommentCard key={comment.id} comment={comment} />
+              <CommentCard
+                key={comment.id}
+                comment={comment}
+                onSuccess={() => setReloadKey(reloadKey + 1)}
+              />
             ))}
 
         <AnswerTop
@@ -172,22 +184,33 @@ export default function QuestionDetail() {
                       setSelectedAnswerId(answer.id);
                       setIsCommentModalOpen(true);
                     }}
+                    onSuccessEdit={() => setReloadKey(reloadKey + 1)}
+                    onSuccessDelete={() => setReloadKey(reloadKey + 1)}
                   />
                   {answerComments.map((comment) => (
-                    <CommentCard key={comment.id} comment={comment} />
+                    <CommentCard
+                      key={comment.id}
+                      comment={comment}
+                      onSuccess={() => setReloadKey(reloadKey + 1)}
+                    />
                   ))}
                 </div>
               );
             })}
       </div>
       {isAnswerModalOpen && (
-        <AnswerModal setOpen={setIsAnswerModalOpen} questionId={questionId} />
+        <AnswerModal
+          setOpen={setIsAnswerModalOpen}
+          questionId={questionId}
+          onSuccess={() => setReloadKey(reloadKey + 1)}
+        />
       )}
       {isCommentModalOpen && (
         <CommentModal
           setOpen={setIsCommentModalOpen}
           questionId={questionId}
           answerId={selectedAnswerId?.toString()}
+          onSuccess={() => setReloadKey(reloadKey + 1)}
         />
       )}
     </div>

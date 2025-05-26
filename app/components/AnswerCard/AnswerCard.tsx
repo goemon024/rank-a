@@ -25,6 +25,8 @@ export const AnswerCard = ({
   isBest,
   setCommentButtonClick,
   onBest,
+  onSuccessEdit,
+  onSuccessDelete,
 }: {
   answer: AnswerWithUser;
   // votes: VoteSummary;
@@ -38,6 +40,8 @@ export const AnswerCard = ({
   isBest: boolean;
   setCommentButtonClick: () => void;
   onBest: (answerId: number | null) => void;
+  onSuccessEdit?: () => void;
+  onSuccessDelete?: () => void;
 }) => {
   return (
     <div className={styles.answerCard}>
@@ -80,6 +84,8 @@ export const AnswerCard = ({
             answer={answer}
             votes={votes}
             commentCount={commentCount}
+            onSuccessEdit={onSuccessEdit}
+            onSuccessDelete={onSuccessDelete}
           />
         </div>
       </div>

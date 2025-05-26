@@ -2,7 +2,6 @@
 
 import React, { useState, useRef } from "react";
 import styles from "./modal.module.css";
-import { useRouter } from "next/navigation";
 import { commentSchema } from "@/schemas/commentSchema";
 import { MarkdownToolbar } from "../Button/MarkdownToolbar";
 import LoadingModal from "../LoadingModal/LoadingModal";
@@ -11,13 +10,14 @@ const CommentModal = ({
   setOpen,
   questionId,
   answerId,
+  onSuccess,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   questionId: string;
   answerId?: string | null;
+  onSuccess?: () => void;
 }) => {
   const [content, setContent] = useState("");
-  const router = useRouter();
   const token = localStorage.getItem("token");
   const [errorComment, setErrorComment] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +51,9 @@ const CommentModal = ({
         throw new Error("投稿に失敗しました");
       }
 
-      router.push("/");
+      if (onSuccess) onSuccess();
+      setOpen(false);
+
     } catch (error) {
       setIsLoading(false);
       setErrorComment("投稿エラー：もう一度お試しください");

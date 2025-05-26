@@ -32,7 +32,7 @@ export const Pagination = ({
   return (
     <div className={styles.pagination}>
       <button
-        className={styles.previousButton}
+        className={currentPage === 1 ? styles.disabledPreviousButton : styles.previousButton}
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -57,10 +57,10 @@ export const Pagination = ({
       </div>
 
       <button
-        className={styles.nextButton}
+        className={currentPage === totalPages ? styles.disabledNextButton : styles.nextButton}
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
-        // style={{ background: "inherit" }}
+      // style={{ background: "inherit" }}
       >
         Next Page
         <span className={styles.spanStyle}></span>

@@ -8,7 +8,13 @@ import CommentDeleteButton from "./CommentDeleteButton";
 import { CommentWithUser } from "@/types";
 import dayjs from "dayjs";
 
-export const CommentCard = ({ comment }: { comment: CommentWithUser }) => {
+export const CommentCard = ({
+  comment,
+  onSuccess,
+}: {
+  comment: CommentWithUser;
+  onSuccess?: () => void;
+}) => {
   return (
     <div className={styles.commentCard}>
       <div className={styles.artherSection}>
@@ -21,7 +27,7 @@ export const CommentCard = ({ comment }: { comment: CommentWithUser }) => {
             <p>{comment.user.username}</p>
             <p>{dayjs(comment.createdAt).format("YYYY年MM月DD日 HH時mm分")}</p>
           </div>
-          <CommentDeleteButton comment={comment} />
+          <CommentDeleteButton comment={comment} onSuccess={onSuccess} />
         </div>
       </div>
       <div className={styles.commentContent}>

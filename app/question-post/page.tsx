@@ -18,6 +18,10 @@ import { questionSchema } from "@/schemas/qustionSchema";
 
 import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 
+import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
+import { BreadNewPostpage } from "@/constants";
+
+
 export default function QuestionPost() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
@@ -121,6 +125,8 @@ export default function QuestionPost() {
   return isAuthenticated ? (
     <div>
       <Header links={links} />
+      <Breadcrumbs hierarchy={BreadNewPostpage()} pageCategory="overview" />
+
       <div className={styles.container}>
         <form className={styles.form} onSubmit={handleSubmit}>
           <h2 className={styles.title}>質問を投稿</h2>

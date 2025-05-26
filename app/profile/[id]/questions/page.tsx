@@ -11,6 +11,8 @@ import dayjs from "dayjs";
 import { UserIconButton } from "@/app/components/UserIconButton/UserIconButton";
 import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 import { useAuth } from "@/contexts/AuthContext";
+import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
+import { BreadProfilepage } from "@/constants/index";
 
 export default function UserQuestionsPage() {
   const params = useParams();
@@ -44,11 +46,11 @@ export default function UserQuestionsPage() {
           (question: QuestionWithUserAndTags) => question.id,
         );
 
-        if (questionIds.length > 0) {
-          const params = new URLSearchParams({
+        if (questionIds.length > 0 && String(authUser?.userId) === String(userId)) {
+          const notificationParams = new URLSearchParams({
             questionIds: questionIds.join(","),
           });
-          const res = await fetch(`/api/notifications?${params.toString()}`, {
+          const res = await fetch(`/api/notifications?${notificationParams.toString()}`, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`, // 認証が必要なら追加
@@ -60,14 +62,14 @@ export default function UserQuestionsPage() {
 
           console.log("#########");
           console.log(notifications);
-          console.log("#########");
 
-          setUserImagePath(
-            data.questions[0]?.user?.imagePath || authUser?.imagePath,
-          );
-          setUsername(data.questions[0]?.user?.username || authUser?.username);
-          setIsLoading(false);
         }
+        setUserImagePath(
+          data.questions[0]?.user?.imagePath || authUser?.imagePath,
+        );
+        setUsername(data.questions[0]?.user?.username || authUser?.username);
+        setIsLoading(false);
+
       } catch (err) {
         console.log(err);
       }
@@ -102,6 +104,9 @@ export default function UserQuestionsPage() {
     <div>
       <div>
         <Header links={links} />
+        <Breadcrumbs
+          hierarchy={BreadProfilepage("質問履歴", String(userId))}
+          pageCategory="overview" />
       </div>
       <div className={styles.questionArea}>
         <div className={styles.userIconButtonContainer}>
@@ -143,30 +148,6 @@ export default function UserQuestionsPage() {
           })
         )}
 
-        {/* <div
-            key={q.id}
-            className={styles.questionCard}
-            onClick={() => handleCardClick(q)}
-            style={{ cursor: "pointer" }}
-          >
-            <p className={styles.questionTitle}>{q.title}</p>
-            <p className={styles.questionDescription}>{q.description}</p>
-            <p className={styles.questionTime}>
-              {dayjs(q.createdAt).format("YYYY/MM/DD HH:mm")}
-            </p>
-          </div>
-
-            // <Link key={q.id} href={`/question-detail/${q.id}`}>
-            //   <div key={q.id} className={styles.questionCard}>
-            //     <p className={styles.questionTitle}>{q.title}</p>
-            //     <p className={styles.questionDescription}>{q.description}</p>
-            //     <p className={styles.questionTime}>
-            //       {dayjs(q.createdAt).format("YYYY/MM/DD HH:mm")}
-            //     </p>
-            //   </div>
-            // </Link>
-          ))
-        )} */}
       </div>
     </div>
   );

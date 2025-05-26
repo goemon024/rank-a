@@ -73,24 +73,24 @@ export default function LoginPage() {
           ログインは、ユーザ名又はEmailとパスワードを入力ください
         </p>
         <div className={styles.formGroup}>
-          <p className={styles.formLabel}>ユーザー名</p>
+          <p className={email.length === 0 ? styles.formLabel : styles.formLabelDisabled}>ユーザー名</p>
           <input
-            className={styles.formInput}
+            className={email.length === 0 ? styles.formInput : styles.formInputDisabled}
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="ユーザー名"
+            placeholder={email.length === 0 ? "ユーザー名" : "ユーザー名又はEmailを入力してください"}
             disabled={email.length > 0}
           />
         </div>
         <div className={styles.formGroup}>
-          <p className={styles.formLabel}>Email</p>
+          <p className={username.length === 0 ? styles.formLabel : styles.formLabelDisabled}>Email</p>
           <input
-            className={styles.formInput}
+            className={username.length === 0 ? styles.formInput : styles.formInputDisabled}
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
+            placeholder={username.length === 0 ? "Email" : "ユーザー名又はEmailを入力してください"}
             disabled={username.length > 0}
           />
         </div>

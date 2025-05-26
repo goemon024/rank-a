@@ -15,6 +15,7 @@ type DeleteModalProps = {
   question?: QuestionWithUserAndTags;
   answer?: AnswerWithUser;
   comment?: CommentWithUser;
+  onSuccess?: () => void;
 };
 
 const DeleteModal = ({
@@ -22,6 +23,7 @@ const DeleteModal = ({
   question,
   answer,
   comment,
+  onSuccess,
 }: DeleteModalProps) => {
   if (!question && !answer && !comment) {
     throw new Error("question または answer または comment が必要です");
@@ -67,7 +69,10 @@ const DeleteModal = ({
       if (!res?.ok) {
         throw new Error("削除に失敗しました");
       }
-      router.push("/");
+
+      if (onSuccess) onSuccess();
+      setOpen(false);
+
     } catch (error) {
       setIsLoading(false);
       console.error(error);

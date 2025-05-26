@@ -10,6 +10,10 @@ import { LINKS_HOME } from "@/constants";
 import { Footer } from "../components/Footer/Footer";
 import { QuestionWithUserAndTags, Bookmark } from "@/types";
 
+import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
+import { BreadHomepage } from "@/constants";
+
+
 interface HomeProps {
   questions: QuestionWithUserAndTags[];
   currentPage: number;
@@ -29,6 +33,8 @@ export default function Home({
       <div>
         <Header links={LINKS_HOME} />
       </div>
+      <Breadcrumbs hierarchy={BreadHomepage()} pageCategory="home" />
+
       <div className={styles.main}>
         <div className={styles.questionArea}>
           <QuestionArea questions={questions} />

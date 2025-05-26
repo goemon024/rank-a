@@ -14,6 +14,10 @@ import ChangePasswordModal from "./ChangePasswordModal";
 import { imageUploadSchema } from "@/schemas/imageUploadSchema";
 import { profileSchema } from "@/schemas/profileSchema";
 
+import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
+import { BreadProfilepage } from "@/constants/index";
+
+
 export default function ProfileEditPage() {
   const params = useParams();
   const userId = params.id as string;
@@ -231,6 +235,9 @@ export default function ProfileEditPage() {
   return (
     <div>
       <Header links={links} />
+      <Breadcrumbs
+        hierarchy={BreadProfilepage("profile edit", String(userId))}
+        pageCategory="profile" />
       {isLoading ? (
         <div className={styles.LoadingContainer}>
           <p className={styles.Blink}>Loading...</p>

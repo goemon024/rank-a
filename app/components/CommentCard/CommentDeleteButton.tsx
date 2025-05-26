@@ -8,8 +8,10 @@ import DeleteModal from "../Modal/DeleteModal";
 
 export default function CommentDeleteButton({
   comment,
+  onSuccess,
 }: {
   comment: CommentWithUser;
+  onSuccess?: () => void;
 }) {
   const { user: authUser } = useAuth();
   const isAuther = Number(authUser?.userId) === comment.userId;
@@ -29,7 +31,11 @@ export default function CommentDeleteButton({
         <div className={styles.deleteButton}></div>
       )}
       {deleteModal && (
-        <DeleteModal setOpen={setDeleteModal} comment={comment} />
+        <DeleteModal
+          setOpen={setDeleteModal}
+          comment={comment}
+          onSuccess={onSuccess}
+        />
       )}
     </>
   );

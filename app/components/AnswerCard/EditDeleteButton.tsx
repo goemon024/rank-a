@@ -10,10 +10,14 @@ export default function EditDeleteButton({
   answer,
   votes,
   commentCount,
+  onSuccessEdit,
+  onSuccessDelete,
 }: {
   answer: AnswerWithUser;
   votes?: VoteMap;
   commentCount: number;
+  onSuccessEdit?: () => void;
+  onSuccessDelete?: () => void;
 }) {
   const { user: authUser } = useAuth();
   const isAuther = Number(authUser?.userId) === answer.userId;
@@ -51,8 +55,19 @@ export default function EditDeleteButton({
           </button>
         </div>
       )}
-      {editModal && <AnswerModal setOpen={setEditModal} answer={answer} />}
-      {deleteModal && <DeleteModal setOpen={setDeleteModal} answer={answer} />}
+      {editModal &&
+        <AnswerModal
+          setOpen={setEditModal}
+          answer={answer}
+          onSuccess={onSuccessEdit}
+        />}
+      {deleteModal && (
+        <DeleteModal
+          setOpen={setDeleteModal}
+          answer={answer}
+          onSuccess={onSuccessDelete}
+        />
+      )}
     </>
   );
 }

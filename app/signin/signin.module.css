@@ -45,7 +45,8 @@
   text-align: left;
 }
 
-.formLabel {
+.formLabel,
+.formLabelDisabled {
   font-size: 1rem;
   font-weight: bold;
   color: #333;
@@ -54,7 +55,12 @@
   justify-content: space-between;
 }
 
-.formInput {
+.formLabelDisabled {
+  color: #bbb;
+}
+
+.formInput,
+.formInputDisabled {
   width: 100%;
   padding: 12px;
   border: 1px solid #555;
@@ -63,6 +69,16 @@
   margin-bottom: 15px;
   background-color: #ffffff;
   color: #333;
+}
+
+.formInputDisabled {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  color: #ddd;
+}
+
+.formInputDisabled::placeholder {
+  color: #bbb;
 }
 
 /* 入力フィールドにフォーカス時のスタイル */
@@ -101,7 +117,8 @@
     font-size: 35px;
   }
 
-  .formInput {
+  .formInput,
+  .formInputDisabled {
     font-size: 15px;
     padding: 10px;
   }

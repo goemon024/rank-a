@@ -4,7 +4,6 @@ import React, { useState, useRef } from "react";
 import styles from "./modal.module.css";
 import { answerSchema } from "@/schemas/answerSchema";
 import { AnswerWithUser } from "@/types";
-import { useRouter } from "next/navigation";
 
 import { MarkdownToolbar } from "../Button/MarkdownToolbar";
 import LoadingModal from "../LoadingModal/LoadingModal";
@@ -14,10 +13,10 @@ type AnswerModalProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   questionId?: string;
   answer?: AnswerWithUser;
+  onSuccess?: () => void;
 };
 
-const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
-  const router = useRouter();
+const AnswerModal = ({ setOpen, questionId, answer, onSuccess }: AnswerModalProps) => {
 
   if (!questionId && !answer) {
     throw new Error("questionId または answer が必要です");
@@ -72,8 +71,9 @@ const AnswerModal = ({ setOpen, questionId, answer }: AnswerModalProps) => {
         throw new Error("投稿に失敗しました");
       }
 
-      // 投稿成功したらモーダルを閉じる
-      router.push("/");
+      if (onSuccess) onSuccess();
+      setOpen(false);
+
       // 必要ならページをリロードしたり、回答リストを更新したりもできる
       // location.reload()
     } catch (error) {

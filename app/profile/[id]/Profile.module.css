@@ -7,7 +7,7 @@
 }
 
 .ProfileContainer {
-  margin: 120px auto 0 auto;
+  margin: 5px auto 0 auto;
   display: flex;
   flex-direction: row;
   gap: 5px;
@@ -204,6 +204,7 @@
 }
 
 @keyframes blink {
+
   0%,
   49% {
     opacity: 1;
@@ -215,7 +216,7 @@
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 666px) {
   .ProfileContainer {
     flex-direction: column;
     align-items: center;

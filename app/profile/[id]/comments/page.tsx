@@ -12,6 +12,8 @@ import dayjs from "dayjs";
 import { UserIconButton } from "@/app/components/UserIconButton/UserIconButton";
 import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 import { useAuth } from "@/contexts/AuthContext";
+import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
+import { BreadProfilepage } from "@/constants/index";
 
 export default function UserCommentsPage() {
   const params = useParams();
@@ -52,6 +54,9 @@ export default function UserCommentsPage() {
     <div>
       <div>
         <Header links={links} />
+        <Breadcrumbs
+          hierarchy={BreadProfilepage("コメント履歴", String(userId))}
+          pageCategory="overview" />
       </div>
       <div className={styles.questionArea}>
         <div className={styles.userIconButtonContainer}>

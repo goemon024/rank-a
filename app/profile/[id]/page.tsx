@@ -8,6 +8,8 @@ import { getLinksProfile } from "@/constants";
 import styles from "./Profile.module.css";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
+import Breadcrumbs from "@/app/components/BreadCrumb/BreadCrumbs";
+import { BreadProfilepage } from "@/constants";
 
 export default function ProfilePage() {
   const params = useParams();
@@ -16,6 +18,8 @@ export default function ProfilePage() {
   const { isAuthenticated, user: authUser } = useAuth();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+
+
 
   const links = getLinksProfile(userId, String(authUser?.userId) === userId);
 
@@ -95,6 +99,9 @@ export default function ProfilePage() {
   return (
     <div>
       <Header links={links} />
+      <Breadcrumbs
+        hierarchy={BreadProfilepage()}
+        pageCategory="profile" />
       {isLoading ? (
         <div className={styles.LoadingContainer}>
           <p className={styles.Blink}>Loading...</p>
