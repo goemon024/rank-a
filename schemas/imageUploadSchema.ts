@@ -40,15 +40,19 @@ export const imageUploadSchema = z
       message: "ファイルが不正です",
     },
   )
-  .refine((file) => (file as Blob).size <= 1 * 1024 * 1024, {
-    message: "1MB以下の画像を選択してください",
-  })
+  .refine((file) => {
+    return (file as Blob).size <= 0.80 * 1024 * 1024;
+  },
+    {
+      message: "0.7MB以下の画像を選択してください",
+    }
+  )
   .refine((file) => ALLOWED_MIME_TYPES.includes((file as File).type), {
     message: "対応していない画像形式です（JPEG/PNG/WebP）",
   })
   .refine(
     (file) => {
-      const name = (file as File).name?.toLowerCase?.();
+      const name = (file as File).name?.toLowerCase();
       return (
         typeof name === "string" &&
         ALLOWED_EXTENSIONS.some((ext) => name.endsWith(ext))

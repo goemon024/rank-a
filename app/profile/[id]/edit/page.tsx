@@ -70,6 +70,7 @@ export default function ProfileEditPage() {
     const formData = new FormData(event.target as HTMLFormElement);
 
     const file = formData.get("imagePath") as File | null;
+
     if (file && file.size > 0) {
       // 画像バリデーションチェック
       const result = imageUploadSchema.safeParse(file);
@@ -154,7 +155,9 @@ export default function ProfileEditPage() {
     }
 
     const reader = new FileReader();
-    reader.onloadend = () => setPreviewImage(reader.result as string);
+    reader.onloadend = () => {
+      setPreviewImage(reader.result as string)
+    };
     reader.readAsDataURL(file);
     setErrorMessage("");
   };

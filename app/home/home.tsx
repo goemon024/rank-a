@@ -31,8 +31,12 @@ export default function Home({
     <div>
       <div>
         <Header links={LINKS_HOME} />
+
       </div>
-      <Breadcrumbs hierarchy={BreadHomepage()} pageCategory="home" />
+
+      <div className={styles.breadcrumbs}>
+        <Breadcrumbs hierarchy={BreadHomepage()} pageCategory="home" />
+      </div>
 
       <div className={styles.main}>
         <div className={styles.questionArea}>
