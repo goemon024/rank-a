@@ -156,7 +156,7 @@ export default function ProfileEditPage() {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setPreviewImage(reader.result as string)
+      setPreviewImage(reader.result as string);
     };
     reader.readAsDataURL(file);
     setErrorMessage("");

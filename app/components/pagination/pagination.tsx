@@ -1,10 +1,11 @@
 // components/Pagination.tsx
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./pagination.module.css";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
+import LoadingModal from "@/app/components/LoadingModal/LoadingModal";
 
 interface PaginationProps {
   currentPage: number;
@@ -19,12 +20,20 @@ export const Pagination = ({
 }: PaginationProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const goToPage = (page: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", page.toString());
-    if (keyword) params.set("keyword", keyword);
-    router.push(`/home?${params.toString()}`);
+  const goToPage = async (page: number) => {
+    setIsLoading(true)
+    try {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", page.toString());
+      if (keyword) params.set("keyword", keyword);
+      await router.push(`/home?${params.toString()}`);
+    } catch (error) {
+      console.error("ページ遷移に失敗しました:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (totalPages <= 1) return null;
@@ -68,7 +77,7 @@ export const Pagination = ({
         }
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
-        // style={{ background: "inherit" }}
+      // style={{ background: "inherit" }}
       >
         Next Page
         <span className={styles.spanStyle}></span>

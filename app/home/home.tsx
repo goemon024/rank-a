@@ -31,7 +31,6 @@ export default function Home({
     <div>
       <div>
         <Header links={LINKS_HOME} />
-
       </div>
 
       <div className={styles.breadcrumbs}>
